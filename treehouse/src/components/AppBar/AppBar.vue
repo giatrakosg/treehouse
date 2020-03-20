@@ -22,6 +22,14 @@
               Login
           </v-btn>
       </div>
+      <div class="d-flex align-right mx-4">
+          <v-btn
+           color="primary"
+           to="/register"
+          >
+              Register
+          </v-btn>
+      </div>
 
     </v-app-bar>
 
@@ -29,7 +37,12 @@
 
 <script>
 export default {
-    name : 'AppBar'
+    name : 'AppBar' ,
+    data() {
+        return {
+            dialog : false
+        }
+    }
 }
 </script>
 
