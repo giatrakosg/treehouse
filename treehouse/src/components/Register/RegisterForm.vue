@@ -115,11 +115,12 @@
               <v-btn
                 @click="loader = 'loading'"
                 block
-                color="secondary"
+                color="primary"
                 :loading="loading"
-                :disabled="loading"
+                :disabled="false"
+                isActive
 
-                >Εγγραφη
+                >Register
               </v-btn>
 
             </v-form>
