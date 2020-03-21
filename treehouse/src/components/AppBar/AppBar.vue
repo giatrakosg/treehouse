@@ -3,6 +3,7 @@
       app
       color="white"
       dark
+      hide-on-scroll
     >
 <!--     Temporary       -->
          <v-btn
