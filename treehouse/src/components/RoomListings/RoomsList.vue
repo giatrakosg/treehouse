@@ -1,5 +1,10 @@
 <template>
     <v-container  class="grid-list-lg">
+         <v-pagination
+                v-model="page"
+                :length="this.page_rows.length">
+
+        </v-pagination>
         <v-layout align-center justify-center v-for="index in page_rows[page-1]" :key="index" wrap>
              <v-flex  v-for="index in page_cols[page-1]" :key="index"   >
                <RoomInfo />

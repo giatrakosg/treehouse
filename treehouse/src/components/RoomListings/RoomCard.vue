@@ -1,7 +1,7 @@
 <template>
     <v-card elevation="1"
-    min-width="250px"
-    max-width="400px"
+    min-width="150px"
+    max-width="300px"
     to="/roomlistings"
     v-ripple=false
 
