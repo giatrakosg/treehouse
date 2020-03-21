@@ -1,18 +1,24 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+      <v-container>
+          <v-img contain
+           src="../assets/back-ground-image-3.jpg">
+           <v-layout row class="mx-5 my-9">
+               <v-flex sm4 md4 lg4 >
+                   <SearchForm />
+               </v-flex>
+           </v-layout>
+          </v-img>
+      </v-container>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
+import SearchForm from '../components/SearchForm/SearchForm'
 export default {
   name: 'Home',
   components: {
-    HelloWorld
+      SearchForm
   }
 }
 </script>

@@ -1,12 +1,14 @@
 <template lang="html">
-  <div class="">
-      <p>Hello</p>
-  </div>
+    <RegisterForm />
 </template>
 
 <script>
+import RegisterForm from '../components/Register/RegisterForm'
 export default {
-    name : 'RegisterPage' , 
+    name : 'RegisterPage',
+    components : {
+        RegisterForm
+    }
 }
 </script>
 
