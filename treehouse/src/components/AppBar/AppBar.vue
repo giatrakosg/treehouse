@@ -1,8 +1,9 @@
 <template lang="html">
     <v-app-bar
       app
-      color="transparent"
+      color="white"
       dark
+      hide-on-scroll
     >
       <div class="d-flex align-center">
         <v-img
