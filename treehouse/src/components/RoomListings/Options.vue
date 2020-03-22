@@ -10,17 +10,20 @@
                     transition="scale-transition"
                     offset-y
                     min-width="290px"
-
-                  >
+                 >
                     <template v-slot:activator="{ on }">
+
                       <v-text-field
                         label="Select Dates"
                         readonly
-                        style="max-width: 120px"
+                        style="width: 150px"
                         v-on="on"
-                      ></v-text-field>
+                        prepend-icon="far fa-calendar-minus fa-2x"
+                      >
+
+                      </v-text-field>
                     </template>
-                    <v-date-picker v-model="dates" no-title scrollable range color="brown">
+                <v-date-picker  v-model="dates" no-title scrollable range color="brown">
                       <v-spacer></v-spacer>
                       <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
                       <v-btn text color="primary" @click="$refs.menu.save(date)">OK</v-btn>
@@ -33,7 +36,8 @@
               label="Persons"
               min="1"
               step="1"
-              style="max-width: 50px"
+              style="max-width: 90px"
+              prepend-icon="fas fa-male"
               type="number"/>
             <v-col>
                 <v-btn color="primary">
@@ -41,19 +45,37 @@
                 Search
             </v-btn>
            </v-col>
+            <v-spacer/>
 
             <v-col cols="2">
                 <v-select :items="room_types"
+                          v-model="selected_type"
                           outlined
                           dense
                           label="Room Type"
-                            style="height: 40px"
-                            >
+                          style="height: 40px;"
+                          :prepend-icon="icon"
+                          item-value="value"
+                          item-text="text"
+                >
+                    <template slot="item" slot-scope="room_types">
+                        <v-container>
+                            <v-row>
+                                <v-col cols="9">
+                                     <label >{{room_types.item.text}}</label>
+                                </v-col>
+                                <v-col cols="3">
+                                      <i :class=" room_types.item.value === 0 ? 'fas fa-male'
+                                                : room_types.item.value === 1 ? 'fas fa-user-friends'
+                                                : 'fas fa-home'
+                                                    " />
+                                </v-col>
+                            </v-row>
+                        </v-container>
+                    </template>
 
                 </v-select>
-
             </v-col>
-
 
             <v-col >
                 <v-switch v-model="wifi" label=" Wifi ">
@@ -123,7 +145,12 @@
         data:function () {
             return {
                 menu:false,
-                room_types :['Private','shared','House'],
+                room_types : [
+                    {text: 'Private', value:0},
+                    {text: 'Shared', value:1},
+                    {text: 'Home', value:2}
+                ],
+                selected_type: null,
                 wifi:true,
                 air_condition:true,
                 refrigerator:true,
@@ -133,10 +160,26 @@
                 elevator:true,
                  dates: [],
                 persons:0,
-                order:['Ascending price','Descending price']
+                order:['Ascending price','Descending price'],
+                icon:''
             }
 
+        },
+        watch:{
+            selected_type:function (new_value) {
+                console.log(new_value)
+                if(new_value === 0){
+                     this.icon='fas fa-male';
+                }else if(new_value === 1){
+                     this.icon='fas fa-user-friends';
+                }else if(new_value === 2) {
+                    this.icon = 'fas fa-home';
+                }
+
+                console.log(this.icon)
+            }
         }
+
 
     }
 </script>

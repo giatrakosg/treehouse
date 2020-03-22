@@ -51,9 +51,6 @@
                 this.page_rows.push(rem_rows);
 
             }
-            console.log(this.page_rows);
-            console.log(this.page_cols);
-
 
         }
 

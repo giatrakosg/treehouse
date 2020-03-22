@@ -1,50 +1,51 @@
 <template>
-    <v-card elevation="1"
-    min-width="150px"
-    max-width="300px"
+    <v-card elevation="0"
+    min-width="190px"
+    max-width="400px"
     to="/roomlistings"
     v-ripple=false
+
 
   >
     <v-img
       class="white--text align-end"
-      height="175px"
+
       src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
     >
 
     </v-img>
-      <v-card-title>
-        <v-container >
-          <v-row  dense no-gutters align="center">
-            <v-col cols="8">
-               Awesome room
-            </v-col>
-            <v-col cols="4">
-               <v-rating
-              half-increments
-              dense
-              v-model="rating"
-              readonly
-              small
-              ></v-rating>
-            </v-col>
-          </v-row>
-        </v-container>
+      <v-card-title style="height: 60px;font-size: 17px" >
 
+              <label>Awesome room </label>
 
       </v-card-title>
+      <v-card-subtitle style="padding-bottom: 0px" >
+        <v-rating style="display:inline-flex"
+          half-increments
+          dense
+          v-model="rating"
+          readonly
+          small
+        > </v-rating>
+        <label style="margin-left: 20px;font-size: 13px">(1000 reviews)</label>
+      </v-card-subtitle>
 
     <v-card-text class="text--primary">
-
-
-      <v-chip-group column >
+      <v-chip-group  column  >
         <v-chip color="primary" outlined v-ripple="false" >
-          <v-icon>  </v-icon>
-          /day:12
+          <i class="fas fa-euro-sign fa-lg"></i>
+          <label style="font-size: 16px"> /day:12</label>
         </v-chip>
-        <v-chip color="brown" outlined v-ripple="false">beds number:2</v-chip>
-        <v-chip color="blue" outlined v-ripple="false">room:private</v-chip>
+        <v-chip color="brown" outlined v-ripple="false" >
+          <i class="fas fa-bed fa-lg"></i>
+          <label style="font-size: 16px"> :2</label>
+        </v-chip>
+        <v-chip color="blue" outlined v-ripple="false" >
+          <label style="font-size: 16px;margin-right: 5px">Room type: </label>
+          <i class="fas fa-male fa-lg"></i>
+        </v-chip>
       </v-chip-group>
+
 
     </v-card-text>
 
