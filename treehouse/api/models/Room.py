@@ -11,9 +11,9 @@ from .Image import Image
 
 
 class RoomTypes(enum.Enum):
-    private_room = 1
-    shared_room = 2
-    house = 3
+    private_room = 0
+    shared_room = 1
+    house = 2
 
 
 class Room(db.Model):

@@ -5,7 +5,16 @@
       dark
       hide-on-scroll
     >
-      <div class="d-flex align-center">
+<!--     Temporary       -->
+         <v-btn
+           color="primary"
+           to="/roomlistings"
+          >
+              TMP Button for LIstings
+          </v-btn>
+<!--                      -->
+
+        <div class="d-flex align-center">
         <v-img
           alt="Vuetify Logo"
           class="shrink mr-2"

@@ -8,4 +8,5 @@ class Image(db.Model):
     room_id = db.Column(db.Integer, db.ForeignKey('room.id'), nullable=False)
 
 
+
 """///////////////////////////////////////////////////////////"""
