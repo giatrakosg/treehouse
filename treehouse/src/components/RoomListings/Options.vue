@@ -1,7 +1,7 @@
 <template >
     <v-container  >
         <v-row   align="center" dense>
-             <v-col >
+             <v-col cols="auto">
                 <v-menu
                     ref="menu"
                     v-model="menu"
@@ -39,7 +39,7 @@
               style="max-width: 90px"
               prepend-icon="fas fa-male"
               type="number"/>
-            <v-col>
+            <v-col cols="auto">
                 <v-btn color="primary">
 
                 Search
@@ -60,15 +60,15 @@
                 >
                     <template slot="item" slot-scope="room_types">
                         <v-container>
-                            <v-row>
+                            <v-row dense>
                                 <v-col cols="9">
                                      <label >{{room_types.item.text}}</label>
                                 </v-col>
                                 <v-col cols="3">
                                       <i :class=" room_types.item.value === 0 ? 'fas fa-male'
                                                 : room_types.item.value === 1 ? 'fas fa-user-friends'
-                                                : 'fas fa-home'
-                                                    " />
+                                                 : room_types.item.value === 2 ? 'fas fa-home'
+                                                  : '' " />
                                 </v-col>
                             </v-row>
                         </v-container>
@@ -148,7 +148,8 @@
                 room_types : [
                     {text: 'Private', value:0},
                     {text: 'Shared', value:1},
-                    {text: 'Home', value:2}
+                    {text: 'Home', value:2},
+                    {text: 'All', value:3},
                 ],
                 selected_type: null,
                 wifi:true,
@@ -174,6 +175,8 @@
                      this.icon='fas fa-user-friends';
                 }else if(new_value === 2) {
                     this.icon = 'fas fa-home';
+                }else{
+                    this.icon = '';
                 }
 
                 console.log(this.icon)

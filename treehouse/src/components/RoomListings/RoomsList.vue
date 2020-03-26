@@ -1,15 +1,15 @@
 <template>
-    <v-container  class="grid-list-lg">
+    <v-container   >
          <v-pagination
                 v-model="page"
                 :length="this.page_rows.length">
 
         </v-pagination>
-        <v-layout align-center justify-center v-for="index in page_rows[page-1]" :key="index" wrap>
-             <v-flex  v-for="index in page_cols[page-1]" :key="index"   >
-               <RoomInfo />
-           </v-flex>
-        </v-layout>
+        <v-row  align-center justify="center" v-for="index in page_rows[page-1]" :key="index" wrap>
+             <v-col  cols="auto" v-for="index in page_cols[page-1]" :key="index"   >
+               <RoomCard />
+           </v-col>
+        </v-row>
         <v-pagination
                 v-model="page"
                 :length="this.page_rows.length">
@@ -19,10 +19,10 @@
 </template>
 
 <script>
-    import RoomInfo from "./RoomCard";
+    import RoomCard from "./RoomCard";
     export default {
         name: "RoomsList",
-      components: {RoomInfo},
+      components: {RoomCard},
         data:function () {
             return {
                 page:1,

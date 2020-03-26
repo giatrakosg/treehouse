@@ -2,14 +2,10 @@
     <v-card elevation="0"
     min-width="190px"
     max-width="400px"
-    to="/roomlistings"
+    to="/room"
     v-ripple=false
-
-
   >
     <v-img
-      class="white--text align-end"
-
       src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
     >
 
@@ -32,15 +28,15 @@
 
     <v-card-text class="text--primary">
       <v-chip-group  column  >
-        <v-chip color="primary" outlined v-ripple="false" >
+        <v-chip color="primary"  v-ripple="false" >
           <i class="fas fa-euro-sign fa-lg"></i>
           <label style="font-size: 16px"> /day:12</label>
         </v-chip>
-        <v-chip color="brown" outlined v-ripple="false" >
+        <v-chip color="brown" style="color: white"  v-ripple="false" >
           <i class="fas fa-bed fa-lg"></i>
           <label style="font-size: 16px"> :2</label>
         </v-chip>
-        <v-chip color="blue" outlined v-ripple="false" >
+        <v-chip color="blue" style="color: white" v-ripple="false" >
           <label style="font-size: 16px;margin-right: 5px">Room type: </label>
           <i class="fas fa-male fa-lg"></i>
         </v-chip>
