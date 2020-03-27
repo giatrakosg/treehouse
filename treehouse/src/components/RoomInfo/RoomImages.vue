@@ -8,13 +8,13 @@
             <v-flex  >
                 <v-layout  >
                     <v-flex  class="hidden-sm-and-down" >
-                         <v-img class="fade" @click="dialog=true" width="250px"   src="https://cdn.vuetifyjs.com/images/cards/docks.jpg">
+                         <v-img class="fade" @click="dialog=true" width="270px"   src="https://cdn.vuetifyjs.com/images/cards/docks.jpg">
                         </v-img>
                     </v-flex>
                 </v-layout>
                 <v-layout   >
                     <v-flex  class="hidden-sm-and-down">
-                         <v-img  class="fade" @click="dialog=true" width="250px"    src="https://cdn.vuetifyjs.com/images/cards/docks.jpg">
+                         <v-img  class="fade" @click="dialog=true" width="270px"    src="https://cdn.vuetifyjs.com/images/cards/docks.jpg">
                         </v-img>
                     </v-flex>
                 </v-layout>
@@ -22,13 +22,13 @@
             <v-flex  >
                 <v-layout  >
                     <v-flex  class="hidden-sm-and-down" >
-                         <v-img class="fade" @click="dialog=true" width="250px"  style="border-radius: 0px 8px 0px 0px" src="https://cdn.vuetifyjs.com/images/cards/docks.jpg">
+                         <v-img class="fade" @click="dialog=true" width="270px"  style="border-radius: 0px 8px 0px 0px" src="https://cdn.vuetifyjs.com/images/cards/docks.jpg">
                         </v-img>
                     </v-flex>
                 </v-layout>
                 <v-layout   >
                     <v-flex  class="hidden-sm-and-down">
-                         <v-img  class="fade" @click="dialog=true" width="250px"  style="border-radius: 0px 0px 8px 0px"  src="https://cdn.vuetifyjs.com/images/cards/docks.jpg">
+                         <v-img  class="fade" @click="dialog=true" width="270px"  style="border-radius: 0px 0px 8px 0px"  src="https://cdn.vuetifyjs.com/images/cards/docks.jpg">
                         </v-img>
                     </v-flex>
                 </v-layout>
