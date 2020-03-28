@@ -1,25 +1,26 @@
 <template>
     <v-container  >
-        <v-row  >
+        <v-row   >
             <v-col>
                 <RoomTitle/>
             </v-col>
             <v-spacer/>
         </v-row>
         <v-divider ></v-divider>
-        <v-row dense   >
-            <v-col cols="auto">
+        <v-row dense  >
+            <v-col md="auto" sm="12">
                 <RoomImages />
             </v-col>
             <v-col  >
                <RoomDescription />
+
             </v-col>
         </v-row>
-        <v-row  no-gutters>
-           <v-col lg="7" xs="12">
-               <RoomReviews style="width:100%"/>
+        <v-row  >
+           <v-col lg="7" xs="12" sm="12">
+               <RoomReviews />
            </v-col>
-            <v-col xs="12">
+            <v-col xs="12" sm="12" lg="5">
                 <RoomLocation/>
             </v-col>
 
