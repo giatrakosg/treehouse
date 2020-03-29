@@ -6,10 +6,14 @@ import markdown
 
 from database import *
 
+from models.Amenity import Amenity
+from models.Availability import Availability
+from models.Image import Image
 from models.Room import Room
+from models.User import User
 
 db.create_all()
-db.session.add(Room('house',1,2,3,True,'ok',True,True,True,0,0,'ok','ok',2,3,4))
+#db.session.add(Room('house',1,2,3,True,'ok',True,True,True,0,0,'ok','ok',2,3,4))
 db.session.commit()
 
 
