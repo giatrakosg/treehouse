@@ -4,7 +4,7 @@ from database import db
 """////////  USER   ///////////////////               """
 
 class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True,autoincrement=True)
     password = db.Column(db.String,nullable=False)
     name = db.Column(db.String,nullable=False)
     surname = db.Column(db.String,nullable=False)
@@ -14,8 +14,8 @@ class User(db.Model):
     isAdmin = db.Column(db.Boolean,nullable=False)
     isHost = db.Column(db.Boolean,nullable=False)
 
-    def __init__(self, id,password,name,surname,email,phone,avatar,isAdmin,isHost):
-        self.id = id
+    def __init__(self,password,name,surname,email,phone,avatar,isAdmin,isHost):
+        #self.id = id
         self.password = password
         self.name = name
         self.surname = surname
