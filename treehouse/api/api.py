@@ -6,7 +6,7 @@ import markdown
 
 from database import *
 
-from models.Amenity import Amenity
+#from models.Amenity import Amenity
 from models.Availability import Availability
 from models.Image import Image
 from models.Room import Room
