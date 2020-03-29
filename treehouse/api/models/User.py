@@ -10,7 +10,7 @@ class User(db.Model):
     surname = db.Column(db.String,nullable=False)
     email = db.Column(db.String,nullable=False)
     phone = db.Column(db.String,nullable=False)
-    avatar = db.Column(db.String,nullable=False)
+    avatar = db.Column(db.String,nullable=True)
     isAdmin = db.Column(db.Boolean,nullable=False)
     isHost = db.Column(db.Boolean,nullable=False)
 
