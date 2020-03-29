@@ -86,7 +86,6 @@ def addUserRequest():
     phone=data['phone'],
     isHost=isHost ,
     isAdmin=False ,
-    avatar="",
     )
 
     db.session.add(new_user)

@@ -14,14 +14,14 @@ class User(db.Model):
     isAdmin = db.Column(db.Boolean,nullable=False)
     isHost = db.Column(db.Boolean,nullable=False)
 
-    def __init__(self,password,name,surname,email,phone,avatar,isAdmin,isHost):
+    def __init__(self,password,name,surname,email,phone,isAdmin,isHost):
         #self.id = id
         self.password = password
         self.name = name
         self.surname = surname
         self.email = email
         self.phone = phone
-        self.avatar = avatar
+        #self.avatar = avatar
         self.isAdmin = isAdmin
         self.isHost = isHost
 
