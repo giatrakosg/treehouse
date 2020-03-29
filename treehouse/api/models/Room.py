@@ -1,8 +1,6 @@
 from database import db
 import enum
 
-
-from .Amenity import room_has_amenities
 from .Availability import Availability
 from .Image import Image
 
@@ -27,6 +25,13 @@ class Room(db.Model):
     smocking_allowed = db.Column(db.Boolean, nullable=False)
     pets_allowed = db.Column(db.Boolean, nullable=False)
     events_allowed = db.Column(db.Boolean, nullable=False)
+    wireless_internet = db.Column(db.Boolean, nullable=False)
+    air_condition = db.Column(db.Boolean, nullable=False)
+    refrigerator = db.Column(db.Boolean, nullable=False)
+    kitchen = db.Column(db.Boolean, nullable=False)
+    tv = db.Column(db.Boolean, nullable=False)
+    parking = db.Column(db.Boolean, nullable=False)
+    elevator = db.Column(db.Boolean, nullable=False)
     x_coordinate = db.Column(db.Float, nullable=False)
     y_coordinate = db.Column(db.Float, nullable=False)
     address = db.Column(db.String(50), nullable=False)
@@ -37,8 +42,6 @@ class Room(db.Model):
 
     images = db.relationship('Image', backref='room', lazy=True)
 
-    amenities = db.relationship('Amenity', secondary=room_has_amenities, lazy='subquery',
-                                backref=db.backref('rooms', lazy=True))
     availabilities = db.relationship('Availability', backref='room', lazy=True)
 
     def __init__(self, rt, beds_num, baths_num, bedr_num, lounge, desc,
