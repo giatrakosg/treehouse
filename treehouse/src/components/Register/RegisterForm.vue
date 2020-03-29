@@ -34,7 +34,7 @@
                                 <v-col>
                                     <v-text-field
 
-                                            v-model="username"
+                                            v-model="name"
                                             label="Name"
                                             v-on:keyup.enter.native="showPassword"
 
@@ -101,27 +101,8 @@
                                 </v-text-field>
                                 <span>{{ errors[0] }}</span>
                             </validation-provider>
-                            <validation-provider rules="required" v-slot="{ errors }">
-                                <v-text-field
-                                        v-model="address"
-                                        label="Address"
-                                        @keyup.enter="handleSubmit()"
-                                >
-                                </v-text-field>
-                                <span>{{ errors[0] }}</span>
-                            </validation-provider>
-                            <validation-provider rules="required" v-slot="{ errors }">
-                                <v-text-field
-                                        v-model="AMKA_id"
-                                        label="AMKA"
-                                        type="number"
-                                        @keyup.enter="handleSubmit()"
-                                >
-                                </v-text-field>
-                                <span>{{ errors[0] }}</span>
-                            </validation-provider>
                             <v-btn
-                                    @click="loader = 'loading'"
+                                    @click="handleSubmit"
                                     block
                                     color="primary"
                                     :loading="loading"
@@ -162,10 +143,9 @@
                 password: '',
                 passwordRetype: '',
                 tel: '',
-                username: '',
+                name : '',
                 surname: '',
-                address: '',
-                AMKA_id: '',
+                isHost : false ,
                 loader: null,
                 loading: false
             }
@@ -182,22 +162,19 @@
         },
         methods: {
             handleSubmit() {
-                this.loader = 'loading'
-                /*
+              this.loader = 'loading' ;
               console.log(this.email,this.password);
               let data = {
-                name: this.username,
-                first_name: this.username,
-                last_name : this.surname ,
+                name: this.name,
+                surname : this.surname ,
                 email: this.email,
                 password: this.password,
                 phone : this.tel,
-                address: this.address,
-                AMKA_id: this.AMKA_id
+                isHost : this.isHost
               };
-              this.$store.dispatch("register", data);
-              this.$router.push('/sentemail')
-              */
+              this.$store.dispatch("register", {data});
+              this.$router.push('/success')
+
             },
         }
     }

@@ -66,32 +66,51 @@ def hello():
         output += markdown.markdown(content)
     return output
 
-@app.route('/user', methods=['POST'])
+@app.route('/user', methods=['POST','OPTIONS'])
 def addUserRequest():
-    data = request.get_json()
-    print(data,file=sys.stderr)
-    hashed_password = generate_password_hash(data['password'], method='sha256')
 
-    uEmail = User.query.filter_by(email=data['email']).all()
-    if len(uEmail) > 0 :
-        return jsonify({'message' : 'Email already exists!'}),400
+    if request.method == "OPTIONS": # CORS preflight
+        return _build_cors_prelight_response()
+    elif request.method == "POST": # The actual request following the preflight
+        data = request.get_json()
+        print(data,file=sys.stderr)
+        hashed_password = generate_password_hash(data['password'], method='sha256')
 
-    isHost = data['isHost']
+        uEmail = User.query.filter_by(email=data['email']).all()
+        if len(uEmail) > 0 :
+            return jsonify({'message' : 'Email already exists!'}),400
 
-    new_user = User(
-    name=data['name'],
-    password=hashed_password,
-    surname=data['surname'],
-    email=data['email'],
-    phone=data['phone'],
-    isHost=isHost ,
-    isAdmin=False ,
-    )
+        isHost = data['isHost']
 
-    db.session.add(new_user)
-    db.session.commit()
-    return jsonify({'message' : 'New user created!'})
+        new_user = User(
+        name=data['name'],
+        password=hashed_password,
+        surname=data['surname'],
+        email=data['email'],
+        phone=data['phone'],
+        isHost=isHost ,
+        isAdmin=False ,
+        )
 
+        db.session.add(new_user)
+        db.session.commit()
+        return jsonify({'message' : 'New user created!'})
+    else :
+        raise RuntimeError("Weird - don't know how to handle method {}".format(request.method))
+
+def _build_cors_prelight_response():
+    response = make_response()
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add('Access-Control-Allow-Headers', "*")
+    response.headers.add('Access-Control-Allow-Methods', "*")
+    return response
+
+def _corsify_actual_response(response):
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    return response
 
 if __name__ == '__main__':
     app.run(debug=True)
+    cors = CORS(app,resources={r"/api/*": {"origins": "*"}})
+    #app.config['CORS_HEADERS'] = 'Content-Type'
+    #app.config["CORS_SUPPORTS_CREDENTIALS"] =True
