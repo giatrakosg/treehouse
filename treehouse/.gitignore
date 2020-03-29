@@ -23,3 +23,5 @@ yarn-error.log*
 api/venv
 api/models/__pycache__/
 api/__pycache__/
+api/migrations/__pycache__/
+api/migrations/versions/__pycache__/
