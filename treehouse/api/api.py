@@ -98,6 +98,31 @@ def addUserRequest():
     else :
         raise RuntimeError("Weird - don't know how to handle method {}".format(request.method))
 
+@app.route('/login')
+def login():
+    if request.method == "OPTIONS": # CORS preflight
+        return _build_cors_prelight_response()
+    elif request.method == "GET": # The actual request following the preflight
+        auth = request.authorization
+        print(auth,file=sys.stderr)
+
+        if not auth or not auth.username or not auth.password:
+            return make_response('Could not verify', 401, {'WWW-Authenticate' : 'Basic realm="Login required!"'})
+        user = User.query.filter_by(email=auth.username).first()
+
+        if not user:
+            return make_response('Could not verify', 401, {'WWW-Authenticate' : 'Basic realm="Login required!"'})
+
+        if check_password_hash(user.password, auth.password):
+            token = jwt.encode({'public_id' : user.public_id, 'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=90)}, app.config['SECRET_KEY'])
+
+            return jsonify({'token' : token.decode('UTF-8')})
+
+        return make_response('Could not verify', 401, {'WWW-Authenticate' : 'Basic realm="Login required!"'})
+    else :
+        raise RuntimeError("Weird - don't know how to handle method {}".format(request.method))
+
+
 def _build_cors_prelight_response():
     response = make_response()
     response.headers.add("Access-Control-Allow-Origin", "*")
@@ -111,6 +136,6 @@ def _corsify_actual_response(response):
 
 if __name__ == '__main__':
     app.run(debug=True)
-    cors = CORS(app,resources={r"/api/*": {"origins": "*"}})
+    #cors = CORS(app,resources={r"/api/*": {"origins": "*"}})
     #app.config['CORS_HEADERS'] = 'Content-Type'
     #app.config["CORS_SUPPORTS_CREDENTIALS"] =True
