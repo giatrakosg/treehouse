@@ -91,7 +91,7 @@
                             <v-chip top color="brown" style="color: white" v-on="on" v-ripple="false">
                                 <i class="fas fa-dog fa-lg"></i>
                                 <span style="margin-left: 3px;margin-right: 3px">:</span>
-                                <i class="fas fa-check-circle fa-lg"></i>
+                                <i class="fas fa-times-circle fa-lg"></i>
                             </v-chip>
                         </template>
                         Pets
@@ -107,7 +107,7 @@
                         Events
                     </v-tooltip>
 
-                    <v-chip top color="brown" style="color: white" v-ripple="false" v-on="on">
+                    <v-chip top color="brown" style="color: white" v-ripple="false">
                         <label style="font-size: 16px">Minimum stay</label>
                         <span style="margin-left: 3px;margin-right: 3px">:</span>
                         <label style="font-size: 16px">2 days</label>
@@ -128,7 +128,7 @@
                 ></v-textarea>
             </v-list-item-content>
         </v-list-item>
-        <v-list-item >
+        <v-list-item>
             <RoomReservation/>
         </v-list-item>
     </v-list>
@@ -136,6 +136,7 @@
 
 <script>
     import RoomReservation from "./RoomReservation";
+
     export default {
         name: "RoomDescription",
         components: {RoomReservation},

@@ -16,72 +16,111 @@
                 ></v-rating>
                 <label style="margin-left: 20px;font-size: 13px;">1000 reviews</label>
                 <v-spacer/>
-                <v-btn color="primary">
+                <v-btn color="primary" @click="show_review_form=true">
                     <v-icon class="fas fa-edit"></v-icon>
                     Write a Review
                 </v-btn>
             </v-card-title>
-            <template v-for="(item) in items">
-                <RoomReview v-bind:key="item"
+            <template v-for="(item,index) in reviews">
+                <RoomReview v-bind:key="index"
                             v-bind:avatar="item.avatar"
-                            v-bind:subtitle="item.subtitle"
-                            v-bind:title="item.title"/>
-                <v-divider v-bind:key="item"/>
+                            v-bind:username="item.username"
+                            v-bind:content="item.description"
+                            v-bind:title="item.title"
+                            v-bind:rating="item.rating"
+                />
+                <v-divider v-bind:key="index+reviews.length"/>
+
             </template>
         </v-list>
+        <v-dialog v-model="show_review_form" max-width="30%">
+            <RoomReviewForm
+                    @new-review="onNewReview"
+                    @close-review-form="onCloseReviewForm"/>
+        </v-dialog>
     </v-container>
+
 </template>
 
 <script>
     import RoomReview from "./RoomReview";
+    import RoomReviewForm from "./RoomReviewForm";
+
     export default {
-        components: {RoomReview},
+        components: {RoomReviewForm, RoomReview},
         data: () => ({
-            items: [
+            reviews: [
 
                 {
+                    username: 'John',
+                    avatar: require('../../assets/anonymous_user_96.png'),
+                    rating: 4,
+                    title: 'Brunch this weekend?',
+                    description: " I'll be in your neighborhood doing errands this weekend. Do you want to hang out?",
+                },
+
+                {
+                    username: 'John',
+                    rating: 4,
+                    avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
+                    title: 'Summer BBQ',
+                    description: "  Wish I could come, but I'm out of town this weekend.",
+                },
+                {
+                    username: 'John',
+                    rating: 4,
                     avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
                     title: 'Brunch this weekend?',
-                    subtitle: "<span class='text--primary'>Ali Connors</span> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?",
+                    description: "I'll be in your neighborhood doing errands this weekend. Do you want to hang out?",
                 },
 
                 {
+                    username: 'John',
+                    rating: 4,
                     avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-                    title: 'Summer BBQ <span class="grey--text text--lighten-1">4</span>',
-                    subtitle: "<span class='text--primary'>to Alex, Scott, Jennifer</span> &mdash; Wish I could come, but I'm out of town this weekend.",
-                },
-                {
-                    avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-                    title: 'Brunch this weekend?',
-                    subtitle: "<span class='text--primary'>Ali Connors</span> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?",
+                    title: 'Summer BBQ ',
+                    description: " Wish I could come, but I'm out of town this weekend.",
                 },
 
                 {
-                    avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-                    title: 'Summer BBQ <span class="grey--text text--lighten-1">4</span>',
-                    subtitle: "<span class='text--primary'>to Alex, Scott, Jennifer</span> &mdash; Wish I could come, but I'm out of town this weekend.",
-                },
-
-                {
+                    username: 'John',
+                    rating: 4,
                     avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
                     title: 'Oui oui',
-                    subtitle: "<span class='text--primary'>Sandra Adams</span> &mdash; Do you have Paris recommendations? Have you ever been?",
+                    description: "Do you have Paris recommendations? Have you ever been?",
                 },
 
                 {
+                    username: 'John',
+                    rating: 4,
                     avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg',
                     title: 'Birthday gift',
-                    subtitle: "<span class='text--primary'>Trevor Hansen</span> &mdash; Have any ideas about what we should get Heidi for her birthday?",
+                    description: "Have any ideas about what we should get Heidi for her birthday?",
                 },
 
                 {
+                    username: 'John',
+                    rating: 4,
                     avatar: 'https://cdn.vuetifyjs.com/images/lists/5.jpg',
                     title: 'Recipe to try',
-                    subtitle: "<span class='text--primary'>Britta Holt</span> &mdash; We should eat this: Grate, Squash, Corn, and tomatillo Tacos.",
+                    description: " We should eat this: Grate, Squash, Corn, and tomatillo Tacos.",
                 },
             ],
-            rating: 5
+            rating: 5,
+            show_review_form: false,
+
         }),
+        methods: {
+            onNewReview(review) {
+                this.show_review_form = false;
+                console.log(review);
+
+                this.reviews.push(review);
+            },
+            onCloseReviewForm() {
+                this.show_review_form = false;
+            }
+        }
     }
 </script>
 

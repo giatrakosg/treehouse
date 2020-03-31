@@ -1,12 +1,29 @@
 <template>
     <v-list-item>
         <v-list-item-avatar>
-            <v-img :src="avatar"></v-img>
+
+
+            <v-img :src="avatar">
+
+            </v-img>
+
         </v-list-item-avatar>
 
         <v-list-item-content>
-            <v-list-item-title v-html="title"></v-list-item-title>
-            <v-list-item-subtitle v-html="subtitle"></v-list-item-subtitle>
+            <v-list-item-title>
+                {{username}}
+                <v-rating :value="rating"
+                          readonly
+                          half-increments
+                          small
+                          dense
+                          style="display: inline-block"></v-rating>
+
+            </v-list-item-title>
+            <h4>{{title}}</h4>
+            <v-list-item-subtitle v-html="content">
+
+            </v-list-item-subtitle>
         </v-list-item-content>
 
     </v-list-item>
@@ -15,7 +32,8 @@
 <script>
     export default {
         name: "RoomReview",
-        props: ['title', 'avatar', 'subtitle']
+        props: ['username', 'title', 'rating', 'content', 'avatar'],
+
     }
 </script>
 
