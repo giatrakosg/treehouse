@@ -33,7 +33,7 @@
 
             </template>
         </v-list>
-        <v-dialog v-model="show_review_form" max-width="30%">
+        <v-dialog v-model="show_review_form" width="500px"  >
             <RoomReviewForm
                     @new-review="onNewReview"
                     @close-review-form="onCloseReviewForm"/>

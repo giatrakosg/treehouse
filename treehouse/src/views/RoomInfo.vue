@@ -17,10 +17,10 @@
             </v-col>
         </v-row>
         <v-row  >
-           <v-col lg="6" xs="12" sm="12">
+           <v-col  cols="12" lg="6" >
                <RoomReviews />
            </v-col>
-            <v-col xs="12" sm="12" lg="6">
+            <v-col cols="12" lg="6" >
                 <RoomLocation/>
             </v-col>
 

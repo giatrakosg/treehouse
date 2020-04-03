@@ -1,5 +1,5 @@
 <template>
-    <v-card>
+    <v-card  >
         <ValidationObserver ref="observer">
             <v-form>
                 <v-container>
