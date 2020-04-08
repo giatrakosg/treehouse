@@ -19,7 +19,7 @@
                     <v-tooltip top color="primary">
                         <template v-slot:activator="{ on }">
                             <v-chip color="primary" v-on="on" v-ripple="false">
-                                <v-img src="../../assets/icons8-room-24.png"/>
+                                <v-icon> mdi-bed-king</v-icon>
                                 <span style="margin-left: 3px;margin-right: 3px">:</span>
                                 <label style="font-size: 16px;">2</label>
                             </v-chip>
@@ -59,7 +59,7 @@
                     <v-tooltip top color="primary">
                         <template v-slot:activator="{ on }">
                             <v-chip color="primary" v-ripple="false" v-on="on">
-                                <v-img src="../../assets/room_space.png"/>
+                                <v-icon>mdi-fit-to-page</v-icon>
                                 <span style="margin-left: 3px;margin-right: 3px">:</span>
                                 <label style="font-size: 16px">12 m<sup>2</sup> </label>
                             </v-chip>
@@ -99,7 +99,7 @@
                     <v-tooltip top color="brown">
                         <template v-slot:activator="{ on }">
                             <v-chip top color="brown" style="color: white" v-ripple="false" v-on="on">
-                                <v-img src="../../assets/party.png"/>
+                                <v-icon>mdi-party-popper</v-icon>
                                 <span style="margin-left: 3px;margin-right: 3px">:</span>
                                 <i class="fas fa-check-circle fa-lg"></i>
                             </v-chip>

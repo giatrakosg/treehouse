@@ -75,7 +75,7 @@
             title: '',
             description: '',
             rating: null,
-            avatar: require('../../assets/anonymous_user_96.png'),
+
 
             review_form: false
         }),

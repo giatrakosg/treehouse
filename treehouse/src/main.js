@@ -30,7 +30,6 @@ Vue.component('l-icon', LIcon);
 Vue.component('l-popup', LPopup);
 
 
-
 new Vue({
   router,
   store,

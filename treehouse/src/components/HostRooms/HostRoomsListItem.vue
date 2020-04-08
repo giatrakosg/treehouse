@@ -1,22 +1,21 @@
 <template>
-     <v-list-item to="/" v-on:mouseover="$root.$emit('highlight',$vnode.key)" v-on:mouseleave="$root.$emit('default',$vnode.key)" >
-        <v-list-item-avatar tile size="180px" >
+     <v-list-item to="/hostroomedit" v-on:mouseover="$root.$emit('highlight',$vnode.key)"
+                  v-on:mouseleave="$root.$emit('default',$vnode.key)" ref="room">
+         <v-list-item-avatar tile size="180px">
 
 
-            <v-img  src="../../assets/back-ground-image-3.jpg">
+             <v-img style="border-radius: 8px" src="../../assets/back-ground-image-3.jpg">
 
-            </v-img>
+             </v-img>
 
-        </v-list-item-avatar>
+         </v-list-item-avatar>
 
-        <v-list-item-content>
+         <v-list-item-content>
             <v-list-item-title>
 
                     <h3 style="display: inline-flex">Awesome Room</h3>
 
             </v-list-item-title>
-
-
             <v-list-item-subtitle >
 
                  <v-chip color="blue" style="color:white " v-ripple="false">
@@ -134,10 +133,8 @@
 <script>
     export default {
         name: "HostRoomsListItem",
-         props: ['title', 'cost', 'description'],
-        data: () => ({
-
-        })
+        props: ['title', 'cost', 'description'],
+        data: () => ({}),
 
 
     }

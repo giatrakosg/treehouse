@@ -4,14 +4,13 @@
                     :url="url"
             />
             <l-marker v-for="(item,index) in coordinates"
-                    :lat-lng="item"
+                      :lat-lng="item"
                       v-bind:key="index"
-
 
 
             >
                 <l-icon>
-                    <img src="../../assets/treehouse.png" class="highlight" style="width: 45px;"  ref="image">
+                    <img src="../../assets/treehouse.png" class="highlight" style="width: 45px;" ref="image"/>
                 </l-icon>
 
             </l-marker>
@@ -32,11 +31,11 @@
             };
         },
         mounted(){
-            this.$root.$on('highlight',(key)=>{
-                this.$refs.image[key].style.width="62px";
-            })
-             this.$root.$on('default',(key)=>{
-                this.$refs.image[key].style.width="45px";
+            this.$root.$on('highlight', (key) => {
+                this.$refs.image[key].style.width = "62px";
+            });
+            this.$root.$on('default', (key) => {
+                this.$refs.image[key].style.width = "45px";
             })
 
         }
