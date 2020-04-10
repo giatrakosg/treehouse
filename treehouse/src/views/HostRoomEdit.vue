@@ -7,17 +7,21 @@
             <v-spacer/>
         </v-row>
         <v-divider></v-divider>
-        <v-row dense>
-            <v-col md="auto" sm="12">
-                <RoomImages/>
+        <v-row dense align="stretch">
+            <v-col cols="12" md="12" lg="6" xl="4" order-lg="1" order-xl="1">
+                <HostRoomEditImages/>
             </v-col>
-            <v-col>
-                <RoomEditDescription/>
+
+            <v-col cols="12" md="12" lg="12" xl="4" order-lg="3" order-xl="2">
+                <HostRoomEditDescription/>
+            </v-col>
+            <v-col cols="12" md="12" lg="6" xl="4" order-lg="2" order-xl="3">
+                <HostRoomEditMap/>
             </v-col>
         </v-row>
         <v-row>
             <v-col cols="12" lg="6">
-                test
+                <HostRoomEditReviews/>
             </v-col>
             <v-col cols="12" lg="6">
                 test
@@ -28,12 +32,14 @@
 </template>
 
 <script>
-    import RoomEditDescription from "../components/HostRoomEdit/HostRoomEditDescription";
-    import RoomImages from "../components/RoomInfo/RoomImages";
+    import HostRoomEditDescription from "../components/HostRoomEdit/HostRoomEditDescription";
+    import HostRoomEditImages from "../components/HostRoomEdit/HostRoomEditImages";
+    import HostRoomEditMap from "../components/HostRoomEdit/HostRoomEditMap";
+    import HostRoomEditReviews from "../components/HostRoomEdit/HostRoomEditReviews";
 
     export default {
         name: "HostRoomEdit",
-        components: {RoomImages, RoomEditDescription}
+        components: {HostRoomEditReviews, HostRoomEditMap, HostRoomEditImages, HostRoomEditDescription}
     }
 </script>
 

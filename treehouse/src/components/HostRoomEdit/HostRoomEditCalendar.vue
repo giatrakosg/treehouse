@@ -58,6 +58,8 @@
                 <v-spacer></v-spacer>
                 <v-col>
                     <v-btn text color="blue" @click="menu = false">Cancel</v-btn>
+                </v-col>
+                <v-col>
                     <v-btn style="color: white" color="blue" @click="$refs.menu.save(dates)">OK</v-btn>
                 </v-col>
                 <v-spacer></v-spacer>

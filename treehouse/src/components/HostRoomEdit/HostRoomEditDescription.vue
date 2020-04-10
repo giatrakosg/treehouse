@@ -1,10 +1,8 @@
 <template>
     <v-list dense>
-        <v-list-item>
+        <v-list-item dense>
             <v-list-item-content>
-                <v-list-item-title>
-                    <span style="font-size: 20px;font-weight: 500;text-decoration-line: underline">Apartment:</span>
-                </v-list-item-title>
+
                 <v-container>
                     <v-row dense align="center">
                         <v-col cols="auto">
@@ -170,11 +168,9 @@
                 </v-container>
             </v-list-item-content>
         </v-list-item>
-        <v-list-item>
+        <v-list-item dense>
             <v-list-item-content>
-                <v-list-item-title>
-                    <span style="font-size: 20px;font-weight: 500;text-decoration-line: underline">Rules:</span>
-                </v-list-item-title>
+
                 <v-container>
                     <v-row dense align="center">
                         <v-col cols="auto">
