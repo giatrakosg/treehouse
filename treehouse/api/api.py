@@ -1,5 +1,3 @@
-
-
 import os
 
 import markdown
@@ -11,8 +9,12 @@ from models.Image import Image
 from models.Room import Room
 from models.User import User
 
+from routes.Rooms import rooms_blueprint
+
+app.register_blueprint(rooms_blueprint)
+
 db.create_all()
-#db.session.add(Room('house',1,2,3,True,'ok',True,True,True,0,0,'ok','ok',2,3,4))
+
 db.session.commit()
 
 
@@ -21,7 +23,6 @@ def hello():
     output = ''
     # Open the README file
     with open(os.path.dirname(app.root_path) + '/README.md', 'r') as markdown_file:
-
         # Read the content of the file
         content = markdown_file.read()
 

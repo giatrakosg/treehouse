@@ -1,6 +1,6 @@
 <template>
-    <v-container >
-        <v-row align="center" dense >
+    <v-container>
+        <v-row align="center" dense>
             <v-col cols="auto">
                 <v-menu
                         ref="menu"
@@ -18,7 +18,7 @@
                                 readonly
                                 style="width: 150px"
                                 v-on="on"
-                                prepend-icon="far fa-calendar-minus fa-2x"
+                                prepend-icon="mdi-calendar-range"
                         >
 
                         </v-text-field>
@@ -53,10 +53,11 @@
                           outlined
                           dense
                           label="Room Type"
-                          style="height: 40px;"
+                          style="height: 40px;width: 180px"
                           :prepend-icon="icon"
                           item-value="value"
                           item-text="text"
+
                 >
                     <template slot="item" slot-scope="room_types">
                         <v-container>
@@ -65,10 +66,11 @@
                                     <label>{{room_types.item.text}}</label>
                                 </v-col>
                                 <v-col cols="3">
-                                    <i :class=" room_types.item.value === 0 ? 'fas fa-male'
-                                                : room_types.item.value === 1 ? 'fas fa-user-friends'
-                                                 : room_types.item.value === 2 ? 'fas fa-home'
-                                                  : '' "/>
+                                    <v-icon> {{room_types.item.value === 0 ? 'mdi-account'
+                                        : room_types.item.value === 1 ? 'mdi-account-multiple'
+                                        : room_types.item.value === 2 ? 'mdi-home'
+                                        : '' }}
+                                    </v-icon>
                                 </v-col>
                             </v-row>
                         </v-container>
@@ -77,47 +79,62 @@
                 </v-select>
             </v-col>
 
-            <v-col>
-                <v-switch v-model="wifi" label=" Wifi ">
-
-                </v-switch>
-
+            <v-col cols="auto">
+                <v-tooltip top color="primary">
+                    <template v-slot:activator="{ on }">
+                        <v-checkbox v-model="wifi" prepend-icon="mdi-wifi" v-on="on"/>
+                    </template>
+                    Wifi
+                </v-tooltip>
             </v-col>
-            <v-col>
-                <v-switch v-model="air_condition" label="A/C">
-
-                </v-switch>
-
+            <v-col cols="auto">
+                <v-tooltip top color="primary">
+                    <template v-slot:activator="{ on }">
+                        <v-checkbox v-model="a_c" prepend-icon="mdi-air-conditioner" v-on="on"/>
+                    </template>
+                    A/C
+                </v-tooltip>
             </v-col>
-            <v-col>
-                <v-switch v-model="refrigerator" label="Refrigerator">
-
-                </v-switch>
-
+            <v-col cols="auto">
+                <v-tooltip top color="primary">
+                    <template v-slot:activator="{ on }">
+                        <v-checkbox v-model="refrigerator" prepend-icon="mdi-fridge" v-on="on"/>
+                    </template>
+                    Refrigerator
+                </v-tooltip>
             </v-col>
-            <v-col>
-                <v-switch v-model="kitchen" label="Kitchen">
-
-                </v-switch>
-
+            <v-col cols="auto">
+                <v-tooltip top color="primary">
+                    <template v-slot:activator="{ on }">
+                        <v-checkbox v-model="kitchen" prepend-icon="mdi-stove" v-on="on"/>
+                    </template>
+                    Kitchen
+                </v-tooltip>
             </v-col>
-            <v-col>
-                <v-switch v-model="tv" label="TV">
-
-                </v-switch>
-
+            <v-col cols="auto">
+                <v-tooltip top color="primary">
+                    <template v-slot:activator="{ on }">
+                        <v-checkbox hint="ok" v-model="tv" prepend-icon="mdi-television" v-on="on"/>
+                    </template>
+                    TV
+                </v-tooltip>
             </v-col>
-            <v-col>
-                <v-switch v-model="parking" label="Parking">
-
-                </v-switch>
-
+            <v-col cols="auto">
+                <v-tooltip top color="primary">
+                    <template v-slot:activator="{ on }">
+                        <v-checkbox v-model="parking" prepend-icon="mdi-garage-open-variant" v-on="on"/>
+                    </template>
+                    Parking
+                </v-tooltip>
             </v-col>
 
-            <v-col>
-                <v-switch v-model="elevator" label="Elevator">
-
-                </v-switch>
+            <v-col cols="auto">
+                <v-tooltip top color="primary">
+                    <template v-slot:activator="{ on }">
+                        <v-checkbox v-model="elevator" prepend-icon="mdi-elevator-passenger" v-on="on"/>
+                    </template>
+                    Elevator
+                </v-tooltip>
             </v-col>
             <v-col cols="2">
                 <v-select :items="order"
@@ -141,7 +158,7 @@
 
 <script>
     export default {
-        name: "Options",
+        name: "RoomOptions",
         data: function () {
             return {
                 menu: false,
@@ -168,15 +185,13 @@
         },
         watch: {
             selected_type: function (new_value) {
-                console.log(new_value);
+
                 if (new_value === 0) {
-                    this.icon = 'fas fa-male';
+                    this.icon = 'mdi-account';
                 } else if (new_value === 1) {
-                    this.icon = 'fas fa-user-friends';
+                    this.icon = 'mdi-account-multiple';
                 } else if (new_value === 2) {
-                    this.icon = 'fas fa-home';
-                } else {
-                    this.icon = '';
+                    this.icon = 'mdi-home';
                 }
             }
         }

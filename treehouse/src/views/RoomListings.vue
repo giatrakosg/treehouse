@@ -2,7 +2,7 @@
     <v-container  >
         <v-row    align="center" dense>
             <v-col>
-             <Options />
+             <RoomOptions/>
             </v-col>
         </v-row>
         <v-divider></v-divider>
@@ -17,10 +17,10 @@
 
 <script>
     import RoomsList from "../components/RoomListings/RoomsList";
-    import Options from "../components/RoomListings/Options";
+    import RoomOptions from "../components/RoomListings/RoomOptions";
     export default {
         name: "RoomListings",
-        components: {Options, RoomsList}
+        components: {RoomOptions, RoomsList}
     }
 </script>
 

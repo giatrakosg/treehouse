@@ -25,7 +25,8 @@
             <v-row dense>
                 <v-col>
                     <v-date-picker v-model="dates" no-title scrollable range color="blue"
-                                   style="-webkit-box-shadow: none!important;">
+                                   style="-webkit-box-shadow: none!important;"
+                                   :allowed-dates="allowedDates">
                         <label> {{ dates[0]}} ~ {{dates[1] }}</label>
                         <v-spacer></v-spacer>
 
@@ -46,7 +47,7 @@
                                 <v-divider/>
                             </v-list-item-content>
                             <v-list-item-action>
-                                <v-btn color="blue" icon="mdi-minus" @click="removeDates(i)">
+                                <v-btn color="blue" text @click="removeDates(i)">
                                     <v-icon>mdi-minus</v-icon>
                                 </v-btn>
                             </v-list-item-action>
@@ -71,28 +72,23 @@
 </template>
 
 <script>
+    import moment from 'moment'
+
     export default {
         name: "HostRoomEditCalendar",
         data: () => ({
             dates: [],
             menu: false,
             date_ranges: [
-                ['2019-09-10', '2019-09-20'],
-                ['2019-09-10', '2019-09-20'],
-                ['2019-09-10', '2019-09-20'],
-                ['2019-09-10', '2019-09-20'],
-                ['2019-09-10', '2019-09-20'],
-                ['2019-09-10', '2019-09-20'],
-                ['2019-09-10', '2019-09-20'],
-                ['2019-09-10', '2019-09-20'],
-                ['2019-09-10', '2019-09-20'],
-                ['2019-09-10', '2019-09-20'],
-
-            ],
+                ['2019-09-10', '2019-09-20']
+            ]
         }),
+        watch: {},
+
         methods: {
             addDates() {
                 this.date_ranges.push(this.dates);
+                this.dates = [];
             },
             removeDates(date) {
                 if (date !== null) {
@@ -103,6 +99,27 @@
                     }
                 }
 
+
+            },
+            allowedDates(val) {
+                let d;
+                let moment_date;
+
+                moment_date = moment(val);
+
+                for (d of this.date_ranges) {
+
+
+                    if (moment_date.isBetween(d[0], d[1]) || d[0] === val || d[1] === val) {
+
+                        return false;
+                    } else {
+
+                        continue;
+                    }
+
+                }
+                return true;
 
             }
 

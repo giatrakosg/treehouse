@@ -1,9 +1,9 @@
 from database import db
 import enum
 
-from .Availability import Availability
-from .Image import Image
-
+from models.Availability import Availability
+from models.Image import Image
+from models.Review import Review
 
 """////////  ROOM   ///////////////////               """
 
@@ -39,30 +39,54 @@ class Room(db.Model):
     persons_num = db.Column(db.Integer, nullable=False)
     standard_cost = db.Column(db.Float, nullable=False)
     add_persons_cost = db.Column(db.Float)
+    reviews_score = db.Column(db.Float)
+    title = db.Column(db.String(30), nullable=False)
 
     images = db.relationship('Image', backref='room', lazy=True)
+
+    reviews = db.relationship('Review', backref='room', lazy=True)
 
     availabilities = db.relationship('Availability', backref='room', lazy=True)
 
     def __init__(self, rt, beds_num, baths_num, bedr_num, lounge, desc,
-                 smoc_all, pets_all, events_all, x, y, address, tran_info, pers_num,
-                 standr_cost, add_prs_cost):
+                 smoking_all, pets_all, events_all, wifi, ac, refrigerator, kitchen, tv, parking, elevator, x, y,
+                 address, tran_info, pers_num,
+                 standard_cost, add_prs_cost, reviews_score, title):
         self.Type = rt
         self.beds_num = beds_num
         self.baths_num = baths_num
         self.bedrooms_num = bedr_num
         self.lounge = lounge
         self.description = desc
-        self.smocking_allowed = smoc_all
+        self.smocking_allowed = smoking_all
         self.pets_allowed = pets_all
         self.events_allowed = events_all
+        self.wireless_internet = wifi
+        self.air_condition = ac
+        self.refrigerator = refrigerator
+        self.kitchen = kitchen
+        self.tv = tv
+        self.parking = parking
+        self.elevator = elevator
         self.x_coordinate = x
         self.y_coordinate = y
         self.address = address
         self.transport_info = tran_info
         self.persons_num = pers_num
-        self.standard_cost = standr_cost
+        self.standard_cost = standard_cost
         self.add_persons_cost = add_prs_cost
+        self.reviews_score = reviews_score
+        self.title = title
+
+    def to_dict_short(self):
+        r = {'title': self.title,
+             'Type': self.Type,
+             'review_scores': self.reviews_score,
+             'beds_number': self.beds_num,
+             'cost_per_day': self.standard_cost,
+             'image_src': self.images[0].source}
+
+        return r
 
 
 """///////////////////////////////////////////////////////////"""

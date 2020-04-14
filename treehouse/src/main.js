@@ -4,10 +4,12 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify';
 
+
 Vue.config.productionTip = false
 
 
 //import { Icon } from 'leaflet'
+
 
 import { LMap, LTileLayer, LMarker,LPolyline,LCircleMarker ,LIcon , LPopup} from 'vue2-leaflet';
 import 'leaflet/dist/leaflet.css'
