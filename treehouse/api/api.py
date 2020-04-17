@@ -3,6 +3,7 @@ import os
 import markdown
 
 from database import *
+from flask_cors import CORS
 
 from models.Availability import Availability
 from models.Image import Image
@@ -10,6 +11,8 @@ from models.Room import Room
 from models.User import User
 
 from routes.Rooms import rooms_blueprint
+
+cors = CORS(app)
 
 app.register_blueprint(rooms_blueprint)
 

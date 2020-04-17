@@ -1,5 +1,5 @@
 from database import db
-import enum
+from enum import Enum
 
 from models.Availability import Availability
 from models.Image import Image
@@ -8,10 +8,10 @@ from models.Review import Review
 """////////  ROOM   ///////////////////               """
 
 
-class RoomTypes(enum.Enum):
-    private_room = 0
-    shared_room = 1
-    house = 2
+class RoomTypes(str, Enum):
+    private_room = 'private room'
+    shared_room = 'shared room'
+    house = 'house'
 
 
 class Room(db.Model):
@@ -32,14 +32,14 @@ class Room(db.Model):
     tv = db.Column(db.Boolean, nullable=False)
     parking = db.Column(db.Boolean, nullable=False)
     elevator = db.Column(db.Boolean, nullable=False)
-    x_coordinate = db.Column(db.Float, nullable=False)
-    y_coordinate = db.Column(db.Float, nullable=False)
+    lat_coordinate = db.Column(db.Float, nullable=False)
+    long_coordinate = db.Column(db.Float, nullable=False)
     address = db.Column(db.String(50), nullable=False)
     transport_info = db.Column(db.String(100))
     persons_num = db.Column(db.Integer, nullable=False)
     standard_cost = db.Column(db.Float, nullable=False)
     add_persons_cost = db.Column(db.Float)
-    reviews_score = db.Column(db.Float)
+    rating = db.Column(db.Float)
     title = db.Column(db.String(30), nullable=False)
 
     images = db.relationship('Image', backref='room', lazy=True)
@@ -49,7 +49,8 @@ class Room(db.Model):
     availabilities = db.relationship('Availability', backref='room', lazy=True)
 
     def __init__(self, rt, beds_num, baths_num, bedr_num, lounge, desc,
-                 smoking_all, pets_all, events_all, wifi, ac, refrigerator, kitchen, tv, parking, elevator, x, y,
+                 smoking_all, pets_all, events_all, wifi, ac, refrigerator, kitchen, tv,
+                 parking, elevator, latitude, longitude,
                  address, tran_info, pers_num,
                  standard_cost, add_prs_cost, reviews_score, title):
         self.Type = rt
@@ -68,24 +69,31 @@ class Room(db.Model):
         self.tv = tv
         self.parking = parking
         self.elevator = elevator
-        self.x_coordinate = x
-        self.y_coordinate = y
+        self.lat_coordinate = latitude
+        self.long_coordinate = longitude
         self.address = address
         self.transport_info = tran_info
         self.persons_num = pers_num
         self.standard_cost = standard_cost
         self.add_persons_cost = add_prs_cost
-        self.reviews_score = reviews_score
+        self.rating = reviews_score
         self.title = title
 
     def to_dict_short(self):
-        r = {'title': self.title,
-             'Type': self.Type,
-             'review_scores': self.reviews_score,
+        r = {'type': self.Type,
              'beds_number': self.beds_num,
+             'wireless_internet': self.wireless_internet,
+             'air_condition': self.air_condition,
+             'refrigerator': self.refrigerator,
+             'kitchen': self.kitchen,
+             'tv': self.tv,
+             'parking': self.parking,
+             'elevator': self.elevator,
+             'title': self.title,
+             'persons_number': self.persons_num,
+             'rating': self.rating,
              'cost_per_day': self.standard_cost,
              'image_src': self.images[0].source}
-
         return r
 
 
