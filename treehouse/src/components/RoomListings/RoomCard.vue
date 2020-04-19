@@ -3,8 +3,9 @@
     <v-card elevation="0"
             min-width="190px"
             max-width="400px"
-            to="/room"
+            :to="{name:'RoomInfo',params:{room_id:id}}"
             v-ripple=false
+            @click="gotoRoom"
     >
         <v-img
                 :src="image_src"
@@ -73,6 +74,7 @@
     export default {
         name: "RoomCard",
         props: {
+            id: Number,
             type: String,
             beds_number: Number,
             cost_per_day: Number,
@@ -80,6 +82,12 @@
             title: String,
             rating: Number
         },
+        methods: {
+            gotoRoom() {
+
+
+            }
+        }
 
 
     }

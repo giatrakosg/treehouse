@@ -36,7 +36,12 @@
     import RoomReviews from "../components/RoomInfo/RoomReviews";
     export default {
         name: "RoomInfo",
-        components: {RoomReviews, RoomLocation, RoomDescription, RoomImages, RoomTitle}
+        components: {RoomReviews, RoomLocation, RoomDescription, RoomImages, RoomTitle},
+        created() {
+
+            
+            console.log(this.$route.params.room_id)
+        }
     }
 </script>
 

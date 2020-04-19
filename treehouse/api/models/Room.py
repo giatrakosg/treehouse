@@ -16,7 +16,7 @@ class RoomTypes(str, Enum):
 
 class Room(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    Type = db.Column(db.Enum(RoomTypes))
+    type = db.Column(db.Enum(RoomTypes))
     beds_num = db.Column(db.Integer, nullable=False)
     baths_num = db.Column(db.Integer, nullable=False)
     bedrooms_num = db.Column(db.Integer, nullable=False)
@@ -53,7 +53,7 @@ class Room(db.Model):
                  parking, elevator, latitude, longitude,
                  address, tran_info, pers_num,
                  standard_cost, add_prs_cost, reviews_score, title):
-        self.Type = rt
+        self.type = rt
         self.beds_num = beds_num
         self.baths_num = baths_num
         self.bedrooms_num = bedr_num
@@ -80,7 +80,8 @@ class Room(db.Model):
         self.title = title
 
     def to_dict_short(self):
-        r = {'type': self.Type,
+        r = {'id': self.id,
+             'type': self.type,
              'beds_number': self.beds_num,
              'wireless_internet': self.wireless_internet,
              'air_condition': self.air_condition,
@@ -94,6 +95,13 @@ class Room(db.Model):
              'rating': self.rating,
              'cost_per_day': self.standard_cost,
              'image_src': self.images[0].source}
+
+        available_rooms = []
+        for date_range in self.availabilities:
+            available_rooms.append(date_range.to_dict())
+
+        r['availabilities'] = available_rooms
+
         return r
 
 

@@ -7,6 +7,7 @@
             transition="scale-transition"
             offset-y
             min-width="290px"
+
     >
         <template v-slot:activator="{ on }">
 
@@ -26,22 +27,27 @@
                 <v-col>
                     <v-date-picker v-model="dates" no-title scrollable range color="blue"
                                    style="-webkit-box-shadow: none!important;"
-                                   :allowed-dates="allowedDates">
-                        <label> {{ dates[0]}} ~ {{dates[1] }}</label>
-                        <v-spacer></v-spacer>
+                                   event-color="primary"
+                                   :events="allowedDates"
+                                   @close="make_available=false">
 
-                        <v-btn text color="blue" @click="addDates">
-                            <v-icon>
-                                mdi-plus
-                            </v-icon>
+                        <v-spacer/>
+                        <v-btn color="blue" style="color: white" @click="addDates"
+                               v-if="make_available || make_unavailable">
+                            <span v-if="make_available">Make Available </span>
+                            <span v-if="make_unavailable">Make Unavailable </span>
+
                         </v-btn>
-
+                        <v-spacer/>
 
                     </v-date-picker>
                 </v-col>
                 <v-col>
                     <v-list dense height="326px" style="overflow: auto">
-                        <v-list-item v-for="(i,index) in date_ranges" v-bind:key="index">
+                        <h4 style="text-align: center">Available Dates</h4>
+                        <v-divider/>
+                        <v-list-item v-for="(i,index) in allowed_date_ranges" v-bind:key="index">
+
                             <v-list-item-content>
                                 <label> {{ i[0]}} ~ {{i[1] }}</label>
                                 <v-divider/>
@@ -79,22 +85,48 @@
         data: () => ({
             dates: [],
             menu: false,
-            date_ranges: [
+
+            allowed_date_ranges: [
                 ['2019-09-10', '2019-09-20']
-            ]
+            ],
+
+            make_available: false,
+            make_unavailable: false,
         }),
-        watch: {},
+        watch: {
+            dates: function () {
+                if (this.dates.length !== 0) {
+                    if (!this.allowedDates(this.dates[0]) || !this.allowedDates(this.dates[1])) {
+
+                        this.make_available = true;
+                        this.make_unavailable = false;
+                    } else {
+                        this.make_available = false;
+                        this.make_unavailable = true;
+                    }
+
+                } else {
+                    this.make_available = false;
+                    this.make_unavailable = false;
+                }
+
+
+            }
+        },
 
         methods: {
             addDates() {
-                this.date_ranges.push(this.dates);
-                this.dates = [];
+                this.allowed_date_ranges.push(this.dates);
+
+                this.make_available = false;
+
+
             },
             removeDates(date) {
                 if (date !== null) {
-                    let index = this.date_ranges.indexOf(date);
+                    let index = this.allowed_date_ranges.indexOf(date);
                     if (index > -1) {
-                        this.date_ranges.splice(index, 1);
+                        this.allowed_date_ranges.splice(index, 1);
 
                     }
                 }
@@ -107,19 +139,26 @@
 
                 moment_date = moment(val);
 
-                for (d of this.date_ranges) {
+                for (d of this.allowed_date_ranges) {
+                    let start_date = d[0];
+                    let end_date = d[1];
+
+                    if (start_date > end_date) {
+                        start_date = d[1];
+                        end_date = d[0]
+                    }
 
 
-                    if (moment_date.isBetween(d[0], d[1]) || d[0] === val || d[1] === val) {
+                    if (moment_date.isBetween(start_date, end_date) || d[0] === val || d[1] === val) {
 
-                        return false;
+                        return true;
                     } else {
 
                         continue;
                     }
 
                 }
-                return true;
+                return false;
 
             }
 

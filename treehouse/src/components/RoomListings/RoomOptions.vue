@@ -1,12 +1,12 @@
 <template>
-    <v-container class="fixedElement">
+    <v-container>
         <v-row align="center" dense>
             <v-col cols="auto">
                 <v-menu
                         ref="menu"
                         v-model="menu"
                         :close-on-content-click="false"
-                        :return-value.sync="filters.dates"
+                        :return-value.sync="dates"
                         transition="scale-transition"
                         offset-y
                         min-width="290px"
@@ -16,17 +16,18 @@
                         <v-text-field
                                 label="Select Dates"
                                 readonly
-                                style="width: 150px"
+                                style="width: 220px"
+                                v-model="computedDateFormatted"
                                 v-on="on"
                                 prepend-icon="mdi-calendar-range"
                         >
 
                         </v-text-field>
                     </template>
-                    <v-date-picker v-model="filters.dates" no-title scrollable range color="primary">
+                    <v-date-picker v-model="dates" no-title scrollable range color="primary">
                         <v-spacer></v-spacer>
                         <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
-                        <v-btn text color="primary" @click="$refs.menu.save(dates)">OK</v-btn>
+                        <v-btn text color="primary" @click="newDates">OK</v-btn>
                     </v-date-picker>
                 </v-menu>
 
@@ -37,7 +38,7 @@
                         label="Persons"
                         min="1"
                         step="1"
-                        style="max-width: 90px"
+                        style="max-width: 100px"
                         prepend-icon="fas fa-male"
                         type="number"/>
             </v-col>
@@ -52,7 +53,7 @@
 
             <v-col cols="auto">
                 <v-select :items="room_types"
-                          v-model="type"
+                          v-model="filters.type"
                           outlined
                           dense
                           label="Room Type"
@@ -81,11 +82,16 @@
 
                 </v-select>
             </v-col>
+            <v-col cols="auto">
+                <v-switch v-model="filters.apply_amen" label="Filters"/>
+            </v-col>
 
             <v-col cols="auto">
                 <v-tooltip top color="primary">
                     <template v-slot:activator="{ on }">
-                        <v-checkbox v-model="filters.wireless_internet" prepend-icon="mdi-wifi" v-on="on"/>
+                        <v-checkbox v-model="filters.wireless_internet" prepend-icon="mdi-wifi" v-on="on"
+                                    :disabled="!filters.apply_amen"
+                        />
                     </template>
                     Wifi
                 </v-tooltip>
@@ -93,7 +99,8 @@
             <v-col cols="auto">
                 <v-tooltip top color="primary">
                     <template v-slot:activator="{ on }">
-                        <v-checkbox v-model="filters.air_condition" prepend-icon="mdi-air-conditioner" v-on="on"/>
+                        <v-checkbox v-model="filters.air_condition" prepend-icon="mdi-air-conditioner" v-on="on"
+                                    :disabled="!filters.apply_amen"/>
                     </template>
                     A/C
                 </v-tooltip>
@@ -101,7 +108,8 @@
             <v-col cols="auto">
                 <v-tooltip top color="primary">
                     <template v-slot:activator="{ on }">
-                        <v-checkbox v-model="filters.refrigerator" prepend-icon="mdi-fridge" v-on="on"/>
+                        <v-checkbox v-model="filters.refrigerator" prepend-icon="mdi-fridge" v-on="on"
+                                    :disabled="!filters.apply_amen"/>
                     </template>
                     Refrigerator
                 </v-tooltip>
@@ -109,7 +117,8 @@
             <v-col cols="auto">
                 <v-tooltip top color="primary">
                     <template v-slot:activator="{ on }">
-                        <v-checkbox v-model="filters.kitchen" prepend-icon="mdi-stove" v-on="on"/>
+                        <v-checkbox v-model="filters.kitchen" prepend-icon="mdi-stove" v-on="on"
+                                    :disabled="!filters.apply_amen"/>
                     </template>
                     Kitchen
                 </v-tooltip>
@@ -117,7 +126,8 @@
             <v-col cols="auto">
                 <v-tooltip top color="primary">
                     <template v-slot:activator="{ on }">
-                        <v-checkbox hint="ok" v-model="filters.tv" prepend-icon="mdi-television" v-on="on"/>
+                        <v-checkbox hint="ok" v-model="filters.tv" prepend-icon="mdi-television" v-on="on"
+                                    :disabled="!filters.apply_amen"/>
                     </template>
                     TV
                 </v-tooltip>
@@ -125,7 +135,8 @@
             <v-col cols="auto">
                 <v-tooltip top color="primary">
                     <template v-slot:activator="{ on }">
-                        <v-checkbox v-model="filters.parking" prepend-icon="mdi-garage-open-variant" v-on="on"/>
+                        <v-checkbox v-model="filters.parking" prepend-icon="mdi-garage-open-variant" v-on="on"
+                                    :disabled="!filters.apply_amen"/>
                     </template>
                     Parking
                 </v-tooltip>
@@ -134,7 +145,8 @@
             <v-col cols="auto">
                 <v-tooltip top color="primary">
                     <template v-slot:activator="{ on }">
-                        <v-checkbox v-model="filters.elevator" prepend-icon="mdi-elevator-passenger" v-on="on"/>
+                        <v-checkbox v-model="filters.elevator" prepend-icon="mdi-elevator-passenger" v-on="on"
+                                    :disabled="!filters.apply_amen"/>
                     </template>
                     Elevator
                 </v-tooltip>
@@ -145,7 +157,6 @@
                         v-model="filters.max_price"
                         label="Max cost"
                         style="width: 100px"
-
                         type="number"/>
             </v-col>
             <v-col cols="auto">
@@ -153,7 +164,8 @@
                           outlined
                           dense
                           label="Order By"
-                          style="height: 40px;"
+                          style="height: 40px;width: 200px"
+                          v-model="order_by"
 
                 >
                 </v-select>
@@ -170,8 +182,10 @@
 </template>
 
 <script>
+
     export default {
         name: "RoomOptions",
+        props: ['init_dates'],
         data: function () {
             return {
                 menu: false,
@@ -181,22 +195,29 @@
                     {text: 'Home', value: 'house'},
                     {text: 'All', value: 'all'},
                 ],
+
                 filters: {
-                    selected_type: null,
-                    wireless_internet: true,
-                    refrigerator: true,
-                    kitchen: true,
-                    tv: true,
-                    parking: true,
-                    elevator: true,
-                    dates: [],
+                    type: null,
+                    wireless_internet: false,
+                    refrigerator: false,
+                    kitchen: false,
+                    tv: false,
+                    parking: false,
+                    elevator: false,
+                    dates_formatted: [],
                     persons: '',
-                    max_price: null,
-                    air_condition: true,
+                    max_price: '',
+                    air_condition: false,
+
+                    apply_amen: false,
                 },
-                order: ['Ascending price', 'Descending price'],
+                order: ['Price-Low to High', 'Price-High to Low', 'Rating'],
                 icon: '',
-                type: ''
+                order_by: '',
+                dates: this.init_dates,
+
+
+                dates_changed: false
 
 
             }
@@ -204,7 +225,6 @@
         },
         watch: {
             type: function (new_value) {
-                console.log(new_value);
 
                 if (new_value === 'private room') {
                     this.icon = 'mdi-account';
@@ -214,25 +234,68 @@
                     this.icon = 'mdi-home';
                 }
                 this.filters.selected_type = this.type;
-            }
+            },
+            order_by: function (order) {
+                this.$emit('order-by', order);
+            },
+
+        },
+        computed: {
+            computedDateFormatted() {
+
+                let formatted = this.formatDate(this.dates);
+                if (formatted === null) return '';
+
+                if (formatted[1] < formatted[0]) {
+                    return `${formatted[1]} - ${formatted[0]}`
+                } else {
+                    return `${formatted[0]} - ${formatted[1]}`
+                }
+            },
         },
         methods: {
+
+            formatDate(dates) {
+                let formatted = [];
+
+                if (!dates[0] || !dates[1]) return null;
+
+                let [year, month, day] = dates[0].split('-');
+                let new_date = `${day}/${month}/${year}`;
+                formatted.push(new_date);
+
+                [year, month, day] = dates[1].split('-');
+                new_date = `${day}/${month}/${year}`;
+                formatted.push(new_date);
+
+                return formatted;
+
+            },
             applyFilters() {
+                if (this.dates_changed) {
+                    this.$emit('new-dates', [this.dates, this.filters]);
+
+                    this.dates_changed = false;
+                    return;
+                }
 
                 this.$emit('apply-filters', this.filters);
+            },
+            newDates() {
+
+                this.$refs.menu.save(this.dates);
+                this.dates_changed = true;
+
             }
-        }
+        },
 
 
     }
 </script>
 
 <style scoped>
-    .fixedElement {
-        position: sticky;
-        top: 0;
-
-
+    .faded {
+        opacity: ;
     }
 
 </style>

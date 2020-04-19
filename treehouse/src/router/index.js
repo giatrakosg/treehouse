@@ -26,9 +26,9 @@ const routes = [
   component: RoomListings
   },
   {
-    path: '/room',
-    name: 'RoomInfo',
-    component: RoomInfo
+      path: '/room/:room_id',
+      name: 'RoomInfo',
+      component: RoomInfo
   },
   {
     path: '/hostrooms',

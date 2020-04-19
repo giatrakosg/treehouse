@@ -2,7 +2,10 @@
     <v-container>
         <v-row align="center" dense>
             <v-col>
-                <RoomOptions v-on:apply-filters="applyFilters($event)"/>
+                <RoomOptions v-on:apply-filters="applyFilters($event)"
+                             v-on:order-by="orderBy($event)"
+                             v-on:new-dates="newDates($event)"
+                             v-bind:init_dates="dates"/>
             </v-col>
         </v-row>
         <v-divider></v-divider>
@@ -12,13 +15,7 @@
                 <RoomsList v-bind:rooms="filtered_rooms"/>
             </v-col>
         </v-row>
-        <v-row v-if="empty" justify="center" align="center">
-            <v-spacer/>
-            <v-col cols="auto">
-                <span style="color: #86989B;font-size: 40px">No Results</span>
-            </v-col>
-            <v-spacer/>
-        </v-row>
+
     </v-container>
 </template>
 
@@ -34,38 +31,68 @@
             rooms: [],
             filtered_rooms: [],
 
-            list_key: 0,
+            dates: ["2020-1-2", "2020-10-30"],
+
             empty: false,
         }),
         created() {
-            this.$http.get('http://127.0.0.1:5000/rooms')
-                .then((result) => {
-
-                    this.rooms = result.data;
-                    this.filtered_rooms = this.rooms;
-
-                })
-                .catch(error => console.log(error));
+            this.getRooms(this.dates, null);
         },
+
         methods: {
+            newDates(event) {
+                this.getRooms(event[0], event[1]);
+            },
+
+            getRooms(dates, filters) {
+
+                this.$http.get('http://127.0.0.1:5000/rooms', {
+                    params: {
+                        'date_from': dates[0],
+                        'date_to': dates[1],
+                    }
+                })
+                    .then((result) => {
+
+                        console.log(result);
+
+
+                        this.rooms = result.data;
+
+
+                        if (filters === null) {
+                            this.filtered_rooms = this.rooms;
+                        } else {
+
+                            this.applyFilters(filters);
+                        }
+
+                    })
+                    .catch(error => console.log(error));
+            },
             applyFilters: function (filters) {
-                console.log(filters);
 
                 let filtered = this.rooms.filter(function (room) {
 
-                        if (room.air_condition === filters.air_condition && room.elevator === filters.elevator &&
-                            room.kitchen === filters.kitchen && room.parking === filters.parking &&
-                            room.refrigerator === filters.refrigerator && room.tv === filters.tv &&
-                            room.wireless_internet === filters.wireless_internet) {
+
+                        if (!filters.apply_amen
+                            || (room.air_condition === filters.air_condition && room.elevator === filters.elevator &&
+                                room.kitchen === filters.kitchen && room.parking === filters.parking &&
+                                room.refrigerator === filters.refrigerator && room.tv === filters.tv &&
+                                room.wireless_internet === filters.wireless_internet)) {
 
                             if (filters.persons !== '' && filters.persons !== room.persons_number.toString()) {
                                 return false;
                             }
 
-                            if (filters.selected_type === null || filters.selected_type === 'all') {
+                            if (filters.max_price !== '' && room.cost_per_day > parseFloat(filters.max_price)) {
+                                return false;
+                            }
+
+                            if (filters.type === null || filters.type === 'all') {
                                 return true;
                             } else {
-                                return room.type === filters.selected_type
+                                return room.type === filters.type
                             }
 
 
@@ -73,18 +100,23 @@
                             return false;
                         }
 
+
                     }
                 );
                 this.filtered_rooms = filtered;
-                if (filtered.length === 0) {
-                    this.empty = true;
-                } else {
 
-                    this.empty = false;
+
+            },
+            orderBy(order) {
+                if (order === 'Price-Low to High') {
+                    this.filtered_rooms.sort((room1, room2) => room1.cost_per_day - room2.cost_per_day);
+                } else if (order === 'Price-High to Low') {
+                    this.filtered_rooms.sort((room1, room2) => room2.cost_per_day - room1.cost_per_day);
+                } else if (order === 'Rating') {
+                    this.filtered_rooms.sort((room1, room2) => room2.rating - room1.rating);
                 }
+            },
 
-
-            }
 
         }
 
