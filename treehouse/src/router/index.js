@@ -6,6 +6,7 @@ import RoomListings from "../views/RoomListings";
 import RoomInfo from "../views/RoomInfo";
 import HostRooms from "../views/HostRooms";
 import HostRoomEdit from "../views/HostRoomEdit";
+import LoginPage from "../views/LoginPage"
 
 Vue.use(VueRouter)
 
@@ -19,6 +20,11 @@ const routes = [
     path: '/register',
     name: 'RegisterPage',
     component: RegisterPage
+  },
+  {
+    path: '/login',
+    name: 'LoginPage',
+    component: LoginPage
   },
   {
   path: '/roomlistings',
