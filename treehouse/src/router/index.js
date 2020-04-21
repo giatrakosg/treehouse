@@ -7,6 +7,7 @@ import RoomInfo from "../views/RoomInfo";
 import HostRooms from "../views/HostRooms";
 import HostRoomEdit from "../views/HostRoomEdit";
 import LoginPage from "../views/LoginPage"
+import SuccessPage from "../views/SuccessPage"
 
 Vue.use(VueRouter)
 
@@ -45,6 +46,11 @@ const routes = [
     path: '/hostroomedit',
     name: 'HostRoomEdit',
     component: HostRoomEdit
+  } ,
+  {
+      path : '/success' ,
+      name : 'SuccessPage' ,
+      component : SuccessPage
   }
 
 ]
