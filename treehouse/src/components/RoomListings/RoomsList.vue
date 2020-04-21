@@ -1,20 +1,45 @@
 <template>
     <v-container>
-        <v-pagination
-                v-model="page"
-                :length="this.page_rows.length">
-
-        </v-pagination>
-        <v-row align-center justify="center" v-for="index in page_rows[page-1]" :key="index" wrap>
-            <v-col cols="auto" v-for="index in page_cols[page-1]" :key="index">
-                <RoomCard/>
+        <v-row v-if="empty" justify="center" align="center">
+            <v-spacer/>
+            <v-col cols="auto">
+                <span style="color: #86989B;font-size: 40px">No Results</span>
             </v-col>
+            <v-spacer/>
         </v-row>
-        <v-pagination
-                v-model="page"
-                :length="this.page_rows.length">
+        <div v-else>
+            <v-pagination
+                    v-if="pages_number>1"
+                    v-model="page"
+                    :length="this.pages_number"
+                    total-visible="5"
+            >
 
-        </v-pagination>
+            </v-pagination>
+            <v-row>
+                <v-col cols="12" sm="4" md="3" lg="3" v-for="(item,index) in page_rooms[page-1]" :key="index">
+
+                    <RoomCard v-bind:type="rooms[(page-1)*12+item-1].type"
+                              v-bind:title="rooms[(page-1)*12+item-1].title"
+                              v-bind:rating="rooms[(page-1)*12+item-1].rating"
+                              v-bind:beds_number="rooms[(page-1)*12+item-1].beds_number"
+                              v-bind:cost_per_day="rooms[(page-1)*12+item-1].cost_per_day"
+                              v-bind:image_src="rooms[(page-1)*12+item-1].image_src"
+                              v-bind:id="rooms[(page-1)*12+item-1].id"
+                    />
+                </v-col>
+            </v-row>
+
+            <v-pagination
+                    v-if="pages_number>1"
+                    v-model="page"
+                    :length="this.pages_number"
+                    total-visible="5">
+
+            </v-pagination>
+        </div>
+
+
     </v-container>
 </template>
 
@@ -24,34 +49,63 @@
     export default {
         name: "RoomsList",
         components: {RoomCard},
+        props: ['rooms'],
         data: function () {
             return {
                 page: 1,
                 max_rooms_per_page: 12,
-                total_rooms: 40,
-                page_rows: [],
-                page_cols: []
+                page_rooms: [],
+                pages_number: 0,
+                room: "test",
+                empty: false,
+
+
             }
 
         },
         created() {
-            let pages_number, rem;
 
-            pages_number = Math.floor(this.total_rooms / this.max_rooms_per_page);
-            rem = this.total_rooms % this.max_rooms_per_page;
-            let i;
+        },
+        watch: {
+            rooms: function () {
 
-            for (i = 0; i < pages_number; i++) {
-                this.page_rows.push(3);
-                this.page_cols.push(4);
-            }
-            if (rem > 0) {
+                if (this.rooms.length === 0) {
+                    this.empty = true;
+                    return;
+                } else {
+                    this.empty = false;
+                }
 
-                let rem_rows = Math.floor(rem / 4) + (rem % 4 != 0 ? 1 : 0);
-                this.page_cols.push(4);
-                this.page_rows.push(rem_rows);
 
-            }
+                this.page_rooms = [];
+
+
+                console.log("----------");
+                console.log(this.rooms);
+
+                let rem;
+
+                let total_rooms = this.rooms.length;
+
+
+                rem = total_rooms % this.max_rooms_per_page;
+
+                this.pages_number = Math.ceil(total_rooms / this.max_rooms_per_page);
+
+                let i;
+
+
+                for (i = 0; i < this.pages_number - 1; i++) {
+                    this.page_rooms.push(12);
+                }
+                if (rem > 0) {
+                    this.page_rooms.push(rem);
+
+                } else if (rem === 0) {
+                    this.page_rooms.push(12);
+                }
+
+            },
 
         }
 

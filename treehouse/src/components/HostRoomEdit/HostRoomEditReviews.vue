@@ -16,10 +16,7 @@
                 ></v-rating>
                 <label style="margin-left: 20px;font-size: 13px;">1000 reviews</label>
                 <v-spacer/>
-                <v-btn color="primary" @click="show_review_form=true">
-                    <v-icon class="fas fa-edit"></v-icon>
-                    Write a Review
-                </v-btn>
+
             </v-card-title>
             <template v-for="(item,index) in reviews">
                 <RoomReview v-bind:key="index"
@@ -29,25 +26,21 @@
                             v-bind:title="item.title"
                             v-bind:rating="item.rating"
                 />
+
                 <v-divider v-bind:key="index+reviews.length"/>
 
             </template>
         </v-list>
-        <v-dialog v-model="show_review_form" width="500px"  >
-            <RoomReviewForm
-                    @new-review="onNewReview"
-                    @close-review-form="onCloseReviewForm"/>
-        </v-dialog>
-    </v-container>
 
+    </v-container>
 </template>
 
 <script>
-    import RoomReview from "./RoomReview";
-    import RoomReviewForm from "./RoomReviewForm";
+    import RoomReview from "../RoomInfo/RoomReview";
 
     export default {
-        components: {RoomReviewForm, RoomReview},
+        name: "HostRoomEditReviews",
+        components: {RoomReview},
         data: () => ({
             reviews: [
 
@@ -107,20 +100,7 @@
                 },
             ],
             rating: 5,
-            show_review_form: false,
-
-        }),
-        methods: {
-            onNewReview(review) {
-                this.show_review_form = false;
-                console.log(review);
-
-                this.reviews.push(review);
-            },
-            onCloseReviewForm() {
-                this.show_review_form = false;
-            }
-        }
+        })
     }
 </script>
 

@@ -17,10 +17,10 @@
             </v-col>
         </v-row>
         <v-row  >
-           <v-col lg="7" xs="12" sm="12">
+           <v-col  cols="12" lg="6" >
                <RoomReviews />
            </v-col>
-            <v-col xs="12" sm="12" lg="5">
+            <v-col cols="12" lg="6" >
                 <RoomLocation/>
             </v-col>
 
@@ -36,7 +36,12 @@
     import RoomReviews from "../components/RoomInfo/RoomReviews";
     export default {
         name: "RoomInfo",
-        components: {RoomReviews, RoomLocation, RoomDescription, RoomImages, RoomTitle}
+        components: {RoomReviews, RoomLocation, RoomDescription, RoomImages, RoomTitle},
+        created() {
+
+            
+            console.log(this.$route.params.room_id)
+        }
     }
 </script>
 

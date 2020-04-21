@@ -1,11 +1,28 @@
 <template>
-    <v-list dense>
-        <v-list-item>
-            <v-list-item-content>
-                <v-list-item-title>
-                    <span style="font-size: 20px;font-weight: 500;text-decoration-line: underline">Apartment:</span>
-                </v-list-item-title>
-                <v-chip-group column>
+     <v-list-item to="/hostroomedit" v-on:mouseover="$root.$emit('highlight',$vnode.key)"
+                  v-on:mouseleave="$root.$emit('default',$vnode.key)" ref="room">
+         <v-list-item-avatar tile size="180px">
+
+
+             <v-img style="border-radius: 8px" src="../../assets/back-ground-image-3.jpg">
+
+             </v-img>
+
+         </v-list-item-avatar>
+
+         <v-list-item-content>
+            <v-list-item-title>
+
+                    <h3 style="display: inline-flex">Awesome Room</h3>
+
+            </v-list-item-title>
+            <v-list-item-subtitle >
+
+                 <v-chip color="blue" style="color:white " v-ripple="false">
+                    <i class="fas fa-euro-sign fa-lg"></i>
+                    <label style="font-size: 16px;" > /day:12</label>
+                </v-chip>
+               <v-chip-group column class="hidden-md-and-down">
                     <v-tooltip top color="primary">
                         <template v-slot:activator="{ on }">
                             <v-chip color="primary" v-ripple="false" v-on="on">
@@ -19,7 +36,7 @@
                     <v-tooltip top color="primary">
                         <template v-slot:activator="{ on }">
                             <v-chip color="primary" v-on="on" v-ripple="false">
-                                <v-icon> mdi-bed-king</v-icon>
+                                <v-icon>mdi-bed-king</v-icon>
                                 <span style="margin-left: 3px;margin-right: 3px">:</span>
                                 <label style="font-size: 16px;">2</label>
                             </v-chip>
@@ -67,21 +84,12 @@
                         Area
                     </v-tooltip>
                 </v-chip-group>
-
-            </v-list-item-content>
-        </v-list-item>
-        <v-list-item>
-            <v-list-item-content>
-                <v-list-item-title>
-                    <span style="font-size: 20px;font-weight: 500;text-decoration-line: underline">Rules:</span>
-                </v-list-item-title>
-                <v-chip-group column>
+                <v-chip-group column class="hidden-xs-only">
                     <v-tooltip top color="brown">
                         <template v-slot:activator="{ on }">
                             <v-chip color="brown" style="color: white" v-ripple="false" v-on="on">
                                 <v-icon>mdi-smoking</v-icon>
                                 <span style="margin-left: 3px;margin-right: 3px">:</span>
-
                                 <i class="fas fa-check-circle fa-lg"></i>
                             </v-chip>
                         </template>
@@ -115,38 +123,23 @@
                     </v-chip>
 
                 </v-chip-group>
-            </v-list-item-content>
-        </v-list-item>
-        <v-list-item>
-            <v-list-item-content>
-                <v-textarea
+            </v-list-item-subtitle>
 
-                        auto-grow
-                        value="The Woodman set to work at once, and so sharp was his axe that the tree was soon chopped nearly through."
-                        label="Description"
-                        readonly
+        </v-list-item-content>
 
-                ></v-textarea>
-            </v-list-item-content>
-        </v-list-item>
-
-        <v-list-item>
-            <RoomReservation/>
-        </v-list-item>
-    </v-list>
+    </v-list-item>
 </template>
 
 <script>
-    import RoomReservation from "./RoomReservation";
-
     export default {
-        name: "RoomDescription",
-        components: {RoomReservation},
+        name: "HostRoomsListItem",
+        props: ['title', 'cost', 'description'],
+        data: () => ({}),
+
+
     }
 </script>
 
 <style scoped>
-    v-label {
-        font-size: 23px !important;
-    }
+
 </style>

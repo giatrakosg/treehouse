@@ -3,11 +3,15 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify';
+import axios from 'axios'
+
 
 Vue.config.productionTip = false
+Vue.prototype.$http = axios
 
 
 //import { Icon } from 'leaflet'
+
 
 import { LMap, LTileLayer, LMarker,LPolyline,LCircleMarker ,LIcon , LPopup} from 'vue2-leaflet';
 import 'leaflet/dist/leaflet.css'
@@ -28,7 +32,6 @@ Vue.component('l-circle-marker', LCircleMarker);
 Vue.component('l-polyline', LPolyline);
 Vue.component('l-icon', LIcon);
 Vue.component('l-popup', LPopup);
-
 
 
 new Vue({

@@ -12,6 +12,12 @@
         >
             TMP Button for LIstings
         </v-btn>
+         <v-btn
+                color="primary"
+                to="/hostrooms"
+        >
+            TMP Button for HostRooms
+        </v-btn>
         <!--                      -->
 
         <div class="d-flex align-center">

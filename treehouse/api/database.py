@@ -1,6 +1,7 @@
 # noinspection PyUnresolvedReferences
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
+# noinspection PyUnresolvedReferences
 from flask_migrate import Migrate
 
 
