@@ -31,12 +31,22 @@
             />
         </div>
         <v-spacer></v-spacer>
-        <div class="d-flex align-right">
-            <v-btn
-                    color="primary"
-            >
+        <div class="d-flex align-right mx-4">
+          <v-dialog
+            v-model="dialog"
+            width="500"
+          >
+            <template v-slot:activator="{ on }">
+              <v-btn
+                color="primary"
+                dark
+                v-on="on"
+              >
                 Login
-            </v-btn>
+              </v-btn>
+            </template>
+            <LoginForm />
+          </v-dialog>
         </div>
         <div class="d-flex align-right mx-4">
             <v-btn
@@ -45,21 +55,25 @@
             >
                 Register
             </v-btn>
+            <!-- <LoginForm /> -->
         </div>
-
     </v-app-bar>
 
 </template>
 
 <script>
-    export default {
-        name: 'AppBar',
-        data() {
-            return {
-                dialog: false
-            }
+import LoginForm from '../Login/LoginForm'
+export default {
+    name: 'AppBar',
+    components:{
+        LoginForm
+    },
+    data() {
+        return {
+            dialog: false ,
         }
     }
+}
 </script>
 
 <style lang="css" scoped>
