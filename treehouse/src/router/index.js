@@ -33,7 +33,7 @@ const routes = [
   component: RoomListings
   },
   {
-      path: '/room/:room_id',
+      path: '/room/:room_title',
       name: 'RoomInfo',
       component: RoomInfo
   },

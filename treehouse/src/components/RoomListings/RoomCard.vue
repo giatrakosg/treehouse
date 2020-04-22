@@ -3,7 +3,7 @@
     <v-card elevation="0"
             min-width="190px"
             max-width="400px"
-            :to="{name:'RoomInfo',params:{room_id:id}}"
+            :to="{name:'RoomInfo',params:{room_title:title}}"
             v-ripple=false
             @click="gotoRoom"
     >

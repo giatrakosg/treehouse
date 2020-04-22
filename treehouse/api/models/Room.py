@@ -22,7 +22,7 @@ class Room(db.Model):
     bedrooms_num = db.Column(db.Integer, nullable=False)
     lounge = db.Column(db.Boolean, nullable=False)
     description = db.Column(db.Text)
-    smocking_allowed = db.Column(db.Boolean, nullable=False)
+    smoking_allowed = db.Column(db.Boolean, nullable=False)
     pets_allowed = db.Column(db.Boolean, nullable=False)
     events_allowed = db.Column(db.Boolean, nullable=False)
     wireless_internet = db.Column(db.Boolean, nullable=False)
@@ -41,6 +41,8 @@ class Room(db.Model):
     add_persons_cost = db.Column(db.Float)
     rating = db.Column(db.Float)
     title = db.Column(db.String(30), nullable=False)
+    area = db.Column(db.Float, nullable=False)
+    min_stay = db.Column(db.Integer, nullable=False)
 
     images = db.relationship('Image', backref='room', lazy=True)
 
@@ -52,14 +54,14 @@ class Room(db.Model):
                  smoking_all, pets_all, events_all, wifi, ac, refrigerator, kitchen, tv,
                  parking, elevator, latitude, longitude,
                  address, tran_info, pers_num,
-                 standard_cost, add_prs_cost, reviews_score, title):
+                 standard_cost, add_prs_cost, reviews_score, title, area, min_stay):
         self.type = rt
         self.beds_num = beds_num
         self.baths_num = baths_num
         self.bedrooms_num = bedr_num
         self.lounge = lounge
         self.description = desc
-        self.smocking_allowed = smoking_all
+        self.smoking_allowed = smoking_all
         self.pets_allowed = pets_all
         self.events_allowed = events_all
         self.wireless_internet = wifi
@@ -78,6 +80,50 @@ class Room(db.Model):
         self.add_persons_cost = add_prs_cost
         self.rating = reviews_score
         self.title = title
+        self.area = area
+        self.min_stay = min_stay
+
+    def to_dict_all(self):
+
+        images = []
+
+        for i in self.images:
+            image_dict = i.to_dict()
+
+            images.append(image_dict)
+
+        r = {
+            'type': self.type,
+            'beds_number': self.beds_num,
+            'baths_number': self.baths_num,
+            'lounge': self.lounge,
+            'description': self.description,
+            'wireless_internet': self.wireless_internet,
+            'air_condition': self.air_condition,
+            'refrigerator': self.refrigerator,
+            'kitchen': self.kitchen,
+            'tv': self.tv,
+            'parking': self.parking,
+            'elevator': self.elevator,
+            'location': [self.lat_coordinate, self.long_coordinate],
+            'smoking_allowed': self.smoking_allowed,
+            'pets_allowed': self.pets_allowed,
+            'events_allowed': self.events_allowed,
+            'min_stay': self.min_stay,
+            'area': self.area,
+            'address': self.address,
+            'transport_info': self.transport_info,
+            'standard_cost': self.standard_cost,
+            'add_persons_cost': self.add_persons_cost,
+            'title': self.title,
+            'persons_number': self.persons_num,
+            'rating': self.rating,
+            'cost_per_day': self.standard_cost,
+            'images': images,
+            'bedrooms_number': self.bedrooms_num,
+
+        }
+        return r
 
     def to_dict_short(self):
         r = {'id': self.id,
@@ -104,5 +150,4 @@ class Room(db.Model):
 
         return r
 
-
-"""///////////////////////////////////////////////////////////"""
+    """///////////////////////////////////////////////////////////"""
