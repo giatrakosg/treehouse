@@ -31,6 +31,19 @@
                     </v-date-picker>
                 </v-menu>
 
+
+            </v-col>
+            <v-col cols="auto">
+
+
+                <places
+                        v-model="form.country.label"
+                        placeholder="Location"
+                        @change="val => { form.country.data = val }"
+                        :options="options">
+                </places>
+
+
             </v-col>
             <v-col cols="auto">
                 <v-text-field
@@ -53,7 +66,7 @@
 
             <v-col cols="auto">
                 <v-select :items="room_types"
-                          v-model="filters.type"
+                          v-model="type"
                           outlined
                           dense
                           label="Room Type"
@@ -182,10 +195,12 @@
 </template>
 
 <script>
+    import Places from 'vue-places';
 
     export default {
         name: "RoomOptions",
-        props: ['init_dates'],
+        components: {Places},
+        props: ['init_dates', 'location_placeholder'],
         data: function () {
             return {
                 menu: false,
@@ -217,7 +232,19 @@
                 dates: this.init_dates,
 
 
-                dates_changed: false
+                dates_changed: false,
+                type: null,
+                options: {
+                    appId: 'plBU33AXJV5Y',
+                    apiKey: '357dc78dcc889cdaecd7c7ad22d69b5d',
+                    countries: ['GR'],
+                },
+                form: {
+                    country: {
+                        label: null,
+                        data: {},
+                    },
+                },
 
 
             }
@@ -233,7 +260,7 @@
                 } else if (new_value === 'house') {
                     this.icon = 'mdi-home';
                 }
-                this.filters.selected_type = this.type;
+                this.filters.type = this.type;
             },
             order_by: function (order) {
                 this.$emit('order-by', order);
@@ -294,8 +321,6 @@
 </script>
 
 <style scoped>
-    .faded {
-        opacity: ;
-    }
+
 
 </style>

@@ -21,7 +21,8 @@
                         <v-text-field
                                 label="Select Dates"
                                 readonly
-                                style="width: 200px"
+                                color="blue"
+                                style="width: 220px"
                                 v-model="computedDateFormatted"
                                 v-on="on"
                                 prepend-icon="mdi-calendar-range"

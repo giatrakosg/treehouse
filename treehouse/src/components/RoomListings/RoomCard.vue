@@ -5,7 +5,6 @@
             max-width="400px"
             :to="{name:'RoomInfo',params:{room_title:title}}"
             v-ripple=false
-            @click="gotoRoom"
     >
         <v-img
                 :src="image_src"
@@ -83,10 +82,7 @@
             rating: Number
         },
         methods: {
-            gotoRoom() {
 
-
-            }
         }
 
 

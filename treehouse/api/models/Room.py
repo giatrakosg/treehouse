@@ -1,5 +1,6 @@
 from database import db
 from enum import Enum
+from sqlalchemy.ext.hybrid import hybrid_property
 
 from models.Availability import Availability
 from models.Image import Image
@@ -50,11 +51,22 @@ class Room(db.Model):
 
     availabilities = db.relationship('Availability', backref='room', lazy=True)
 
+    @hybrid_property
+    def rating(self):
+
+        r_sum = 0
+        reviews_num = len(self.reviews)
+
+        for r in self.reviews:
+            r_sum = r_sum + r.rating
+
+        return r_sum / reviews_num
+
     def __init__(self, rt, beds_num, baths_num, bedr_num, lounge, desc,
                  smoking_all, pets_all, events_all, wifi, ac, refrigerator, kitchen, tv,
                  parking, elevator, latitude, longitude,
                  address, tran_info, pers_num,
-                 standard_cost, add_prs_cost, reviews_score, title, area, min_stay):
+                 standard_cost, add_prs_cost, title, area, min_stay):
         self.type = rt
         self.beds_num = beds_num
         self.baths_num = baths_num
@@ -78,7 +90,6 @@ class Room(db.Model):
         self.persons_num = pers_num
         self.standard_cost = standard_cost
         self.add_persons_cost = add_prs_cost
-        self.rating = reviews_score
         self.title = title
         self.area = area
         self.min_stay = min_stay
@@ -86,10 +97,14 @@ class Room(db.Model):
     def to_dict_all(self):
 
         images = []
+        reviews = []
+
+        for i in self.reviews:
+            review_dict = i.to_dict()
+            reviews.append(review_dict)
 
         for i in self.images:
             image_dict = i.to_dict()
-
             images.append(image_dict)
 
         r = {
@@ -121,8 +136,27 @@ class Room(db.Model):
             'cost_per_day': self.standard_cost,
             'images': images,
             'bedrooms_number': self.bedrooms_num,
+            'reviews': reviews,
+            'reviews_num': len(self.reviews)
 
         }
+
+        available_dates = []
+        for date_range in self.availabilities:
+            available_dates.append(date_range.to_dict())
+
+        r['availabilities'] = available_dates
+        return r
+
+    def to_dict_host_short(self):
+        r = {'title': self.title,
+             'cost_per_day': self.standard_cost,
+             'rating': self.rating,
+             'address': self.address,
+             'reviews_number': len(self.reviews),
+             'location': [self.lat_coordinate, self.long_coordinate],
+             'thumbnail': self.images[0].source
+             }
         return r
 
     def to_dict_short(self):
@@ -140,13 +174,14 @@ class Room(db.Model):
              'persons_number': self.persons_num,
              'rating': self.rating,
              'cost_per_day': self.standard_cost,
-             'image_src': self.images[0].source}
+             'image_src': self.images[0].source,
+             'reviews_num': len(self.reviews)}
 
-        available_rooms = []
+        available_dates = []
         for date_range in self.availabilities:
-            available_rooms.append(date_range.to_dict())
+            available_dates.append(date_range.to_dict())
 
-        r['availabilities'] = available_rooms
+        r['availabilities'] = available_dates
 
         return r
 

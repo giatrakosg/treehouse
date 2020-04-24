@@ -1,36 +1,49 @@
 <template>
-     <l-map style="height: 800px;z-index: 0;border-radius: 8px;" :zoom="zoom" :center="center">
-            <l-tile-layer
-                    :url="url"
-            />
-            <l-marker v-for="(item,index) in coordinates"
-                      :lat-lng="item"
-                      v-bind:key="index"
+    <l-map style="height: 800px;z-index: 0;border-radius: 8px;" :zoom="zoom" v-bind:center="center">
+        <l-tile-layer
+                :url="url"
+        />
+        <l-marker v-for="(item,index) in coordinates"
+                  :lat-lng="item"
+                  v-bind:key="index"
 
 
-            >
-                <l-icon>
-                    <img src="../../assets/treehouse.png" class="highlight" style="width: 45px;" ref="image"/>
-                </l-icon>
+        >
+            <l-icon>
+                <img src="../../assets/treehouse.png" class="highlight" style="width: 45px;" ref="image"/>
+            </l-icon>
 
-            </l-marker>
-        </l-map>
+        </l-marker>
+    </l-map>
 </template>
 
 <script>
+    import L from 'leaflet'
     export default {
         name: "HostRoomsMap",
-        props:['coordinates'],
-         data() {
+        props: ['coordinates'],
+        data() {
             return {
                 url: 'http://mt.google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z}',
-                zoom: 13,
+                zoom: 10,
                 center: [37.984888, 23.730851],
 
 
             };
         },
-        mounted(){
+        watch: {
+            coordinates() {
+                let sum = [0, 0];
+
+                for (let c of this.coordinates) {
+                    sum[0] = sum[0] + c[0];
+                    sum[1] = sum[1] + c[1]
+                }
+                this.center = L.latLng(sum[0] / this.coordinates.length, sum[1] / this.coordinates.length)
+
+            }
+        },
+        mounted() {
             this.$root.$on('highlight', (key) => {
                 this.$refs.image[key].style.width = "62px";
             });
@@ -44,7 +57,7 @@
 
 <style scoped>
     .highlight:hover {
-        width: 62px!important;
+        width: 62px !important;
         cursor: pointer;
     }
 

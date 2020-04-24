@@ -2,7 +2,7 @@
     <v-container>
         <v-row>
             <v-col>
-                <RoomTitle/>
+                <RoomTitle v-bind:rating="rating" v-bind:reviews_number="reviews_num" v-bind:title="room_desc.title"/>
             </v-col>
             <v-spacer/>
         </v-row>
@@ -21,7 +21,7 @@
 
         <v-row>
             <v-col cols="12" lg="6">
-                <RoomReviews/>
+                <RoomReviews v-bind:reviews="reviews" v-bind:rating="rating" :room_title="room_desc.title"/>
             </v-col>
             <v-col cols="12" lg="6">
                 <RoomLocation :address="address" v-bind:transport_info="transport_info" :location="location"/>
@@ -64,6 +64,7 @@
                 events_allowed: Boolean,
                 min_stay: Number,
                 persons_number: Number,
+                title: String
 
             },
             reservation: {
@@ -75,7 +76,11 @@
 
             location: [],
             address: '',
-            transport_info: ''
+            transport_info: '',
+
+            reviews: [],
+            rating: 0,
+            reviews_num: 0
 
         }),
         created() {
@@ -107,6 +112,7 @@
                     this.room_desc.events_allowed = result.data.events_allowed;
                     this.room_desc.min_stay = result.data.min_stay;
                     this.room_desc.persons_number = result.data.persons_number;
+                    this.room_desc.title = result.data.title;
 
                     this.reservation.add_persons_cost = result.data.add_persons_cost.toFixed(2);
                     this.reservation.cost_per_day = result.data.cost_per_day.toFixed(2);
@@ -116,6 +122,9 @@
                     this.address = result.data.address;
                     this.transport_info = result.data.transport_info;
                     this.location = result.data.location;
+                    this.reviews = result.data.reviews;
+                    this.rating = result.data.rating;
+                    this.reviews_num = result.data.reviews_num;
 
 
                 })

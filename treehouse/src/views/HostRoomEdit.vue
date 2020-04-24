@@ -7,7 +7,7 @@
             <v-spacer/>
         </v-row>
         <v-divider></v-divider>
-        <v-row dense align="stretch">
+        <v-row dense align="center">
             <v-col cols="12" md="12" lg="6" xl="4" order-lg="1" order-xl="1">
                 <HostRoomEditImages/>
             </v-col>

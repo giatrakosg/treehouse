@@ -2,7 +2,7 @@
     <v-list-item three-line>
         <v-list-item-content>
             <v-list-item-title>
-                <h2>Awesome room</h2>
+                <h2>{{title}}</h2>
             </v-list-item-title>
             <v-list-item-subtitle>
                 <v-row dense align="center">
@@ -15,7 +15,7 @@
                                   size="20px"
                         ></v-rating>
 
-                        <label style="margin-left: 20px;">(1000)</label>
+                        <label style="margin-left: 20px;">({{reviews_number}})</label>
                     </v-col>
                     <v-col cols="auto">
                         <label style="padding-left: 20px">Host: </label>
@@ -45,10 +45,9 @@
 <script>
     export default {
         name: "RoomTitle",
+        props: ['title', 'rating', 'reviews_number'],
         data: function () {
-            return {
-                rating: 3.5
-            }
+            return {}
         }
     }
 </script>

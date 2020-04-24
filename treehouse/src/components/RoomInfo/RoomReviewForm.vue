@@ -1,5 +1,5 @@
 <template>
-    <v-card  >
+    <v-card>
         <ValidationObserver ref="observer">
             <v-form>
                 <v-container>
@@ -65,6 +65,7 @@
         message: '{_field_} may not be greater than {length} characters',
     });
     export default {
+        props: ['room_title'],
         components: {
             ValidationProvider,
             ValidationObserver
@@ -83,19 +84,30 @@
         methods: {
             async Submit() {
                 if (await this.$refs.observer.validate()) {
+                    let url = 'http://127.0.0.1:5000/rooms/' + this.room_title + '/new_review';
+
                     let new_review = {
                         title: this.title,
                         description: this.description,
                         rating: this.rating,
-                        avatar: this.avatar,
+
                     };
+
+                    this.$http.post(url, {
+                        'title': this.title,
+                        'description': this.description,
+                        'rating': this.rating
+                    }).then()
+                        .catch(error => console.log(error));
+
+
+                    console.log(this.room_title);
 
 
                     this.$emit('new-review', new_review);
                     this.title = '';
                     this.description = '';
                     this.rating = null;
-
 
                 }
             },
