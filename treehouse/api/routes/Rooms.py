@@ -6,6 +6,7 @@ from models.Image import Image
 from models.Availability import Availability
 from models.Review import Review
 
+import json
 import random
 import time
 from datetime import datetime
@@ -14,7 +15,28 @@ import string
 rooms_blueprint = Blueprint('rooms', __name__)
 
 
-@rooms_blueprint.route("/my_rooms", methods=['GET'])
+@rooms_blueprint.route("/rooms/<string:room_title>/update_images", methods=['POST'])
+def update_rooms_images(room_title):
+    data = request.get_json()
+
+    images_dict = data['images']
+
+    room = Room.query.filter_by(title=room_title).first()
+    if room is None:
+        return jsonify({'message': 'ERROR'})
+
+    Image.query.filter_by(room_id=room.id).delete()
+
+    for i in images_dict:
+        image = Image(i['src'])
+        room.images.append(image)
+
+    db.session.commit()
+
+    return jsonify({'message': 'SUCCESS'})
+
+
+@rooms_blueprint.route("/rooms/host", methods=['GET'])
 def get_host_rooms():
     host_rooms_dict = []
 
@@ -49,13 +71,39 @@ def get_rooms():
     return jsonify(rooms_dict)
 
 
-@rooms_blueprint.route("/rooms/<string:room_title>", methods=['GET'])
+@rooms_blueprint.route("/rooms/<string:room_title>", methods=['GET', 'POST', 'DELETE'])
 def get_room(room_title):
     room = Room.query.filter_by(title=room_title).first()
+    if room is None:
+        return jsonify({'message': 'ERROR'})
 
-    room_to_dict = room.to_dict_all()
+    if request.method == 'GET':
 
-    return jsonify(room_to_dict)
+        room_to_dict = room.to_dict_all()
+        return jsonify(room_to_dict)
+
+    elif request.method == 'POST':
+        data = request.get_json()
+        if data is None:
+            return jsonify({'message': 'ERROR'})
+
+        room_d = data['room']
+        room.update(json.loads(room_d))
+
+        return jsonify({'message': 'SUCCESS'})
+    elif request.method == 'DELETE':
+        for a in room.availabilities:
+            db.session.delete(a)
+
+        for i in room.images:
+            db.session.delete(i)
+        for r in room.reviews:
+            db.session.delete(r)
+
+        db.session.delete(room)
+
+        db.session.commit()
+        return jsonify({'message': 'SUCCESS'})
 
 
 @rooms_blueprint.route("/rooms/<string:room_title>/new_review", methods=['POST'])

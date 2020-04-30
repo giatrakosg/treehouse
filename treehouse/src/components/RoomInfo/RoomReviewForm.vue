@@ -1,52 +1,53 @@
 <template>
     <v-card>
         <ValidationObserver ref="observer">
-            <v-form>
-                <v-container>
-                    <v-card-title>
-                        Rating:
+            <v-container>
+                <v-card-title>
+                    Rating:
+                    <ValidationProvider v-slot="{ errors }" rules="required">
                         <v-rating
                                 half-increments
                                 v-model="rating"
+                                :error-messages="errors"
+
                         />
-                    </v-card-title>
-                    <v-card-subtitle>
+                    </ValidationProvider>
+                </v-card-title>
+                <v-card-subtitle>
                         <span v-if="rating===null"
                               style="color: #ff1744;font-size: 12px">Rating is required</span>
-                    </v-card-subtitle>
+                </v-card-subtitle>
 
-                    <v-card-text>
-                        <ValidationProvider v-slot="{ errors }" name="Title" rules="required|max:30">
-                            <v-text-field
-                                    v-model="title"
-                                    :counter="30"
-                                    :error-messages="errors"
-                                    label="Title"
-                                    required
-                            ></v-text-field>
-                        </ValidationProvider>
-                        <ValidationProvider v-slot="{ errors }" name="Description" rules="required">
-                            <v-textarea
-                                    v-model="description"
-                                    label="Description"
-                                    :error-messages="errors"
-                                    required
-                            >
-                            </v-textarea>
-                        </ValidationProvider>
-                        <v-spacer/>
+                <v-card-text>
+                    <ValidationProvider v-slot="{ errors }" rules="required|max:50">
+                        <v-text-field
+                                v-model="title"
+                                :counter="30"
+                                maxlength="30"
+                                :error-messages="errors"
+                                label="Title"
+                        ></v-text-field>
+                    </ValidationProvider>
+                    <ValidationProvider v-slot="{ errors }" rules="required">
+                        <v-textarea
+                                v-model="description"
+                                label="Description"
+                                :error-messages="errors"
 
-
-                    </v-card-text>
-                </v-container>
-
-                <v-card-actions>
-                    <v-btn color="primary" text @click="Clear">Reset</v-btn>
+                        >
+                        </v-textarea>
+                    </ValidationProvider>
                     <v-spacer/>
-                    <v-btn color="primary" @click="Submit">Submit</v-btn>
-                    <v-btn color="primary" text @click="Close">Close</v-btn>
-                </v-card-actions>
-            </v-form>
+
+
+                </v-card-text>
+            </v-container>
+
+            <v-card-actions>
+
+                <v-btn color="primary" @click="Submit">Submit</v-btn>
+                <v-btn color="primary" text @click="Close">Close</v-btn>
+            </v-card-actions>
         </ValidationObserver>
     </v-card>
 </template>
@@ -78,7 +79,6 @@
             rating: null,
 
 
-            review_form: false
         }),
 
         methods: {

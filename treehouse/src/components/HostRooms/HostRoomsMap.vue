@@ -6,19 +6,22 @@
         <l-marker v-for="(item,index) in coordinates"
                   :lat-lng="item"
                   v-bind:key="index"
-
+                  v-show="loaded"
 
         >
             <l-icon>
-                <img src="../../assets/treehouse.png" class="highlight" style="width: 45px;" ref="image"/>
+                <img src="../../assets/treehouse.png" class="highlight" style="width: 45px;" ref="img"/>
             </l-icon>
 
         </l-marker>
+
     </l-map>
+
 </template>
 
 <script>
     import L from 'leaflet'
+
     export default {
         name: "HostRoomsMap",
         props: ['coordinates'],
@@ -27,6 +30,7 @@
                 url: 'http://mt.google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z}',
                 zoom: 10,
                 center: [37.984888, 23.730851],
+                loaded: false
 
 
             };
@@ -44,12 +48,18 @@
             }
         },
         mounted() {
+
             this.$root.$on('highlight', (key) => {
-                this.$refs.image[key].style.width = "62px";
+
+
+                this.$refs.img[key].style.width = "65px";
+                console.log(key)
+
             });
             this.$root.$on('default', (key) => {
-                this.$refs.image[key].style.width = "45px";
+                this.$refs.img[key].style.width = "45px";
             })
+
 
         }
     }

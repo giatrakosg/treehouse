@@ -1,6 +1,7 @@
 from database import db
 from enum import Enum
 from sqlalchemy.ext.hybrid import hybrid_property
+from datetime import datetime
 
 from models.Availability import Availability
 from models.Image import Image
@@ -155,8 +156,13 @@ class Room(db.Model):
              'address': self.address,
              'reviews_number': len(self.reviews),
              'location': [self.lat_coordinate, self.long_coordinate],
-             'thumbnail': self.images[0].source
              }
+
+        if len(self.images) == 0:
+            r['thumbnail'] = ''
+        else:
+            r['thumbnail'] = self.images[0].source
+
         return r
 
     def to_dict_short(self):
@@ -174,7 +180,6 @@ class Room(db.Model):
              'persons_number': self.persons_num,
              'rating': self.rating,
              'cost_per_day': self.standard_cost,
-             'image_src': self.images[0].source,
              'reviews_num': len(self.reviews)}
 
         available_dates = []
@@ -183,6 +188,54 @@ class Room(db.Model):
 
         r['availabilities'] = available_dates
 
+        if len(self.images) == 0:
+            r['image_src'] = ''
+        else:
+            r['image_src'] = self.images[0].source
+            return r
+
         return r
+
+    def update(self, data):
+
+        self.type = RoomTypes(data['type'])
+        self.beds_num = data['beds_num']
+        self.baths_num = data['baths_num']
+        self.bedrooms_num = data['bedrooms_num']
+        self.lounge = data['lounge']
+        self.description = data['description']
+        self.smoking_allowed = data['smoking_allowed']
+        self.pets_allowed = data['pets_allowed']
+        self.events_allowed = data['events_allowed']
+        self.wireless_internet = data['wireless_internet']
+        self.air_condition = data['air_condition']
+        self.refrigerator = data['refrigerator']
+        self.kitchen = data['kitchen']
+        self.tv = data['tv']
+        self.parking = data['parking']
+        self.elevator = data['elevator']
+        self.lat_coordinate = data['location'][0]
+        self.long_coordinate = data['location'][1]
+        self.address = data['address']
+        self.transport_info = data['transport_info']
+        self.persons_num = data['persons_num']
+        self.standard_cost = data['cost_per_day']
+        self.add_persons_cost = data['add_persons_cost']
+        self.title = data['title']
+        self.area = data['area']
+        self.min_stay = data['min_stay']
+
+        availabilities = data['availabilities']
+
+        for a in self.availabilities:
+            db.session.delete(a)
+
+        for a in availabilities:
+            d_from = datetime.strptime(a['date_from'], '%Y-%m-%d')
+            d_to = datetime.strptime(a['date_to'], '%Y-%m-%d')
+
+            self.availabilities.append(Availability(d_from, d_to))
+
+        db.session.commit()
 
     """///////////////////////////////////////////////////////////"""

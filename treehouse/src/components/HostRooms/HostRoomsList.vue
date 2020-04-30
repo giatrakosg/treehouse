@@ -13,7 +13,8 @@
             <v-spacer/>
             <v-tooltip top color="primary">
                 <template v-slot:activator="{ on }">
-                    <v-btn color="primary" :ripple="false" v-on="on" to="/hostroomedit">
+                    <v-btn color="primary" :ripple="false" v-on="on"
+                           :to="{name:'HostRoomEdit',params:{room_title:'New_Room'}}">
                         <v-icon>mdi-plus</v-icon>
 
                     </v-btn>
@@ -23,7 +24,7 @@
         </v-card-title>
         <template v-for="(item,index) in display_rooms">
 
-            <HostRoomsListItem :key="index" :room="item" ref="room"/>
+            <HostRoomsListItem :key="index" :room="item"/>
 
 
         </template>
@@ -43,6 +44,7 @@
         }),
         watch: {
             rooms() {
+                console.log(this.rooms);
                 this.display_rooms = this.rooms
             }
         },

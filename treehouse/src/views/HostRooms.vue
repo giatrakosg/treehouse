@@ -28,12 +28,14 @@
         data: () => ({
 
             rooms: [],
-            coordinates: []
+            coordinates: [],
+            key: 0,
+
 
         }),
         created() {
 
-            let url = 'http://127.0.0.1:5000/my_rooms';
+            let url = 'http://127.0.0.1:5000/rooms/host';
 
             this.$http.get(url, {
                 params: {
@@ -52,6 +54,8 @@
 
 
             }).catch(error => console.log(error));
+
+
         }
 
 

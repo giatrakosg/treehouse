@@ -3,7 +3,13 @@
         <div v-if="!loaded"></div>
         <v-layout v-else>
             <v-flex class="d-inline-flex ">
-                <v-img style="border-radius: 8px 0 0 8px" class="fade" @click="openAllImages(0)" width="490px"
+                <v-img v-if="images[0]===undefined || images[0]===null" style="border-radius: 8px 8px 0 0" class="fade"
+                       @click="openAllImages(0)"
+                       width="490px"
+                       height="450px"
+                       :src="require('../../assets/empty_thumbnail.png')">
+                </v-img>
+                <v-img v-else style="border-radius: 8px 0 0 8px" class="fade" @click="openAllImages(0)" width="490px"
                        height="450px"
                        :src="images[0].src">
                 </v-img>
@@ -11,14 +17,24 @@
             <v-flex>
                 <v-layout>
                     <v-flex class="hidden-sm-and-down">
-                        <v-img class="fade" @click="openAllImages(1)" width="245px" height="217px"
+                        <v-img v-if="images[0]===undefined || images[0]===null" style="border-radius: 8px 8px 0 0"
+                               class="fade" @click="openAllImages(0)"
+                               width="245px" height="217px"
+                               :src="require('../../assets/empty_thumbnail.png')">
+                        </v-img>
+                        <v-img v-else class="fade" @click="openAllImages(1)" width="245px" height="217px"
                                :src="images[1].src">
                         </v-img>
                     </v-flex>
                 </v-layout>
                 <v-layout>
                     <v-flex class="hidden-sm-and-down">
-                        <v-img class="fade" @click="openAllImages(2)" width="245px" height="217px"
+                        <v-img v-if="images[0]===undefined || images[0]===null" style="border-radius: 8px 8px 0 0"
+                               class="fade" @click="openAllImages(0)"
+                               width="245px" height="217px"
+                               :src="require('../../assets/empty_thumbnail.png')">
+                        </v-img>
+                        <v-img v-else class="fade" @click="openAllImages(2)" width="245px" height="217px"
                                :src="images[2].src">
                         </v-img>
                     </v-flex>
@@ -27,7 +43,12 @@
             <v-flex>
                 <v-layout>
                     <v-flex class="hidden-sm-and-down">
-                        <v-img class="fade" @click="openAllImages(3)" width="245px" height="217px"
+                        <v-img v-if="images[0]===undefined || images[0]===null" style="border-radius: 8px 8px 0 0"
+                               class="fade" @click="openAllImages(0)"
+                               width="245px" height="217px"
+                               :src="require('../../assets/empty_thumbnail.png')">
+                        </v-img>
+                        <v-img v-else class="fade" @click="openAllImages(3)" width="245px" height="217px"
                                style="border-radius: 0 8px 0 0"
                                :src="images[3].src">
                         </v-img>
@@ -35,7 +56,12 @@
                 </v-layout>
                 <v-layout>
                     <v-flex class="hidden-sm-and-down">
-                        <v-img class="fade" @click="openAllImages(4)" width="245px" height="217px"
+                        <v-img v-if="images[0]===undefined || images[0]===null" style="border-radius: 8px 8px 0 0"
+                               class="fade" @click="openAllImages(0)"
+                               width="245px" height="217px"
+                               :src="require('../../assets/empty_thumbnail.png')">
+                        </v-img>
+                        <v-img v-else class="fade" @click="openAllImages(4)" width="245px" height="217px"
                                style="border-radius: 0 0 8px 0"
                                :src="images[4].src">
                         </v-img>

@@ -66,12 +66,15 @@
 
             <v-col cols="auto">
                 <v-select :items="room_types"
-                          v-model="type"
+                          v-model="filters.type"
                           outlined
                           dense
                           label="Room Type"
                           style="height: 40px;width: 180px"
-                          :prepend-icon="icon"
+                          :prepend-icon="filters.type === 'private room' ? 'mdi-account'
+                                        : filters.type === 'shared room' ? 'mdi-account-multiple'
+                                        : filters.type === 'house' ? 'mdi-home'
+                                        : '' "
                           item-value="value"
                           item-text="text"
 
@@ -233,7 +236,7 @@
 
 
                 dates_changed: false,
-                type: null,
+
                 options: {
                     appId: 'plBU33AXJV5Y',
                     apiKey: '357dc78dcc889cdaecd7c7ad22d69b5d',
@@ -251,17 +254,7 @@
 
         },
         watch: {
-            type: function (new_value) {
 
-                if (new_value === 'private room') {
-                    this.icon = 'mdi-account';
-                } else if (new_value === 'shared room') {
-                    this.icon = 'mdi-account-multiple';
-                } else if (new_value === 'house') {
-                    this.icon = 'mdi-home';
-                }
-                this.filters.type = this.type;
-            },
             order_by: function (order) {
                 this.$emit('order-by', order);
             },
