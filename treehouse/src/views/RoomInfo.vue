@@ -72,6 +72,7 @@
                 add_persons_cost: Number,
                 persons_number: Number,
                 cost_per_day: Number,
+                available_dates: Array
             },
 
             location: [],
@@ -118,6 +119,7 @@
                     this.reservation.cost_per_day = result.data.cost_per_day.toFixed(2);
                     this.reservation.min_stay = result.data.min_stay;
                     this.reservation.persons_number = result.data.persons_number;
+                    this.reservation.available_dates = result.data.availabilities;
 
                     this.address = result.data.address;
                     this.transport_info = result.data.transport_info;

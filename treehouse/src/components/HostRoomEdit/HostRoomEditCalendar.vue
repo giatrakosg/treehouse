@@ -45,7 +45,7 @@
                     </v-date-picker>
                 </v-col>
                 <v-col cols="auto">
-                    <v-list dense height="326px" style="overflow: auto" v-if="loaded">
+                    <v-list dense height="326px" style="overflow: auto" min-width="200px" v-if="loaded">
                         <div style="position: sticky;top: -9px; background-color: white;z-index: 1" class="mt-0">
                             <h4 style="text-align: center;">Available Dates</h4>
                             <v-divider/>
@@ -105,12 +105,12 @@
             loaded: false,
         }),
         mounted() {
-            this.tmp_available_date_ranges = this.available_date_ranges;
+            this.tmp_available_date_ranges = JSON.parse(JSON.stringify(this.available_date_ranges));
             this.tmp_available_date_ranges.sort((a, b) => a.date_from > b.date_from ? 1 : -1);
             this.loaded = true;
 
             this.available_dates = this.getAllDates(this.available_date_ranges);
-            this.tmp_available_dates = this.available_dates;
+            this.tmp_available_dates = JSON.parse(JSON.stringify(this.available_dates));
 
         },
 
@@ -152,7 +152,7 @@
                 this.menu = false;
 
                 this.available_dates = this.tmp_available_dates;
-                this.available_date_ranges = this.tmp_available_date_ranges;
+
                 this.$emit('new-dates', this.available_date_ranges);
                 this.menu = false;
 

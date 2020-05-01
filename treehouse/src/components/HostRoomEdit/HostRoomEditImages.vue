@@ -67,7 +67,7 @@
         <v-dialog v-model="dialog" max-width="70%">
             <v-card>
 
-                <v-container style="overflow: auto;height:600px;">
+                <v-container style="overflow: auto;max-height:600px; height:auto;">
                     <v-row align="center">
                         <v-col cols="12" sm="12" lg="4" v-for="(image,index) in tmp_images" v-bind:key="index">
                             <v-img :src="image.src" contain style="border-radius: 8px"

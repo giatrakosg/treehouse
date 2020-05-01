@@ -3,14 +3,15 @@
         <l-tile-layer
                 :url="url"
         />
-        <l-marker v-for="(item,index) in coordinates"
-                  :lat-lng="item"
+        <l-marker v-for="(item,index) in rooms"
+                  :lat-lng="item.location"
                   v-bind:key="index"
-                  v-show="loaded"
+                  v-on:click="$root.$emit('scroll-to-room',index)"
 
         >
             <l-icon>
-                <img src="../../assets/treehouse.png" class="highlight" style="width: 45px;" ref="img"/>
+                <img :src="rooms[index].image" class="highlight" style="width: 85px;height:85px;border-radius: 30px"
+                     ref="img"/>
             </l-icon>
 
         </l-marker>
@@ -24,40 +25,43 @@
 
     export default {
         name: "HostRoomsMap",
-        props: ['coordinates'],
+        props: ['rooms'],
         data() {
             return {
                 url: 'http://mt.google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z}',
                 zoom: 10,
                 center: [37.984888, 23.730851],
-                loaded: false
 
 
             };
         },
         watch: {
-            coordinates() {
+            rooms() {
                 let sum = [0, 0];
+                console.log(this.rooms)
 
-                for (let c of this.coordinates) {
-                    sum[0] = sum[0] + c[0];
-                    sum[1] = sum[1] + c[1]
+                for (let c of this.rooms) {
+                    sum[0] = sum[0] + c.location[0];
+                    sum[1] = sum[1] + c.location[1];
                 }
-                this.center = L.latLng(sum[0] / this.coordinates.length, sum[1] / this.coordinates.length)
+                this.center = L.latLng(sum[0] / this.rooms.length, sum[1] / this.rooms.length)
 
             }
         },
         mounted() {
 
+
             this.$root.$on('highlight', (key) => {
 
 
-                this.$refs.img[key].style.width = "65px";
+                this.$refs.img[key].style.width = "95px";
+                this.$refs.img[key].style.height = "95px";
                 console.log(key)
 
             });
             this.$root.$on('default', (key) => {
-                this.$refs.img[key].style.width = "45px";
+                this.$refs.img[key].style.width = "85px";
+                this.$refs.img[key].style.height = "85px";
             })
 
 
@@ -67,7 +71,8 @@
 
 <style scoped>
     .highlight:hover {
-        width: 62px !important;
+        width: 90px !important;
+        height: 90px !important;
         cursor: pointer;
     }
 

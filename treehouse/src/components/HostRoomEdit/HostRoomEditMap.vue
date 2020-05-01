@@ -7,14 +7,18 @@
                     <l-tile-layer
                             :url="url"
                     />
+
+
                     <l-marker
                             :lat-lng="center"
+
                     >
                         <l-icon>
                             <img src="../../assets/treehouse.png" style="width: 45px">
                         </l-icon>
 
                     </l-marker>
+
                 </l-map>
             </v-col>
 
@@ -34,7 +38,8 @@
                 zoom: 13,
 
             };
-        }
+        },
+        watch: {}
     }
 </script>
 

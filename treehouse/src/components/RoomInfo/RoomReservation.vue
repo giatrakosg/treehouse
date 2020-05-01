@@ -30,7 +30,7 @@
 
                         </v-text-field>
                     </template>
-                    <v-date-picker v-model="dates" no-title scrollable range color="blue">
+                    <v-date-picker v-model="dates" no-title scrollable range color="blue" :allowed-dates="allowedDates">
                         <v-spacer></v-spacer>
                         <v-btn text color="blue" @click="menu = false">Cancel</v-btn>
                         <v-btn text color="blue" @click="$refs.menu.save(dates)">OK</v-btn>
@@ -81,6 +81,7 @@
                 add_persons_cost: Number,
                 persons_number: Number,
                 cost_per_day: Number,
+                available_dates: Array
             }
 
         },
@@ -112,6 +113,19 @@
                 return formatted;
 
             },
+            allowedDates(date) {
+                let date_from, date_to;
+
+                for (let a of this.reservation.available_dates) {
+                    date_from = moment(a.date_from).format("YYYY-MM-DD")
+                    date_to = moment(a.date_to).format("YYYY-MM-DD")
+                    if (date >= date_from && date <= date_to) {
+                        return true
+                    }
+
+                }
+                return false
+            }
         },
         computed: {
             computedDateFormatted() {

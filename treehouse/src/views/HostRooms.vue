@@ -11,7 +11,7 @@
                 <HostRoomsList v-bind:rooms="rooms"/>
             </v-col>
             <v-col cols="12" lg="6">
-                <HostRoomsMap v-bind:coordinates="coordinates"/>
+                <HostRoomsMap v-bind:rooms="rooms_loc"/>
             </v-col>
 
         </v-row>
@@ -22,13 +22,14 @@
     import HostRoomsList from "../components/HostRooms/HostRoomsList";
     import HostRoomsMap from "../components/HostRooms/HostRoomsMap";
 
+
     export default {
         name: "HostRooms",
         components: {HostRoomsMap, HostRoomsList},
         data: () => ({
 
             rooms: [],
-            coordinates: [],
+            rooms_loc: [],
             key: 0,
 
 
@@ -48,9 +49,9 @@
 
                 for (let r of result.data) {
 
-                    this.coordinates.push(r.location)
+                    this.rooms_loc.push({location: r.location, image: r.thumbnail})
                 }
-                console.log(this.coordinates)
+                console.log(this.rooms_loc)
 
 
             }).catch(error => console.log(error));

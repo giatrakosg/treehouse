@@ -5,7 +5,7 @@
             <v-col cols="auto">
                 <ValidationProvider v-slot="{ errors }" rules="required">
 
-                    <v-text-field name="alpha_field" label="Title" v-model="room_desc.title" style="width: 400px"
+                    <v-text-field name="alpha_field" label="Room Name" v-model="room_desc.title" style="width: 400px"
                                   :error-messages="errors" v-if="loaded"/>
                 </ValidationProvider>
             </v-col>
@@ -49,7 +49,7 @@
 
     extend('required', {
         ...required,
-        message: 'Title is required '
+        message: ' '
     });
 
     export default {
@@ -132,7 +132,7 @@
                 this.room_desc.cost_per_day = 0;
                 this.room_desc.add_persons_cost = 0;
 
-                this.room_desc.location = [];
+                this.room_desc.location = [37.97945, 23.71622];
                 this.reviews = [];
                 this.rating = 0;
                 this.room_desc.availabilities = [];

@@ -1,7 +1,8 @@
 <template>
 
-    <v-list height="800px" style="overflow: auto;border-radius: 8px;padding-top: 0px" elevation="0" three-line
-            ref="list">
+    <v-list height="800px" style="overflow: auto;border-radius: 8px;padding-top: 0" elevation="0" three-line
+            id="#list"
+    >
 
         <v-card-title style="position: sticky;top: 0;background-color: white;z-index: 1">
 
@@ -24,7 +25,7 @@
         </v-card-title>
         <template v-for="(item,index) in display_rooms">
 
-            <HostRoomsListItem :key="index" :room="item"/>
+            <HostRoomsListItem :key="index" :room="item" :id="'#room'+'_'+index"/>
 
 
         </template>
@@ -34,6 +35,7 @@
 
 <script>
     import HostRoomsListItem from "./HostRoomsListItem";
+
 
     export default {
         name: "HostRoomsList",
@@ -59,6 +61,13 @@
                 }
 
             }
+        },
+        mounted() {
+
+            this.$root.$on('scroll-to-room', (index) => {
+                document.getElementById("#list").scroll(0, index * 232)
+
+            });
         }
 
     }
