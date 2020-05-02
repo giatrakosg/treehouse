@@ -7,9 +7,15 @@ class Image(db.Model):
     source = db.Column(db.String(500))
     room_id = db.Column(db.Integer, db.ForeignKey('room.id'), nullable=False)
 
-    def __init__(self, source, room):
+    def __init__(self, source):
         self.source = source
-        self.room_id = room
+
+    def to_dict(self):
+        r = {
+            'src': self.source
+        }
+
+        return r
 
 
 """///////////////////////////////////////////////////////////"""

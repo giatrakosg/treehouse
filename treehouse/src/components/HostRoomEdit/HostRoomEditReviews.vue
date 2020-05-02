@@ -14,14 +14,14 @@
                           readonly
                           dense
                 ></v-rating>
-                <label style="margin-left: 20px;font-size: 13px;">1000 reviews</label>
+                <label style="margin-left: 20px;font-size: 13px;">({{reviews.length}})</label>
                 <v-spacer/>
 
             </v-card-title>
             <template v-for="(item,index) in reviews">
                 <RoomReview v-bind:key="index"
-                            v-bind:avatar="item.avatar"
-                            v-bind:username="item.username"
+                            avatar="https://cdn.vuetifyjs.com/images/lists/2.jpg"
+                            username="John"
                             v-bind:content="item.description"
                             v-bind:title="item.title"
                             v-bind:rating="item.rating"
@@ -41,66 +41,8 @@
     export default {
         name: "HostRoomEditReviews",
         components: {RoomReview},
-        data: () => ({
-            reviews: [
-
-                {
-                    username: 'John',
-                    avatar: require('../../assets/anonymous_user_96.png'),
-                    rating: 4,
-                    title: 'Brunch this weekend?',
-                    description: " I'll be in your neighborhood doing errands this weekend. Do you want to hang out?",
-                },
-
-                {
-                    username: 'John',
-                    rating: 4,
-                    avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-                    title: 'Summer BBQ',
-                    description: "  Wish I could come, but I'm out of town this weekend.",
-                },
-                {
-                    username: 'John',
-                    rating: 4,
-                    avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-                    title: 'Brunch this weekend?',
-                    description: "I'll be in your neighborhood doing errands this weekend. Do you want to hang out?",
-                },
-
-                {
-                    username: 'John',
-                    rating: 4,
-                    avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-                    title: 'Summer BBQ ',
-                    description: " Wish I could come, but I'm out of town this weekend.",
-                },
-
-                {
-                    username: 'John',
-                    rating: 4,
-                    avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-                    title: 'Oui oui',
-                    description: "Do you have Paris recommendations? Have you ever been?",
-                },
-
-                {
-                    username: 'John',
-                    rating: 4,
-                    avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg',
-                    title: 'Birthday gift',
-                    description: "Have any ideas about what we should get Heidi for her birthday?",
-                },
-
-                {
-                    username: 'John',
-                    rating: 4,
-                    avatar: 'https://cdn.vuetifyjs.com/images/lists/5.jpg',
-                    title: 'Recipe to try',
-                    description: " We should eat this: Grate, Squash, Corn, and tomatillo Tacos.",
-                },
-            ],
-            rating: 5,
-        })
+        props: ['reviews', 'rating'],
+        data: () => ({})
     }
 </script>
 

@@ -3,18 +3,21 @@
     <v-card elevation="0"
             min-width="190px"
             max-width="400px"
-            :to="{name:'RoomInfo',params:{room_id:id}}"
+            :to="{name:'RoomInfo',params:{room_title:title}}"
             v-ripple=false
-            @click="gotoRoom"
     >
-        <v-img
-                :src="image_src"
-                height="300px"
-                style="border-radius: 8px"
+        <v-img v-if="image_src!==''"
+               :src="image_src"
+               height="300px"
+               style="border-radius: 8px"
 
-        >
+        />
+        <v-img v-else
+               :src="require('../../assets/empty_thumbnail.png')"
+               height="300px"
+               style="border-radius: 8px"
 
-        </v-img>
+        />
         <v-card-title style="height: 60px;font-size: 17px">
             <label>{{title}} </label>
         </v-card-title>
@@ -83,10 +86,7 @@
             rating: Number
         },
         methods: {
-            gotoRoom() {
 
-
-            }
         }
 
 

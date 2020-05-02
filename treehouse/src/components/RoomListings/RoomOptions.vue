@@ -31,6 +31,19 @@
                     </v-date-picker>
                 </v-menu>
 
+
+            </v-col>
+            <v-col cols="auto">
+
+
+                <places
+                        v-model="form.country.label"
+                        placeholder="Location"
+                        @change="val => { form.country.data = val }"
+                        :options="options">
+                </places>
+
+
             </v-col>
             <v-col cols="auto">
                 <v-text-field
@@ -58,7 +71,10 @@
                           dense
                           label="Room Type"
                           style="height: 40px;width: 180px"
-                          :prepend-icon="icon"
+                          :prepend-icon="filters.type === 'private room' ? 'mdi-account'
+                                        : filters.type === 'shared room' ? 'mdi-account-multiple'
+                                        : filters.type === 'house' ? 'mdi-home'
+                                        : '' "
                           item-value="value"
                           item-text="text"
 
@@ -182,10 +198,12 @@
 </template>
 
 <script>
+    import Places from 'vue-places';
 
     export default {
         name: "RoomOptions",
-        props: ['init_dates'],
+        components: {Places},
+        props: ['init_dates', 'location_placeholder'],
         data: function () {
             return {
                 menu: false,
@@ -217,24 +235,26 @@
                 dates: this.init_dates,
 
 
-                dates_changed: false
+                dates_changed: false,
+
+                options: {
+                    appId: 'plBU33AXJV5Y',
+                    apiKey: '357dc78dcc889cdaecd7c7ad22d69b5d',
+                    countries: ['GR'],
+                },
+                form: {
+                    country: {
+                        label: null,
+                        data: {},
+                    },
+                },
 
 
             }
 
         },
         watch: {
-            type: function (new_value) {
 
-                if (new_value === 'private room') {
-                    this.icon = 'mdi-account';
-                } else if (new_value === 'shared room') {
-                    this.icon = 'mdi-account-multiple';
-                } else if (new_value === 'house') {
-                    this.icon = 'mdi-home';
-                }
-                this.filters.selected_type = this.type;
-            },
             order_by: function (order) {
                 this.$emit('order-by', order);
             },
@@ -294,8 +314,6 @@
 </script>
 
 <style scoped>
-    .faded {
-        opacity: ;
-    }
+
 
 </style>

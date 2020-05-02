@@ -1,23 +1,41 @@
 <template>
-    <v-container class="grid-list-lg" >
-        <v-layout >
+    <v-container class="grid-list-lg">
+        <div v-if="!loaded"></div>
+        <v-layout v-else>
             <v-flex class="d-inline-flex ">
-                <v-img style="border-radius: 8px 0px 0px 8px" class="fade" @click="dialog=true" width="500px"
-                       src="https://cdn.vuetifyjs.com/images/cards/docks.jpg">
+                <v-img v-if="images[0]===undefined || images[0]===null" style="border-radius: 8px 8px 0 0" class="fade"
+                       @click="openAllImages(0)"
+                       width="490px"
+                       height="450px"
+                       :src="require('../../assets/empty_thumbnail.png')">
+                </v-img>
+                <v-img v-else style="border-radius: 8px 0 0 8px" class="fade" @click="openAllImages(0)" width="490px"
+                       height="450px"
+                       :src="images[0].src">
                 </v-img>
             </v-flex>
             <v-flex>
                 <v-layout>
                     <v-flex class="hidden-sm-and-down">
-                        <v-img class="fade" @click="dialog=true" width="260px"
-                               src="https://cdn.vuetifyjs.com/images/cards/docks.jpg">
+                        <v-img v-if="images[0]===undefined || images[0]===null" style="border-radius: 8px 8px 0 0"
+                               class="fade" @click="openAllImages(0)"
+                               width="245px" height="217px"
+                               :src="require('../../assets/empty_thumbnail.png')">
+                        </v-img>
+                        <v-img v-else class="fade" @click="openAllImages(1)" width="245px" height="217px"
+                               :src="images[1].src">
                         </v-img>
                     </v-flex>
                 </v-layout>
                 <v-layout>
                     <v-flex class="hidden-sm-and-down">
-                        <v-img class="fade" @click="dialog=true" width="260px"
-                               src="https://cdn.vuetifyjs.com/images/cards/docks.jpg">
+                        <v-img v-if="images[0]===undefined || images[0]===null" style="border-radius: 8px 8px 0 0"
+                               class="fade" @click="openAllImages(0)"
+                               width="245px" height="217px"
+                               :src="require('../../assets/empty_thumbnail.png')">
+                        </v-img>
+                        <v-img v-else class="fade" @click="openAllImages(2)" width="245px" height="217px"
+                               :src="images[2].src">
                         </v-img>
                     </v-flex>
                 </v-layout>
@@ -25,15 +43,27 @@
             <v-flex>
                 <v-layout>
                     <v-flex class="hidden-sm-and-down">
-                        <v-img class="fade" @click="dialog=true" width="260px" style="border-radius: 0px 8px 0px 0px"
-                               src="https://cdn.vuetifyjs.com/images/cards/docks.jpg">
+                        <v-img v-if="images[0]===undefined || images[0]===null" style="border-radius: 8px 8px 0 0"
+                               class="fade" @click="openAllImages(0)"
+                               width="245px" height="217px"
+                               :src="require('../../assets/empty_thumbnail.png')">
+                        </v-img>
+                        <v-img v-else class="fade" @click="openAllImages(3)" width="245px" height="217px"
+                               style="border-radius: 0 8px 0 0"
+                               :src="images[3].src">
                         </v-img>
                     </v-flex>
                 </v-layout>
                 <v-layout>
                     <v-flex class="hidden-sm-and-down">
-                        <v-img class="fade" @click="dialog=true" width="260px" style="border-radius: 0px 0px 8px 0px"
-                               src="https://cdn.vuetifyjs.com/images/cards/docks.jpg">
+                        <v-img v-if="images[0]===undefined || images[0]===null" style="border-radius: 8px 8px 0 0"
+                               class="fade" @click="openAllImages(0)"
+                               width="245px" height="217px"
+                               :src="require('../../assets/empty_thumbnail.png')">
+                        </v-img>
+                        <v-img v-else class="fade" @click="openAllImages(4)" width="245px" height="217px"
+                               style="border-radius: 0 0 8px 0"
+                               :src="images[4].src">
                         </v-img>
                     </v-flex>
                 </v-layout>
@@ -43,7 +73,7 @@
             <v-card>
                 <v-carousel v-model="first_image">
                     <v-carousel-item
-                            v-for="(item,i) in items"
+                            v-for="(item,i) in images"
                             :key="i"
                             :src="item.src"
 
@@ -63,29 +93,24 @@
 <script>
     export default {
         name: "RoomImages",
+        props: ['images'],
         data: function () {
             return {
                 dialog: false,
                 first_image: 3,
-                items: [
-                    {
-                        src: 'https://cdn.vuetifyjs.com/images/carousel/squirrel.jpg',
-                    },
-                    {
-                        src: 'https://cdn.vuetifyjs.com/images/carousel/sky.jpg',
-                    },
-                    {
-                        src: 'https://cdn.vuetifyjs.com/images/carousel/bird.jpg',
-                    },
-                    {
-                        src: 'https://cdn.vuetifyjs.com/images/carousel/planet.jpg',
-                    },
-                ]
+                loaded: false
+
+            }
+        },
+        watch: {
+            images() {
+                this.loaded = true;
             }
         },
         methods: {
-            ShowAlert() {
+            openAllImages(index) {
                 this.dialog = true;
+                this.first_image = index;
             }
         }
     }
