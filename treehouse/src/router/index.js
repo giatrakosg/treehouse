@@ -34,7 +34,7 @@ const routes = [
   component: RoomListings
   },
   {
-      path: '/room/:room_id',
+      path: '/room/:room_title',
       name: 'RoomInfo',
       component: RoomInfo
   },
@@ -44,9 +44,9 @@ const routes = [
     component: HostRooms
   },
   {
-    path: '/hostroomedit',
-    name: 'HostRoomEdit',
-    component: HostRoomEdit
+      path: '/hostrooms/:room_title',
+      name: 'HostRoomEdit',
+      component: HostRoomEdit
   } ,
   {
       path : '/success' ,

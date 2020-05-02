@@ -1,41 +1,65 @@
 <template>
     <v-container>
+
         <v-row justify="center">
-              <h1 style="text-align: center">My Rooms</h1>
+            <h1 style="text-align: center">My Rooms</h1>
         </v-row>
 
-    <v-divider/>
-        <v-row >
-            <v-col  cols="12"  lg="6">
+        <v-divider/>
+        <v-row>
+            <v-col cols="12" lg="6">
                 <HostRoomsList v-bind:rooms="rooms"/>
             </v-col>
-            <v-col  cols="12"  lg="6">
-                <HostRoomsMap v-bind:coordinates="rooms"/>
+            <v-col cols="12" lg="6">
+                <HostRoomsMap v-bind:rooms="rooms_loc"/>
             </v-col>
 
         </v-row>
-        </v-container>
+    </v-container>
 </template>
 
 <script>
     import HostRoomsList from "../components/HostRooms/HostRoomsList";
     import HostRoomsMap from "../components/HostRooms/HostRoomsMap";
+
+
     export default {
         name: "HostRooms",
         components: {HostRoomsMap, HostRoomsList},
-        data:()=>({
+        data: () => ({
 
-            rooms:[
-                    [37.942907, 23.740806],
-                    [37.945411, 23.735581],
-                    [37.947575, 23.736627],
-                    [37.956644, 23.734336],
-                    [37.968875, 23.732418],
-                    [37.975760, 23.731731],
-                    [38.024167, 23.691184]
-                ],
+            rooms: [],
+            rooms_loc: [],
+            key: 0,
 
-        })
+
+        }),
+        created() {
+
+            let url = 'http://127.0.0.1:5000/rooms/host';
+
+            this.$http.get(url, {
+                params: {
+                    'host_id': 0
+                }
+
+            }).then((result) => {
+                this.rooms = result.data;
+                console.log(this.rooms);
+
+                for (let r of result.data) {
+
+                    this.rooms_loc.push({location: r.location, image: r.thumbnail})
+                }
+                console.log(this.rooms_loc)
+
+
+            }).catch(error => console.log(error));
+
+
+        }
+
+
     }
 </script>
 
