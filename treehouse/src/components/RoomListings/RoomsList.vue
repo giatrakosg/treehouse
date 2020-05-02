@@ -26,6 +26,7 @@
                               v-bind:cost_per_day="rooms[(page-1)*12+item-1].cost_per_day"
                               v-bind:image_src="rooms[(page-1)*12+item-1].image_src"
                               v-bind:id="rooms[(page-1)*12+item-1].id"
+                              v-bind:reviews_number="rooms[(page-1)*12+item-1].reviews_num"
                     />
                 </v-col>
             </v-row>

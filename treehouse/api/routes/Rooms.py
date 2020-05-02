@@ -3,13 +3,13 @@ from database import db
 
 from models.Room import Room, RoomTypes
 from models.Image import Image
-from models.Availability import Availability
+from models.Reservation import Reservation
 from models.Review import Review
 
 import json
 import random
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 import string
 
 rooms_blueprint = Blueprint('rooms', __name__)
@@ -50,27 +50,6 @@ def get_host_rooms():
     return jsonify(host_rooms_dict)
 
 
-@rooms_blueprint.route("/rooms", methods=['GET'])
-def get_rooms():
-    # get_random_data()
-
-    rooms_dict = []
-
-    d_from = request.args.get('date_from')
-    d_to = request.args.get('date_to')
-
-    datetime_from = datetime.strptime(d_from, '%Y-%m-%d')
-    datetime_to = datetime.strptime(d_to, '%Y-%m-%d')
-
-    room_ids = Availability.query.with_entities(Availability.room_id).filter(Availability.date_from >= datetime_from,
-                                                                             Availability.date_to <= datetime_to).distinct().all()
-    for room_id in room_ids:
-        room = Room.query.filter_by(id=room_id[0]).first()
-        rooms_dict.append(room.to_dict_short())
-
-    return jsonify(rooms_dict)
-
-
 @rooms_blueprint.route("/rooms/<string:room_title>", methods=['GET', 'POST', 'DELETE'])
 def get_room(room_title):
     room = Room.query.filter_by(title=room_title).first()
@@ -106,11 +85,51 @@ def get_room(room_title):
         return jsonify({'message': 'SUCCESS'})
 
 
+@rooms_blueprint.route("/rooms", methods=['GET'])
+def get_rooms():
+    # get_random_data()
+
+    rooms_dict = []
+
+    d_from = request.args.get('date_from')
+    d_to = request.args.get('date_to')
+    datetime_from = datetime.strptime(d_from, '%Y-%m-%d')
+    datetime_to = datetime.strptime(d_to, '%Y-%m-%d')
+
+    location = [float(request.args.get('lat')), float(request.args.get('long'))]
+
+    location_rooms = search_rooms_in_area(location)
+
+    if len(location_rooms):
+
+        for room in location_rooms:
+            flag = False
+            for r in room.reservations:
+
+                if r.date_from > datetime_to:
+                    print(str(r.date_from) + ' ' + str(r.date_to))
+                    flag = True
+            if flag:
+                rooms_dict.append(room.to_dict_short())
+
+    return jsonify(rooms_dict)
+
+
+def search_rooms_in_area(location):
+    radius = 0.3
+    bounds_1 = [location[0] + radius, location[1] + radius]
+    bounds_2 = [location[0] - radius, location[1] - radius]
+
+    close_rooms = Room.query.filter(
+        (bounds_2[0] <= Room.lat_coordinate) & (Room.lat_coordinate <= bounds_1[0]),
+        (bounds_2[1] <= Room.long_coordinate) & (Room.long_coordinate <= bounds_1[1])).all()
+
+    return close_rooms
+
+
 @rooms_blueprint.route("/rooms/<string:room_title>/new_review", methods=['POST'])
 def new_review(room_title):
     data = request.get_json()
-    print(data)
-    print(room_title)
 
     room = Room.query.filter_by(title=room_title).first()
     if room is None:
@@ -132,31 +151,25 @@ def get_random_data():
                     bool(random.getrandbits(1)), bool(random.getrandbits(1)), bool(random.getrandbits(1)),
                     bool(random.getrandbits(1)), bool(random.getrandbits(1)), bool(random.getrandbits(1)),
                     bool(random.getrandbits(1)), bool(random.getrandbits(1)), bool(random.getrandbits(1)),
-                    random.uniform(37.0839412, 38.9839412), random.uniform(23.7283052, 24.7283052),
+                    37.9754983 + random.uniform(-1, 1), 23.7356671 + random.uniform(-1, 1),
                     "address", "info", random.randint(1, 5), random.randint(23, 300), random.uniform(10, 70),
                     random_sentence(3), random.randint(6, 20), random.randint(1, 3))
         for y in range(10):
             room.images.append(Image('https://picsum.photos/id/' + str(i * 10 + y) + '/400/400'))
             room.reviews.append(Review(random.uniform(1, 5), random_sentence(3), random_sentence(10), 0))
 
-        for x in range(10):
-            date_from = random_date('1/1/2020', '3/12/2020', '%d/%m/%Y', random.random())
-            date_to = random_date(date_from, '3/12/2020', '%d/%m/%Y', random.random())
+        start_date = datetime.strptime('1/1/2020', '%d/%m/%Y')
 
-            room.availabilities.append(Availability(datetime.strptime(date_from, '%d/%m/%Y'),
-                                                    datetime.strptime(date_to, '%d/%m/%Y')))
+        for x in range(10):
+            next_date = start_date + timedelta(days=random.randint(2, 30))
+
+            room.reservations.append(Reservation(start_date, next_date))
+
+            start_date = next_date + timedelta(days=random.randint(20, 40))
 
         db.session.add(room)
 
     db.session.commit()
-
-
-def random_date(start, end, date_format, prop):
-    stime = time.mktime(time.strptime(start, date_format))
-    etime = time.mktime(time.strptime(end, date_format))
-
-    ptime = stime + prop * (etime - stime)
-    return time.strftime(date_format, time.localtime(ptime))
 
 
 def random_sentence(words_number):

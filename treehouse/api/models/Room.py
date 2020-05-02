@@ -3,7 +3,7 @@ from enum import Enum
 from sqlalchemy.ext.hybrid import hybrid_property
 from datetime import datetime
 
-from models.Availability import Availability
+from models.Reservation import Reservation
 from models.Image import Image
 from models.Review import Review
 
@@ -50,7 +50,7 @@ class Room(db.Model):
 
     reviews = db.relationship('Review', backref='room', lazy=True)
 
-    availabilities = db.relationship('Availability', backref='room', lazy=True)
+    reservations = db.relationship('Reservation', backref='room', lazy=True)
 
     @hybrid_property
     def rating(self):
@@ -142,11 +142,11 @@ class Room(db.Model):
 
         }
 
-        available_dates = []
-        for date_range in self.availabilities:
-            available_dates.append(date_range.to_dict())
+        reservations = []
+        for date_range in self.reservations:
+            reservations.append(date_range.to_dict())
 
-        r['availabilities'] = available_dates
+        r['reservations'] = reservations
         return r
 
     def to_dict_host_short(self):
@@ -181,12 +181,6 @@ class Room(db.Model):
              'rating': self.rating,
              'cost_per_day': self.standard_cost,
              'reviews_num': len(self.reviews)}
-
-        available_dates = []
-        for date_range in self.availabilities:
-            available_dates.append(date_range.to_dict())
-
-        r['availabilities'] = available_dates
 
         if len(self.images) == 0:
             r['image_src'] = ''
@@ -225,16 +219,16 @@ class Room(db.Model):
         self.area = data['area']
         self.min_stay = data['min_stay']
 
-        availabilities = data['availabilities']
+        reservations = data['reservations']
 
-        for a in self.availabilities:
+        for a in self.reservations:
             db.session.delete(a)
 
-        for a in availabilities:
+        for a in reservations:
             d_from = datetime.strptime(a['date_from'], '%Y-%m-%d')
             d_to = datetime.strptime(a['date_to'], '%Y-%m-%d')
 
-            self.availabilities.append(Availability(d_from, d_to))
+            self.reservations.append(Reservation(d_from, d_to))
 
         db.session.commit()
 
