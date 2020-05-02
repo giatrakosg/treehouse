@@ -1,12 +1,9 @@
 <template lang="html">
-    <v-layout row>
-        <v-flex sm1 md1 lg1>
-            <v-spacer></v-spacer>
-        </v-flex>
-        <v-flex sm10 md10 lg10 >
+    <v-row>
+        <v-col>
             <ProfileInfoCard />
-        </v-flex>
-    </v-layout>
+        </v-col>
+    </v-row>
 
 </template>
 
