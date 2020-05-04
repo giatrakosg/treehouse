@@ -1,9 +1,20 @@
 <template lang="html">
   <div class="">
         <v-card
+         class="ma-5"
         >
+            <v-toolbar
+              color="primary"
+              dark
+            >
+              <v-app-bar-nav-icon></v-app-bar-nav-icon>
+
+              <v-toolbar-title>Users</v-toolbar-title>
+
+              <v-spacer></v-spacer>
+            </v-toolbar>
+
           <v-list subheader>
-            <v-subheader>Recent chat</v-subheader>
 
             <v-list-item
               v-for="item in items"
@@ -21,26 +32,6 @@
               <v-list-item-icon>
                 <v-icon :color="item.active ? 'deep-purple accent-4' : 'grey'">mdi-message</v-icon>
               </v-list-item-icon>
-            </v-list-item>
-          </v-list>
-
-          <v-divider></v-divider>
-
-          <v-list subheader>
-            <v-subheader>Previous chats</v-subheader>
-
-            <v-list-item
-              v-for="item in items2"
-              :key="item.title"
-
-            >
-              <v-list-item-avatar>
-                <v-img :src="item.avatar"></v-img>
-              </v-list-item-avatar>
-
-              <v-list-item-content>
-                <v-list-item-title v-text="item.title"></v-list-item-title>
-              </v-list-item-content>
             </v-list-item>
           </v-list>
         </v-card>
