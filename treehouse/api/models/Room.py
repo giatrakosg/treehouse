@@ -3,7 +3,7 @@ from enum import Enum
 from sqlalchemy.ext.hybrid import hybrid_property
 from datetime import datetime
 
-from models.Reservation import Reservation
+from models.Reservation import Reservation, Status
 from models.Image import Image
 from models.Review import Review
 
@@ -222,13 +222,18 @@ class Room(db.Model):
         reservations = data['reservations']
 
         for a in self.reservations:
-            db.session.delete(a)
+            if a.status == Status.not_available:
+                db.session.delete(a)
 
         for a in reservations:
             d_from = datetime.strptime(a['date_from'], '%Y-%m-%d')
-            d_to = datetime.strptime(a['date_to'], '%Y-%m-%d')
+            if a['date_to'] is None:
+                d_to = None
+            else:
+                d_to = datetime.strptime(a['date_to'], '%Y-%m-%d')
+            status = Status.not_available
 
-            self.reservations.append(Reservation(d_from, d_to))
+            self.reservations.append(Reservation(d_from, d_to, status))
 
         db.session.commit()
 

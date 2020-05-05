@@ -10,6 +10,7 @@
                         transition="scale-transition"
                         offset-y
                         min-width="290px"
+
                 >
                     <template v-slot:activator="{ on }">
 
@@ -24,7 +25,7 @@
 
                         </v-text-field>
                     </template>
-                    <v-date-picker v-model="dates" no-title scrollable range color="primary">
+                    <v-date-picker v-model="dates" :min="nowDate" no-title scrollable range color="primary">
                         <v-spacer></v-spacer>
                         <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
                         <v-btn text color="primary" @click="newDates">OK</v-btn>
@@ -38,8 +39,9 @@
 
                 <places
                         placeholder="Location"
+                        v-model="place.label"
                         @change=" updateLatLong($event)"
-                        :options="location.options"
+                        :options="places_options"
                 >
                 </places>
 
@@ -203,7 +205,7 @@
     export default {
         name: "RoomOptions",
         components: {Places},
-        props: ['init_dates'],
+        props: ['init_dates', 'init_place'],
         data: function () {
             return {
                 menu: false,
@@ -238,20 +240,22 @@
                 dates_changed: false,
                 location_changed: false,
 
-                location: {
-                    options: {
-                        appId: 'plBU33AXJV5Y',
-                        apiKey: '357dc78dcc889cdaecd7c7ad22d69b5d',
-                        countries: ['GR'],
-                    },
-                    latlng: {}
-                }
+                places_options: {
+                    appId: 'plBU33AXJV5Y',
+                    apiKey: '357dc78dcc889cdaecd7c7ad22d69b5d',
+                    countries: ['GR'],
+                },
+
+                place: this.init_place,
+
+                nowDate: new Date().toISOString().slice(0, 10),
 
 
             }
 
         },
         watch: {
+
 
             order_by: function (order) {
                 this.$emit('order-by', order);
@@ -272,9 +276,13 @@
             },
         },
         methods: {
+
             updateLatLong(suggestion) {
-                if (this.location.latlng !== suggestion.latlng) {
-                    this.location.latlng = suggestion.latlng
+
+                console.log(this.place)
+
+                if (this.place.latlng !== suggestion.latlng) {
+                    this.place.latlng = suggestion.latlng
                     this.location_changed = true
                 }
 
@@ -298,9 +306,9 @@
             },
             applyFilters() {
                 if (this.dates_changed || this.location_changed) {
-                    console.log(this.location.latlng.lng)
+                    console.log(this.place.latlng.lng)
 
-                    this.$emit('new-rooms', [this.dates, [this.location.latlng.lat, this.location.latlng.lng], this.filters]);
+                    this.$emit('new-rooms', [this.dates, this.place.latlng, this.filters]);
 
                     this.dates_changed = false;
                     this.location_changed = false;
