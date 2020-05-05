@@ -4,7 +4,7 @@
             <v-col>
                 <RoomOptions v-on:apply-filters="applyFilters($event)"
                              v-on:order-by="orderBy($event)"
-                             v-on:new-dates="newDates($event)"
+                             v-on:new-rooms="newRoom($event)"
                              v-bind:init_dates="dates"/>
             </v-col>
         </v-row>
@@ -32,24 +32,29 @@
             filtered_rooms: [],
 
             dates: ["2020-1-2", "2020-10-30"],
+            location: [37.9754983, 23.7356671],
 
             empty: false,
         }),
         created() {
-            this.getRooms(this.dates, null);
+            this.getRooms(this.dates, this.location, null);
         },
 
         methods: {
-            newDates(event) {
-                this.getRooms(event[0], event[1]);
+            newRoom(event) {
+                console.log(event)
+                this.getRooms(event[0], event[1], event[2]);
             },
 
-            getRooms(dates, filters) {
+            getRooms(dates, location, filters) {
+
 
                 this.$http.get('http://127.0.0.1:5000/rooms', {
                     params: {
                         'date_from': dates[0],
                         'date_to': dates[1],
+                        'lat': location[0],
+                        'long': location[1]
                     }
                 })
                     .then((result) => {

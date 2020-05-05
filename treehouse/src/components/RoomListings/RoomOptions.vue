@@ -37,10 +37,10 @@
 
 
                 <places
-                        v-model="form.country.label"
                         placeholder="Location"
-                        @change="val => { form.country.data = val }"
-                        :options="options">
+                        @change=" updateLatLong($event)"
+                        :options="location.options"
+                >
                 </places>
 
 
@@ -203,7 +203,7 @@
     export default {
         name: "RoomOptions",
         components: {Places},
-        props: ['init_dates', 'location_placeholder'],
+        props: ['init_dates'],
         data: function () {
             return {
                 menu: false,
@@ -236,18 +236,16 @@
 
 
                 dates_changed: false,
+                location_changed: false,
 
-                options: {
-                    appId: 'plBU33AXJV5Y',
-                    apiKey: '357dc78dcc889cdaecd7c7ad22d69b5d',
-                    countries: ['GR'],
-                },
-                form: {
-                    country: {
-                        label: null,
-                        data: {},
+                location: {
+                    options: {
+                        appId: 'plBU33AXJV5Y',
+                        apiKey: '357dc78dcc889cdaecd7c7ad22d69b5d',
+                        countries: ['GR'],
                     },
-                },
+                    latlng: {}
+                }
 
 
             }
@@ -264,7 +262,7 @@
             computedDateFormatted() {
 
                 let formatted = this.formatDate(this.dates);
-                if (formatted === null) return '';
+                if (formatted === null || formatted === undefined) return '';
 
                 if (formatted[1] < formatted[0]) {
                     return `${formatted[1]} - ${formatted[0]}`
@@ -274,6 +272,13 @@
             },
         },
         methods: {
+            updateLatLong(suggestion) {
+                if (this.location.latlng !== suggestion.latlng) {
+                    this.location.latlng = suggestion.latlng
+                    this.location_changed = true
+                }
+
+            },
 
             formatDate(dates) {
                 let formatted = [];
@@ -292,10 +297,13 @@
 
             },
             applyFilters() {
-                if (this.dates_changed) {
-                    this.$emit('new-dates', [this.dates, this.filters]);
+                if (this.dates_changed || this.location_changed) {
+                    console.log(this.location.latlng.lng)
+
+                    this.$emit('new-rooms', [this.dates, [this.location.latlng.lat, this.location.latlng.lng], this.filters]);
 
                     this.dates_changed = false;
+                    this.location_changed = false;
                     return;
                 }
 

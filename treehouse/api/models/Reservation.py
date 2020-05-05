@@ -3,10 +3,12 @@ from database import db
 """////////  AVAILABILITY   ///////////////////               """
 
 
-class Availability(db.Model):
+class Reservation(db.Model):
+    # add user_id
+
     id = db.Column(db.Integer, primary_key=True)
     date_from = db.Column(db.DateTime, nullable=False)
-    date_to = db.Column(db.DateTime, nullable=False)
+    date_to = db.Column(db.DateTime)
     room_id = db.Column(db.Integer, db.ForeignKey('room.id'), nullable=False)
 
     def __init__(self, date_from, date_to):
