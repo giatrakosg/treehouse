@@ -30,7 +30,8 @@
               </v-list-item-content>
 
               <v-list-item-icon>
-                <v-icon :color="item.active ? 'deep-purple accent-4' : 'grey'">mdi-message</v-icon>
+                <v-icon :color="green"> mdi-check </v-icon>
+                <v-icon> mdi-delete </v-icon>
               </v-list-item-icon>
             </v-list-item>
           </v-list>
