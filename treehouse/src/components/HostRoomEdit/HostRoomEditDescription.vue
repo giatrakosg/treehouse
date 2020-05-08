@@ -272,8 +272,10 @@
                         </v-row>
                         <v-row dense>
                             <v-col cols="auto">
+
                                 <HostRoomEditCalendar v-on:new-dates="saveDates"
-                                                      :available_date_ranges="room_desc.availabilities"/>
+                                                      :reservation_date_ranges="room_desc.reservations"/>
+
                             </v-col>
                             <v-col cols="auto">
                                 <ValidationProvider v-slot="{ errors }" rules="required">
@@ -413,7 +415,8 @@
 
             },
             saveDates(dates) {
-                this.room_desc.availabilities = dates;
+
+                this.room_desc.reservations = dates;
 
 
             },

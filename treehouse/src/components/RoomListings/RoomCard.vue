@@ -29,7 +29,7 @@
                       readonly
                       small
             ></v-rating>
-            <label style="margin-left: 20px;font-size: 13px">(1000 reviews)</label>
+            <label style="margin-left: 20px;font-size: 13px">({{reviews_number}})</label>
         </v-card-subtitle>
 
         <v-card-text>
@@ -83,7 +83,8 @@
             cost_per_day: Number,
             image_src: String,
             title: String,
-            rating: Number
+            rating: Number,
+            reviews_number: Number
         },
         methods: {
 

@@ -5,7 +5,7 @@ import markdown
 from database import *
 from flask_cors import CORS
 
-from models.Availability import Availability
+from models.Reservation import Reservation
 from models.Image import Image
 from models.Room import Room
 from models.User import User

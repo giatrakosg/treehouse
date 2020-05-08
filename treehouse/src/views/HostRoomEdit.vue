@@ -90,7 +90,7 @@
                 transport_info: String,
                 add_persons_cost: Number,
                 cost_per_day: Number,
-                availabilities: Array,
+                reservations: Array,
                 location: []
 
 
@@ -135,7 +135,7 @@
                 this.room_desc.location = [37.97945, 23.71622];
                 this.reviews = [];
                 this.rating = 0;
-                this.room_desc.availabilities = [];
+                this.room_desc.reservations = [];
 
 
                 this.loaded = true;
@@ -175,15 +175,25 @@
 
                     let formatted_dates = [];
 
-                    for (let a of result.data.availabilities) {
-                        formatted_dates.push({
-                            date_from: moment(a.date_from).format('YYYY-MM-DD'),
-                            date_to: moment(a.date_to).format('YYYY-MM-DD')
-                        });
+                    for (let a of result.data.reservations) {
+                        if (a.status === 0) {
+                            if (a.date_to === null) {
+                                formatted_dates.push({
+                                    date_from: moment(a.date_from).format('YYYY-MM-DD'),
+                                    date_to: null
+                                });
+                            } else {
+                                formatted_dates.push({
+                                    date_from: moment(a.date_from).format('YYYY-MM-DD'),
+                                    date_to: moment(a.date_to).format('YYYY-MM-DD')
+                                });
+                            }
+
+                        }
 
                     }
 
-                    this.room_desc.availabilities = formatted_dates;
+                    this.room_desc.reservations = formatted_dates;
 
 
                     console.log(result.data);

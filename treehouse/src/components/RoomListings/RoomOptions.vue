@@ -10,6 +10,7 @@
                         transition="scale-transition"
                         offset-y
                         min-width="290px"
+
                 >
                     <template v-slot:activator="{ on }">
 
@@ -24,7 +25,7 @@
 
                         </v-text-field>
                     </template>
-                    <v-date-picker v-model="dates" no-title scrollable range color="primary">
+                    <v-date-picker v-model="dates" :min="nowDate" no-title scrollable range color="primary">
                         <v-spacer></v-spacer>
                         <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
                         <v-btn text color="primary" @click="newDates">OK</v-btn>
@@ -37,10 +38,11 @@
 
 
                 <places
-                        v-model="form.country.label"
                         placeholder="Location"
-                        @change="val => { form.country.data = val }"
-                        :options="options">
+                        v-model="place.label"
+                        @change=" updateLatLong($event)"
+                        :options="places_options"
+                >
                 </places>
 
 
@@ -203,7 +205,7 @@
     export default {
         name: "RoomOptions",
         components: {Places},
-        props: ['init_dates', 'location_placeholder'],
+        props: ['init_dates', 'init_place'],
         data: function () {
             return {
                 menu: false,
@@ -236,24 +238,24 @@
 
 
                 dates_changed: false,
+                location_changed: false,
 
-                options: {
+                places_options: {
                     appId: 'plBU33AXJV5Y',
                     apiKey: '357dc78dcc889cdaecd7c7ad22d69b5d',
                     countries: ['GR'],
                 },
-                form: {
-                    country: {
-                        label: null,
-                        data: {},
-                    },
-                },
+
+                place: this.init_place,
+
+                nowDate: new Date().toISOString().slice(0, 10),
 
 
             }
 
         },
         watch: {
+
 
             order_by: function (order) {
                 this.$emit('order-by', order);
@@ -264,7 +266,7 @@
             computedDateFormatted() {
 
                 let formatted = this.formatDate(this.dates);
-                if (formatted === null) return '';
+                if (formatted === null || formatted === undefined) return '';
 
                 if (formatted[1] < formatted[0]) {
                     return `${formatted[1]} - ${formatted[0]}`
@@ -274,6 +276,17 @@
             },
         },
         methods: {
+
+            updateLatLong(suggestion) {
+
+                console.log(this.place)
+
+                if (this.place.latlng !== suggestion.latlng) {
+                    this.place.latlng = suggestion.latlng
+                    this.location_changed = true
+                }
+
+            },
 
             formatDate(dates) {
                 let formatted = [];
@@ -292,10 +305,13 @@
 
             },
             applyFilters() {
-                if (this.dates_changed) {
-                    this.$emit('new-dates', [this.dates, this.filters]);
+                if (this.dates_changed || this.location_changed) {
+                    console.log(this.place.latlng.lng)
+
+                    this.$emit('new-rooms', [this.dates, this.place.latlng, this.filters]);
 
                     this.dates_changed = false;
+                    this.location_changed = false;
                     return;
                 }
 
