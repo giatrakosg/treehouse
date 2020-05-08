@@ -3,7 +3,7 @@ from database import db
 
 from models.Room import Room, RoomTypes
 from models.Image import Image
-from models.Reservation import Reservation
+from models.Reservation import Reservation, Status
 from models.Review import Review
 
 import json
@@ -158,14 +158,17 @@ def get_random_data():
             room.images.append(Image('https://picsum.photos/id/' + str(i * 10 + y) + '/400/400'))
             room.reviews.append(Review(random.uniform(1, 5), random_sentence(3), random_sentence(10), 0))
 
-        start_date = datetime.strptime('1/1/2020', '%d/%m/%Y')
+        start_date = datetime.now()
 
         for x in range(10):
             next_date = start_date + timedelta(days=random.randint(2, 30))
 
-            room.reservations.append(Reservation(start_date, next_date))
+            room.reservations.append(Reservation(start_date, next_date, Status.rented))
 
             start_date = next_date + timedelta(days=random.randint(20, 40))
+
+        next_date = None
+        room.reservations.append(Reservation(start_date, next_date, Status.not_available))
 
         db.session.add(room)
 

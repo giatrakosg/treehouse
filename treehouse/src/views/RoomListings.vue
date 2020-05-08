@@ -5,7 +5,8 @@
                 <RoomOptions v-on:apply-filters="applyFilters($event)"
                              v-on:order-by="orderBy($event)"
                              v-on:new-rooms="newRoom($event)"
-                             v-bind:init_dates="dates"/>
+                             v-bind:init_dates="dates"
+                             v-bind:init_place="place"/>
             </v-col>
         </v-row>
         <v-divider></v-divider>
@@ -32,12 +33,15 @@
             filtered_rooms: [],
 
             dates: ["2020-1-2", "2020-10-30"],
-            location: [37.9754983, 23.7356671],
+            place: {
+                label: 'Athens',
+                latlng: [37.9754983, 23.7356671]
+            },
 
             empty: false,
         }),
         created() {
-            this.getRooms(this.dates, this.location, null);
+            this.getRooms(this.dates, this.place.latlng, null);
         },
 
         methods: {
