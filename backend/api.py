@@ -74,5 +74,35 @@ def login():
 
     return make_response('Could not verify', 401, {'WWW-Authenticate' : 'Basic realm="Login required!"'})
 
+@app.route('/user', methods=['POST'])
+def addUserRequest():
+    data = request.get_json()
+    print(data,file=sys.stderr)
+    hashed_password = generate_password_hash(data['password'], method='sha256')
+
+    uName = User.query.filter_by(uname=data['uname']).all()
+    if len(uName) > 0 :
+        return jsonify({'message' : 'User already exists!'}),400
+    uEmail = User.query.filter_by(email=data['email']).all()
+    if len(uEmail) > 0 :
+        return jsonify({'message' : 'Email already exists!'}),400
+
+    new_user = User(
+    public_id=str(uuid.uuid4()),
+    uname=data['uname'],
+    password=hashed_password,
+    fname=data['fname'],
+    surname=data['surname'],
+    email=data['email'],
+    phone=data['phone'],
+    isHost=data['isHost'],
+    isPending=data['isHost'],
+    )
+
+    db.session.add(new_user)
+    db.session.commit()
+    return jsonify({'message' : 'New user created!'})
+
+
 if __name__ == '__main__':
     manager.run()
