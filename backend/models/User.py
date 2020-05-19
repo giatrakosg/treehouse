@@ -17,8 +17,8 @@ class User(db.Model):
     email = db.Column(db.String(32))
     phone = db.Column(db.String(15))
 
-    def __init__(self,id,public_id,isHost,uname,password,fname,surname,email,phone,isPending=True,isAdmin=False):
-        self.id = id
+    def __init__(self,public_id,isHost,uname,password,fname,surname,email,phone,isPending=True,isAdmin=False):
+        #self.id = id
         self.public_id = public_id
         self.isAdmin = isAdmin
         self.isHost = isHost
