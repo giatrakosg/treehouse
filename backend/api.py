@@ -83,6 +83,7 @@ def addUserRequest():
     uName = User.query.filter_by(uname=data['uname']).all()
     if len(uName) > 0 :
         return jsonify({'message' : 'User already exists!'}),400
+
     uEmail = User.query.filter_by(email=data['email']).all()
     if len(uEmail) > 0 :
         return jsonify({'message' : 'Email already exists!'}),400
@@ -128,48 +129,41 @@ def showPendingUsers(current_user):
         output.append(user_data)
 
     return jsonify({'users' : output})
+
 @app.route('/user/pending/<user_public_id>', methods=['PUT'])
 @token_required
 def acceptUser(current_user, user_public_id):
-    if not current_user.admin:
+    if not current_user.isAdmin:
         return jsonify({'message' : 'Cannot perform that function!'})
 
     user = User.query.filter_by(public_id=user_public_id).first()
 
     if not user:
         return jsonify({'message' : 'No user found!'})
-    if user.pending == False :
+    if user.isPending == False :
         return jsonify({'message' : 'User not pending !'})
 
+    user.isPending = False
+    db.session.commit()
 
-    print(user.id)
-    sem.acquire()
-    sqlAddID = "INSERT INTO User VALUES ({})".format(user.id)
-    cursor = dbItems.cursor()
-    cursor.execute(sqlAddID)
-    dbItems.commit()
-    cursor.close()
-    sem.release()
+    return jsonify({'message' : 'The user has been accepted!'}),200
 
-    sqlCreateSeller = "INSERT INTO Seller VALUES (NULL,0,{},0)".format(user.id)
-    sem.acquire()
-    cursor = dbItems.cursor()
-    cursor.execute(sqlCreateSeller)
-    dbItems.commit()
-    cursor.close()
-    sem.release()
+# We reject the users application and delete them from the database
+@app.route('/user/pending/<user_public_id>', methods=['DELETE'])
+@token_required
+def rejectUser(current_user, user_public_id):
+    if not current_user.isAdmin:
+        return jsonify({'message' : 'Cannot perform that function!'})
 
-    sqlCreateBidder = "INSERT INTO Bidder VALUES (NULL,0,'Adanon 7',{},0)".format(
-    user.id)
-    sem.acquire()
-    cursor = dbItems.cursor()
-    cursor.execute(sqlCreateBidder)
-    dbItems.commit()
-    cursor.close()
-    sem.release()
+    user = User.query.filter_by(public_id=user_public_id).first()
 
-    user.pending = False
-    dbUsers.session.commit()
+    if not user:
+        return jsonify({'message' : 'No user found!'})
+    if user.isPending == False :
+        return jsonify({'message' : 'User not pending !'})
+
+    db.session.delete(user)
+    db.session.commit()
 
     return jsonify({'message' : 'The user has been accepted!'}),200
 
@@ -177,7 +171,7 @@ def acceptUser(current_user, user_public_id):
 @app.route('/user/<public_id>', methods=['PUT'])
 @token_required
 def promote_user(current_user, public_id):
-    if not current_user.admin:
+    if not current_user.isAdmin:
         return jsonify({'message' : 'Cannot perform that function!'})
 
     user = User.query.filter_by(public_id=public_id).first()
@@ -185,7 +179,7 @@ def promote_user(current_user, public_id):
     if not user:
         return jsonify({'message' : 'No user found!'})
 
-    user.admin = True
+    user.isAdmin = True
     dbUsers.session.commit()
 
     return jsonify({'message' : 'The user has been promoted!'})
@@ -193,7 +187,7 @@ def promote_user(current_user, public_id):
 @app.route('/user/<public_id>', methods=['DELETE'])
 @token_required
 def delete_user(current_user, public_id):
-    if not current_user.admin:
+    if not current_user.isAdmin:
         return jsonify({'message' : 'Cannot perform that function!'})
 
     user = User.query.filter_by(public_id=public_id).first()
