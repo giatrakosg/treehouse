@@ -50,15 +50,15 @@
                 this.getRooms(event[0], event[1], event[2]);
             },
 
-            getRooms(dates, location, filters) {
+            getRooms(dates, loc, filters) {
 
 
-                this.$http.get('http://127.0.0.1:5000/rooms', {
+                this.$http.get('http://' + this.$hostname + ':5000/rooms', {
                     params: {
                         'date_from': dates[0],
                         'date_to': dates[1],
-                        'lat': location[0],
-                        'long': location[1]
+                        'lat': loc[0],
+                        'long': loc[1]
                     }
                 })
                     .then((result) => {

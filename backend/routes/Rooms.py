@@ -106,7 +106,7 @@ def get_rooms():
             flag = False
             for r in room.reservations:
 
-                if r.date_from > datetime_to:
+                if r.date_from > datetime_to or r.date_to < datetime_from:
                     print(str(r.date_from) + ' ' + str(r.date_to))
                     flag = True
             if flag:
