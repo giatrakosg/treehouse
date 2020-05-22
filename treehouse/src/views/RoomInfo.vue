@@ -86,7 +86,7 @@
         }),
         created() {
 
-            let url = 'http://127.0.0.1:5000/rooms/' + this.$route.params.room_title;
+            let url = 'http://' + this.$hostname + ':5000/rooms/' + this.$route.params.room_title;
 
             this.$http.get(url)
                 .then((result) => {

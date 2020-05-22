@@ -6,6 +6,29 @@
 
                     <v-container>
                         <v-row dense align="center">
+                            <v-col cols="6">
+
+
+                                <places
+                                        placeholder="Location"
+                                        v-model="room_desc.address"
+                                        @change=" updateLatLong($event)"
+                                        :options="places_options"
+                                >
+                                </places>
+
+
+                            </v-col>
+                            <v-col cols="6">
+
+                                <v-text-field color="primary" label="Transport Info"
+                                              v-model="room_desc.transport_info">
+
+                                </v-text-field>
+                            </v-col>
+                        </v-row>
+
+                        <v-row dense align="center">
                             <v-col cols="auto">
                                 <ValidationProvider v-slot="{ errors }" rules="required">
                                     <v-select :items="room_types"
@@ -187,28 +210,6 @@
                             </v-col>
                         </v-row>
 
-                        <v-row dense>
-                            <v-col cols="6">
-                                <ValidationProvider v-slot="{ errors }" rules="required">
-
-                                    <v-text-field color="primary" label="Address" prepend-icon="mdi-map-marker"
-                                                  v-model="room_desc.address"
-                                                  :error-messages="errors"
-                                                  required>
-
-                                    </v-text-field>
-                                </ValidationProvider>
-
-                            </v-col>
-                            <v-col cols="6">
-
-                                <v-text-field color="primary" label="Transport Info"
-                                              v-model="room_desc.transport_info">
-
-                                </v-text-field>
-                            </v-col>
-                        </v-row>
-
 
                     </v-container>
                 </v-list-item-content>
@@ -370,6 +371,7 @@
     import {extend} from 'vee-validate';
     import {required, max} from "vee-validate/dist/rules";
     import {ValidationProvider, ValidationObserver} from 'vee-validate';
+    import Places from 'vue-places';
 
 
     extend('required', {
@@ -385,7 +387,7 @@
 
         name: "RoomEditDescription",
         components: {
-            HostRoomEditCalendar, ValidationObserver, ValidationProvider
+            HostRoomEditCalendar, ValidationObserver, ValidationProvider, Places
         },
         props: {
             room_desc: {}
@@ -403,9 +405,24 @@
             ],
             selected_type: null,
             icon: '',
-            dialog: false
+            dialog: false,
+
+            places_options: {
+                appId: 'plBU33AXJV5Y',
+                apiKey: '357dc78dcc889cdaecd7c7ad22d69b5d',
+                countries: ['GR'],
+            },
+
         }),
         methods: {
+
+
+            updateLatLong(suggestion) {
+
+                this.room_desc.location = suggestion.latlng;
+
+            },
+
             deleteRoom() {
                 let url = 'http://127.0.0.1:5000/rooms/' + this.$route.params.room_title;
 
@@ -425,7 +442,7 @@
 
                 if (await this.$refs.observer.validate() && (this.room_desc.title !== '' || this.room_desc.title !== null)) {
                     this.loading = true;
-                    console.log(this.room_desc.title);
+                    console.log(this.room_desc);
 
 
                     let url = 'http://127.0.0.1:5000/rooms/' + this.room_desc.title;
@@ -462,6 +479,8 @@
     }
 </script>
 
-<style zzscoped>
-
+<style scoped>
+    .ap-dropdown-menu {
+        position: relative !important;
+    }
 </style>

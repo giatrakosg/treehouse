@@ -133,15 +133,17 @@
                 this.room_desc.add_persons_cost = 0;
 
                 this.room_desc.location = [37.97945, 23.71622];
+
                 this.reviews = [];
                 this.rating = 0;
-                this.room_desc.reservations = [];
+                this.room_desc.reservations = [{date_from: new Date().toISOString().slice(0, 10), date_to: null}];
 
 
                 this.loaded = true;
             } else {
 
-                let url = 'http://127.0.0.1:5000/rooms/' + this.$route.params.room_title;
+
+                let url = 'http://' + this.$hostname + ':5000/rooms/' + this.$route.params.room_title;
 
                 this.$http.get(url, {}).then((result) => {
 

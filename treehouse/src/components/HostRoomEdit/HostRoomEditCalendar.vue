@@ -34,11 +34,11 @@
 
 
                         <v-spacer/>
-                        <v-btn color="blue" style="color: white" @click="makeAvailable"
+                        <v-btn color="blue" style="color: white" @click="makeUnavailable(dates)"
                                v-if="make_unavailable">
                             <span>Make Unavailable </span>
                         </v-btn>
-                        <v-btn color="blue" style="color: white" @click="makeUnavailable(dates)"
+                        <v-btn color="blue" style="color: white" @click="makeAvailable(dates)"
                                v-if="make_available">
                             <span>Make Available </span>
                         </v-btn>
@@ -60,7 +60,7 @@
                                 <v-divider/>
                             </v-list-item-content>
                             <v-list-item-action>
-                                <v-btn color="blue" text @click="makeUnavailable([i.date_from,i.date_to])">
+                                <v-btn color="blue" text @click="makeAvailable([i.date_from,i.date_to])">
                                     <v-icon>mdi-minus</v-icon>
                                 </v-btn>
                             </v-list-item-action>
@@ -193,10 +193,10 @@
 
 
             },
-            makeAvailable() {
+            makeUnavailable(dates) {
 
-                let dates;
-                let dates_range = this.orderDates(this.dates);
+
+                let dates_range = this.orderDates(dates);
 
                 dates_range = [{date_from: dates_range[0], date_to: dates_range[1]}];
 
@@ -226,9 +226,9 @@
 
             },
 
-            makeUnavailable(dates_r) {
+            makeAvailable(dates_r) {
 
-                let dates, flag = false;
+                let dates, flag = 0;
                 let i;
                 let dates_range = this.orderDates(dates_r);
 
@@ -236,18 +236,29 @@
 
                 dates = this.getAllDates(dates_range);
 
+
                 for (i = 0; i < dates.length; i++) {
 
                     let index = this.tmp_reserved_dates.indexOf(dates[i]);
                     if (index !== -1) {
+                        if (dates[i] === this.tmp_reserved_dates[this.tmp_reserved_dates.length - 2]) {
+                            this.tmp_reserved_dates.splice(index, 1);
+                            flag = 1;
+                            break;
+
+                        }
                         this.tmp_reserved_dates.splice(index, 1);
-                    } else if (dates[i] >= this.tmp_reserved_dates[this.tmp_reserved_dates.length - 2]) {
-                        flag = true;
+                    } else if (dates[i] > this.tmp_reserved_dates[this.tmp_reserved_dates.length - 2]) {
+                        flag = 2;
                         break;
                     }
 
                 }
-                if (flag) {
+
+                if (flag === 1) {
+                    let last_day = moment(dates[dates.length - 1]).add(1, 'days').format("YYYY-MM-DD");
+                    this.tmp_reserved_dates.splice(this.tmp_reserved_dates.length - 1, 0, last_day)
+                } else if (flag === 2) {
                     let add_dates = this.getAllDates([{
                         date_from: this.tmp_reserved_dates[this.tmp_reserved_dates.length - 2],
                         date_to: moment(dates[i]).subtract(1, 'days').format("YYYY-MM-DD")
@@ -259,8 +270,8 @@
 
                     let last_day = moment(dates[dates.length - 1]).add(1, 'days').format("YYYY-MM-DD");
                     this.tmp_reserved_dates.splice(this.tmp_reserved_dates.length - 1, 0, last_day)
-
                 }
+
 
                 this.tmp_reservation_date_ranges = this.makeDateRanges();
                 this.dates = []
