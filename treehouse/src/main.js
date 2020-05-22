@@ -8,6 +8,7 @@ import axios from 'axios'
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
+Vue.prototype.$hostname = location.hostname
 
 
 //import { Icon } from 'leaflet'
