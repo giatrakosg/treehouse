@@ -180,7 +180,7 @@ def promote_user(current_user, public_id):
         return jsonify({'message' : 'No user found!'})
 
     user.isAdmin = True
-    dbUsers.session.commit()
+    db.session.commit()
 
     return jsonify({'message' : 'The user has been promoted!'})
 
@@ -195,11 +195,36 @@ def delete_user(current_user, public_id):
     if not user:
         return jsonify({'message' : 'No user found!'})
 
-    dbUsers.session.delete(user)
-    dbUsers.session.commit()
+    db.session.delete(user)
+    db.session.commit()
 
     return jsonify({'message' : 'The user has been deleted!'})
 
+
+@app.route('/user/<public_id>', methods=['PATCH'])
+@token_required
+def updateUser(current_user,public_id):
+
+    user = User.query.filter_by(public_id=public_id).first()
+
+    if not user:
+        return jsonify({'message' : 'No user found!'})
+
+    if current_user.public_id != public_id:
+        return jsonify({'message' : 'Operation not permitted!'})
+
+    data = request.get_json()
+    print(data,file=sys.stderr)
+
+    allowed_changes = set(['fname','surname','email','phone'])
+
+    for k in data:
+        if k in allowed_changes:
+            setattr(user, k, data[k])
+
+    db.session.commit()
+
+    return jsonify({'message' : 'Successfull change'})
 
 
 if __name__ == '__main__':
