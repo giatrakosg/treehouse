@@ -9,6 +9,7 @@ import HostRoomEdit from "../views/HostRoomEdit";
 import LoginPage from "../views/LoginPage"
 import SuccessPage from "../views/SuccessPage"
 import ProfilePage from "../views/ProfilePage"
+import AdminPage from "../views/AdminPage"
 
 Vue.use(VueRouter)
 
@@ -50,14 +51,20 @@ const routes = [
   } ,
   {
       path : '/success' ,
-      name : 'SuccessPage' ,
+      name : 'Success Page' ,
       component : SuccessPage
   },
   {
       path : '/profile' ,
-      name : 'ProfilePage' ,
+      name : 'Profile Page' ,
       component : ProfilePage
-  }
+  } ,
+  {
+      path : '/admin' ,
+      name : 'Admin Page' ,
+      component : AdminPage
+  } ,
+
 
 ]
 
