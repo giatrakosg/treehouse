@@ -34,8 +34,8 @@
                                 <v-col>
                                     <validation-provider rules="required" v-slot="{ errors }">
                                         <v-text-field
-                                                v-model="email"
-                                                label="Email.."
+                                                v-model="uname"
+                                                label="Username.."
                                                 v-on:keyup.enter.native="showPassword"
                                                 append-icon="mdi-email"
                                         >
@@ -49,7 +49,7 @@
                                     <validation-provider rules="required" v-slot="{ errors }">
                                         <v-text-field
                                                 v-model="password"
-                                                label="Password"
+                                                label="Password.."
                                                 append-icon="mdi-eye-off"
                                                 type="password"
                                                 @keyup.enter="handleSubmit()"
@@ -60,7 +60,7 @@
                                 </v-col>
                             </v-row>
                             <v-btn
-                                    @click="loader = 'loading'"
+                                    @click="handleSubmit"
                                     block
                                     color="primary"
                                     :loading="loading"
@@ -97,16 +97,8 @@
         },
         data() {
             return {
-                email: '',
                 password: '',
-                passwordRetype: '',
-                tel: '',
-                username: '',
-                surname: '',
-                address: '',
-                AMKA_id: '',
-                loader: null,
-                loading: false
+                uname : ''
             }
         },
         watch: {
@@ -121,22 +113,14 @@
         },
         methods: {
             handleSubmit() {
-                this.loader = 'loading'
-                /*
+              this.loader = 'loading'
               console.log(this.email,this.password);
               let data = {
-                name: this.username,
-                first_name: this.username,
-                last_name : this.surname ,
-                email: this.email,
+                uname: this.uname,
                 password: this.password,
-                phone : this.tel,
-                address: this.address,
-                AMKA_id: this.AMKA_id
               };
-              this.$store.dispatch("register", data);
-              this.$router.push('/sentemail')
-              */
+              this.$store.dispatch("login", data);
+              this.$emit('close-dialog')
             },
         }
     }

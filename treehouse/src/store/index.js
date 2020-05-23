@@ -33,7 +33,7 @@ export default new Vuex.Store({
   },
   actions: {
     login({ commit , dispatch}, user) {
-        const tok = user.email + ':' + user.password;
+        const tok = user.uname + ':' + user.password;
         const hash = btoa(tok);
         const Basic = 'Basic ' + hash;
         return new Promise((resolve, reject) => {

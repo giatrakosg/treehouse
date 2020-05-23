@@ -36,16 +36,15 @@
             v-model="dialog"
             width="500"
           >
-            <template v-slot:activator="{ on }">
               <v-btn
                 color="primary"
                 dark
-                v-on="on"
+                slot="activator"
+                @click="dialog = true"
               >
                 Login
               </v-btn>
-            </template>
-            <LoginForm />
+            <LoginForm v-on:close-dialog="closeDialog" />
           </v-dialog>
         </div>
         <div class="d-flex align-right mx-4">
@@ -71,6 +70,11 @@ export default {
     data() {
         return {
             dialog: false ,
+        }
+    } ,
+    methods : {
+        closeDialog : function() {
+            this.dialog = false
         }
     }
 }
