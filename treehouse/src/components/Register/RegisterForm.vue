@@ -191,6 +191,7 @@
                     email: this.email,
                     password: this.password,
                     phone : this.tel,
+                    isHost : this.isHost
                 };
                 this.$store.dispatch("register", data);
                 this.$router.push('/sentemail')
