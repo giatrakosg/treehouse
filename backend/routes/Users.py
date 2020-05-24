@@ -16,7 +16,7 @@ def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         token = None
-
+        print(request.headers)
         if 'x-access-token' in request.headers:
             token = request.headers['x-access-token']
 
@@ -88,12 +88,11 @@ def addUserRequest():
 @users_blueprint.route('/user/pending', methods=['GET'])
 @token_required
 def showPendingUsers(current_user):
-
     if not current_user.isAdmin:
+        print('Cannot perform that function')
         return jsonify({'message' : 'Cannot perform that function!'})
 
     users = User.query.all()
-
     output = []
 
     for user in users:
