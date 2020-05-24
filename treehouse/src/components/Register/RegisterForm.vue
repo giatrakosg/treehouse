@@ -33,11 +33,19 @@
                             <v-row>
                                 <v-col>
                                     <v-text-field
-
-                                            v-model="username"
-                                            label="Name"
+                                            v-model="uname"
+                                            label="Username"
                                             v-on:keyup.enter.native="showPassword"
-
+                                    >
+                                    </v-text-field>
+                                </v-col>
+                            </v-row>
+                            <v-row>
+                                <v-col>
+                                    <v-text-field
+                                            v-model="fname"
+                                            label="First Name"
+                                            v-on:keyup.enter.native="showPassword"
                                     >
                                     </v-text-field>
                                 </v-col>
@@ -101,27 +109,17 @@
                                 </v-text-field>
                                 <span>{{ errors[0] }}</span>
                             </validation-provider>
-                            <validation-provider rules="required" v-slot="{ errors }">
-                                <v-text-field
-                                        v-model="address"
-                                        label="Address"
-                                        @keyup.enter="handleSubmit()"
-                                >
-                                </v-text-field>
-                                <span>{{ errors[0] }}</span>
-                            </validation-provider>
-                            <validation-provider rules="required" v-slot="{ errors }">
-                                <v-text-field
-                                        v-model="AMKA_id"
-                                        label="AMKA"
-                                        type="number"
-                                        @keyup.enter="handleSubmit()"
-                                >
-                                </v-text-field>
-                                <span>{{ errors[0] }}</span>
-                            </validation-provider>
+                            <v-checkbox
+                              v-model="isHost"
+                              label="I want to register as a host"
+                            ></v-checkbox>
+                            <v-checkbox
+                              v-model="agreement"
+                              label="I have read the terms of service"
+                            ></v-checkbox>
+
                             <v-btn
-                                    @click="loader = 'loading'"
+                                    @click="handleSubmit"
                                     block
                                     color="primary"
                                     :loading="loading"
@@ -162,12 +160,14 @@
                 password: '',
                 passwordRetype: '',
                 tel: '',
-                username: '',
+                uname: '',
+                fname : '',
                 surname: '',
                 address: '',
                 AMKA_id: '',
                 loader: null,
-                loading: false
+                loading: false,
+                isHost : false
             }
         },
         watch: {
@@ -183,21 +183,19 @@
         methods: {
             handleSubmit() {
                 this.loader = 'loading'
-                /*
-              console.log(this.email,this.password);
-              let data = {
-                name: this.username,
-                first_name: this.username,
-                last_name : this.surname ,
-                email: this.email,
-                password: this.password,
-                phone : this.tel,
-                address: this.address,
-                AMKA_id: this.AMKA_id
-              };
-              this.$store.dispatch("register", data);
-              this.$router.push('/sentemail')
-              */
+                //console.log(this.email,this.password);
+                let data = {
+                    uname: this.uname,
+                    fname: this.fname,
+                    surname : this.surname ,
+                    email: this.email,
+                    password: this.password,
+                    phone : this.tel,
+                    isHost : this.isHost
+                };
+                this.$store.dispatch("register", data);
+                this.$router.push('/sentemail')
+
             },
         }
     }
