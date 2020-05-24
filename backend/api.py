@@ -13,7 +13,6 @@ from models.User import User
 from routes.Rooms import rooms_blueprint
 from routes.Users import  users_blueprint
 
-cors = CORS(app)
 
 app.register_blueprint(rooms_blueprint)
 app.register_blueprint(users_blueprint)

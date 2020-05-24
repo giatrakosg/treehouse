@@ -29,6 +29,7 @@ app.config['SECRET_KEY'] = 'thisissecret'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///treehouse.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
+cors = CORS(app)
 db = SQLAlchemy(app)
 
 migrate = Migrate(app, db)
