@@ -34,6 +34,11 @@
 
               <v-list-item-content>
                 <v-list-item-title v-text="item.title"></v-list-item-title>
+                <v-list-item-subtitle v-text="item.fname + ' ' + item.surname">
+                </v-list-item-subtitle>
+                <v-list-item-subtitle v-text="item.email">
+                </v-list-item-subtitle>
+
               </v-list-item-content>
 
               <v-list-item-icon>
@@ -55,15 +60,24 @@
     data: () => ({
       filters : ['approved','pending'] ,
       values : ['approved','pending'],
-      items: [
+/*      items: [
         { active: true, title: 'Jason Oner', avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg' },
         { active: true, title: 'Ranee Carlson', avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg' },
         { title: 'Cindy Baker', avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg' },
         { title: 'Ali Connors', avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg' },
       ],
-      items2: [
-        { title: 'Travis Howard', avatar: 'https://cdn.vuetifyjs.com/images/lists/5.jpg' },
-      ],
-    }),
+*/    }),
+    computed : {
+        users() {
+            return this.$store.state.users
+        },
+        items() {
+            var list = []
+            for (var i = 0; i < this.users.length; i++) {
+                list.push({active:true,title:this.users[i].name,avatar:'https://cdn.vuetifyjs.com/images/lists/3.jpg',fname:this.users[i].first_name ,surname:this.users[i].last_name,email:this.users[i].email})
+            }
+            return list;
+        }
+    }
   }
 </script>
