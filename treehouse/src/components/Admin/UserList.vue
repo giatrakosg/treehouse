@@ -72,9 +72,11 @@
     } ,
     methods : {
         accept(idx) {
+            this.$store.dispatch('acceptUser',idx)
             return console.log(idx)
         },
         reject(idx) {
+            this.$store.dispatch('rejectUser',idx)
             return console.log(idx)
         }
     }
