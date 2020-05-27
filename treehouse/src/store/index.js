@@ -9,6 +9,7 @@ export default new Vuex.Store({
       status: '',
       token: localStorage.getItem('token') || '',
       user: {} ,
+      users : []
   },
   mutations: {
       addUser(state,payload) {
@@ -29,10 +30,16 @@ export default new Vuex.Store({
         state.token = ''
         state.user = {}
       },
+      addUsers(state,payload) {
+          state.users = payload.users
+      },
+      removeUser(state,payload) {
+          state.users.splice(payload.index,1)
+      }
 
   },
   actions: {
-    login({ commit , dispatch}, user) {
+    login({ commit }, user) {
         const tok = user.uname + ':' + user.password;
         const hash = btoa(tok);
         const Basic = 'Basic ' + hash;
@@ -48,7 +55,6 @@ export default new Vuex.Store({
               axios.defaults.headers.common['x-access-token'] = token
               commit('auth_success', { token , user})
               resolve(resp)
-              dispatch('getUser');
             })
             .catch(err => {
               commit('auth_error')
@@ -72,6 +78,66 @@ export default new Vuex.Store({
           })
       })
     },
+    getUserList({commit}) {
+        var token = localStorage.getItem('token');
+        return new Promise((resolve, reject) => {
+          axios({ url: 'http://localhost:5000/user/pending', headers : {
+              common : {
+                  'x-access-token' : token
+              }
+          } , method: 'GET' })
+            .then(resp => {
+              //console.log(resp.data)
+              const users = resp.data.users
+              commit('addUsers',{users})
+              //commit('decrease_routes')
+              resolve(resp)
+            })
+            .catch(err => {
+                reject(err)
+            })
+      }) ;
+    },
+    acceptUser({commit,state},index) {
+        var token = localStorage.getItem('token');
+        var pid = state.users[index].public_id
+        return new Promise((resolve, reject) => {
+          axios({ url: 'http://localhost:5000/user/pending/'+pid, headers : {
+              common : {
+                  'x-access-token' : token
+              }
+          } , method: 'PUT' })
+            .then(resp => {
+              //console.log(resp.data)
+              commit('removeUser',{index})
+              //commit('decrease_routes')
+              resolve(resp)
+            })
+            .catch(err => {
+                reject(err)
+            })
+      }) ;
+    },
+    rejectUser({commit,state},index) {
+        var token = localStorage.getItem('token');
+        var pid = state.users[index].public_id
+        return new Promise((resolve, reject) => {
+          axios({ url: 'http://localhost:5000/user/pending/'+pid, headers : {
+              common : {
+                  'x-access-token' : token
+              }
+          } , method: 'DELETE' })
+            .then(resp => {
+              //console.log(resp.data)
+              commit('removeUser',{index})
+              //commit('decrease_routes')
+              resolve(resp)
+            })
+            .catch(err => {
+                reject(err)
+            })
+      }) ;
+    }
 
   },
   modules: {

@@ -10,6 +10,9 @@ export default {
     name : 'AdminPage' ,
     components : {
         UserList
+    },
+    created() {
+        this.$store.dispatch('getUserList');
     }
 }
 </script>
