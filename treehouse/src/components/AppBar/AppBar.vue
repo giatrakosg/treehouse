@@ -53,8 +53,16 @@
                 >
                     Register
                 </v-btn>
-                <!-- <LoginForm /> -->
             </div>
+            <div class="d-flex align-right mx-4" v-if="isLoggedIn">
+                <v-btn
+                        color="primary"
+                        to="/profile"
+                >
+                    Profile
+                </v-btn>
+            </div>
+
     </v-app-bar>
 
 </template>
