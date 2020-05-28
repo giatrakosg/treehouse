@@ -50,7 +50,7 @@
 
         </div>
         <v-spacer></v-spacer>
-        <div class="d-flex align-right mx-4">
+        <div class="d-flex align-right mx-4" v-if="!isLoggedIn">
             <v-dialog
                     v-model="dialog"
                     width="500"
@@ -66,36 +66,22 @@
                 <LoginForm v-on:close-dialog="closeDialog"/>
             </v-dialog>
         </div>
-        <div class="d-flex align-right mx-4">
-            <v-dialog>
-                <v-btn
+        <div class="d-flex align-right mx-4" v-if="!isLoggedIn">
+            <v-btn
                     color="primary"
-                    dark
-                    slot="activator"
-                    @click="dialog = true"
-                  >
-                    Login
-                  </v-btn>
-                <LoginForm v-on:close-dialog="closeDialog" />
-              </v-dialog>
-            </div>
-            <div class="d-flex align-right mx-4" v-if="!isLoggedIn">
-                <v-btn
-                        color="primary"
-                        to="/register"
-                >
-                    Register
-                </v-btn>
-            </div>
-            <div class="d-flex align-right mx-4" v-if="isLoggedIn">
-                <v-btn
-                        color="primary"
-                        to="/profile"
-                >
-                    Profile
-                </v-btn>
-            </div>
-
+                    to="/register"
+            >
+                Register
+            </v-btn>
+        </div>
+        <div class="d-flex align-right mx-4" v-if="isLoggedIn">
+            <v-btn
+                    color="primary"
+                    to="/profile"
+            >
+                Profile
+            </v-btn>
+        </div>
     </v-app-bar>
 
 </template>
