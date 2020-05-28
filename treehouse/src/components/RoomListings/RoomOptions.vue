@@ -279,7 +279,6 @@
 
             updateLatLong(suggestion) {
 
-                console.log(this.place)
 
                 if (this.place.latlng !== suggestion.latlng) {
                     this.place.latlng = suggestion.latlng
