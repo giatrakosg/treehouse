@@ -9,6 +9,7 @@
                             <v-col cols="6">
 
 
+
                                 <places
                                         placeholder="Location"
                                         v-model="room_desc.address"
@@ -401,7 +402,6 @@
                 {text: 'Private', value: 'private room'},
                 {text: 'Shared', value: 'shared room'},
                 {text: 'Home', value: 'house'},
-                {text: 'All', value: 'all'}
             ],
             selected_type: null,
             icon: '',
@@ -424,7 +424,9 @@
             },
 
             deleteRoom() {
-                let url = 'http://127.0.0.1:5000/rooms/' + this.$route.params.room_title;
+
+
+                let url = 'http://' + this.$hostname + ':5000/rooms/' + this.$route.params.room_title;
 
                 this.$http.delete(url).catch(error => console.log(error))
                 this.$router.go(-1);
@@ -440,12 +442,12 @@
             async saveChanges() {
                 console.log(this.room_desc);
 
-                if (await this.$refs.observer.validate() && (this.room_desc.title !== '' || this.room_desc.title !== null)) {
+                if (await this.$refs.observer.validate() && (this.room_desc.title !== '' || this.room_desc.title !== null) && (this.room_desc.address !== '' || this.room_desc.address !== null)) {
                     this.loading = true;
                     console.log(this.room_desc);
 
 
-                    let url = 'http://127.0.0.1:5000/rooms/' + this.room_desc.title;
+                    let url = 'http://' + this.$hostname + ':5000/rooms/' + this.room_desc.title;
 
                     this.$http.post(url, {
 
