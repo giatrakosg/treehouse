@@ -1,11 +1,22 @@
 <template lang="html">
     <v-app-bar
             app
-            color="white"
+            color="primary"
             dark
             hide-on-scroll
     >
-        <!--     Temporary       -->
+        <div class="d-flex align-center">
+            <v-btn to="/" text color="transparent">
+                <v-img
+                        alt="Vuetify Logo"
+                        class="shrink mr-2"
+                        contain
+                        src="../../assets/treehouse.png"
+                        transition="scale-transition"
+                        width="40"
+                />
+            </v-btn>
+        </div>
         <v-btn
                 color="primary"
                 to="/roomlistings"
@@ -18,18 +29,6 @@
         >
             TMP Button for HostRooms
         </v-btn>
-        <!--                      -->
-
-        <div class="d-flex align-center">
-            <v-img
-                    alt="Vuetify Logo"
-                    class="shrink mr-2"
-                    contain
-                    src="../../assets/treehouse.png"
-                    transition="scale-transition"
-                    width="40"
-            />
-        </div>
         <v-spacer></v-spacer>
             <div class="d-flex align-right mx-4" v-if="!isLoggedIn">
               <v-dialog
