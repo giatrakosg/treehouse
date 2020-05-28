@@ -31,31 +31,31 @@
             />
         </div>
         <v-spacer></v-spacer>
-        <div class="d-flex align-right mx-4">
-          <v-dialog
-            v-model="dialog"
-            width="500"
-          >
-              <v-btn
-                color="primary"
-                dark
-                slot="activator"
-                @click="dialog = true"
+            <div class="d-flex align-right mx-4" v-if="!isLoggedIn">
+              <v-dialog
+                v-model="dialog"
+                width="500"
               >
-                Login
-              </v-btn>
-            <LoginForm v-on:close-dialog="closeDialog" />
-          </v-dialog>
-        </div>
-        <div class="d-flex align-right mx-4">
-            <v-btn
+                  <v-btn
                     color="primary"
-                    to="/register"
-            >
-                Register
-            </v-btn>
-            <!-- <LoginForm /> -->
-        </div>
+                    dark
+                    slot="activator"
+                    @click="dialog = true"
+                  >
+                    Login
+                  </v-btn>
+                <LoginForm v-on:close-dialog="closeDialog" />
+              </v-dialog>
+            </div>
+            <div class="d-flex align-right mx-4" v-if="!isLoggedIn">
+                <v-btn
+                        color="primary"
+                        to="/register"
+                >
+                    Register
+                </v-btn>
+                <!-- <LoginForm /> -->
+            </div>
     </v-app-bar>
 
 </template>
@@ -75,6 +75,11 @@ export default {
     methods : {
         closeDialog : function() {
             this.dialog = false
+        }
+    },
+    computed : {
+        isLoggedIn() {
+            return this.$store.state.isLoggedIn
         }
     }
 }
