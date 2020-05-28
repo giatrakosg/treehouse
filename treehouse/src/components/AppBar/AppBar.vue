@@ -2,11 +2,22 @@
     <v-app-bar
 
             app
-            color="white"
+            color="primary"
             dark
             hide-on-scroll
     >
-        <!--     Temporary       -->
+        <div class="d-flex align-center">
+            <v-btn to="/" text color="transparent">
+                <v-img
+                        alt="Vuetify Logo"
+                        class="shrink mr-2"
+                        contain
+                        src="../../assets/treehouse.png"
+                        transition="scale-transition"
+                        width="40"
+                />
+            </v-btn>
+        </div>
         <v-btn
                 color="primary"
                 to="/roomlistings"
@@ -39,7 +50,7 @@
 
         </div>
         <v-spacer></v-spacer>
-        <div class="d-flex align-right mx-4">
+        <div class="d-flex align-right mx-4" v-if="!isLoggedIn">
             <v-dialog
                     v-model="dialog"
                     width="500"
@@ -55,14 +66,21 @@
                 <LoginForm v-on:close-dialog="closeDialog"/>
             </v-dialog>
         </div>
-        <div class="d-flex align-right mx-4">
+        <div class="d-flex align-right mx-4" v-if="!isLoggedIn">
             <v-btn
                     color="primary"
                     to="/register"
             >
                 Register
             </v-btn>
-            <!-- <LoginForm /> -->
+        </div>
+        <div class="d-flex align-right mx-4" v-if="isLoggedIn">
+            <v-btn
+                    color="primary"
+                    to="/profile"
+            >
+                Profile
+            </v-btn>
         </div>
     </v-app-bar>
 
@@ -84,6 +102,11 @@
         methods: {
             closeDialog: function () {
                 this.dialog = false
+            }
+        },
+        computed : {
+            isLoggedIn() {
+                return this.$store.state.isLoggedIn
             }
         }
     }
