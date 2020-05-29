@@ -51,11 +51,13 @@ export default new Vuex.Store({
             .then(resp => {
               const token = resp.data.token
               const user = resp.data.user
+              console.log(user)
               //console.log(user)
               localStorage.setItem('token', token)
               // Add the following line:
               axios.defaults.headers.common['x-access-token'] = token
-              commit('auth_success', { token , user})
+              commit('auth_success', { token })
+              commit('addUser',{user})
               resolve(resp)
             })
             .catch(err => {
