@@ -1,12 +1,16 @@
 <template lang="html">
     <div class="">
-
+        <EditProfileForm />
     </div>
 </template>
 
 <script>
+import EditProfileForm from "../components/EditProfile/EditProfileForm"
 export default {
-    name : 'EditProfilePage'
+    name : 'EditProfilePage' ,
+    components : {
+        EditProfileForm
+    } ,
 }
 </script>
 
