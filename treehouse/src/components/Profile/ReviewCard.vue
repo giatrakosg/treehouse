@@ -1,7 +1,7 @@
 <template lang="html">
     <v-card>
         <v-card-title>
-            Hi , I am Ali Conners
+            Hi , I am {{name}}
         </v-card-title>
         <v-card-subtitle>
             Member since 2018.
@@ -68,9 +68,15 @@ export default {
                 title: '5/5',
                 subtitle: "<span class='text--primary'>Bill Kilgore</span> &mdash; I love the smell of fresh Napalm in the morning!",
               },
-            ],            
+            ],
         }
-    )
+    ),
+    computed : {
+        name() {
+            return this.$store.state.user.fname + ' ' + this.$store.state.user.surname ;
+
+        }
+    }
 
 }
 </script>
