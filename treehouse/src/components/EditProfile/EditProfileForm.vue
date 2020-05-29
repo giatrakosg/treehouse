@@ -22,7 +22,7 @@
                         </v-sheet>
 
                     </v-card-title>
-                    <v-card-title class="justify-center">Register
+                    <v-card-title class="justify-center">Edit Profile
                         <v-icon>
                             mdi-account
                         </v-icon>
@@ -119,14 +119,6 @@
         },
         data() {
             return {
-                email: '',
-                tel: '',
-                uname: '',
-                fname : '',
-                surname: '',
-                loader: null,
-                loading: false,
-                isHost : false
             }
         },
         watch: {
@@ -144,15 +136,13 @@
                 this.loader = 'loading'
                 //console.log(this.email,this.password);
                 let data = {
-                    uname: this.uname,
-                    fname: this.fname,
-                    surname : this.surname ,
-                    email: this.email,
-                    password: this.password,
-                    phone : this.tel,
-                    isHost : this.isHost
+                    uname: this.user.uname,
+                    fname: this.user.fname,
+                    surname : this.user.surname ,
+                    email: this.user.email,
+                    phone : this.user.phone,
                 };
-                this.$store.dispatch("register", data);
+                this.$store.dispatch("updateUser", data);
                 this.$router.push('/sentemail')
 
             },

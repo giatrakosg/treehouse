@@ -141,7 +141,26 @@ export default new Vuex.Store({
                 reject(err)
             })
       }) ;
-    }
+    } ,
+    updateUser({state},user) {
+        var token = localStorage.getItem('token');
+        var pid = state.user.public_id ;
+        return new Promise((resolve, reject) => {
+          axios({ url: 'http://localhost:5000/user/' + pid, headers : {
+              common : {
+                  'x-access-token' : token
+              }
+          } , data : user , method: 'PATCH' })
+            .then(resp => {
+              //console.log(resp.data)
+              resolve(resp)
+            })
+            .catch(err => {
+                reject(err)
+            })
+      }) ;
+    },
+
 
   },
   modules: {
