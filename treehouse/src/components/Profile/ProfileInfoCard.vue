@@ -14,7 +14,7 @@
 
           <v-spacer></v-spacer>
 
-          <v-btn dark icon class="mr-4">
+          <v-btn dark icon class="mr-4" to="/editprofile">
             <v-icon>mdi-pencil</v-icon>
           </v-btn>
 

@@ -10,6 +10,7 @@ import LoginPage from "../views/LoginPage"
 import SuccessPage from "../views/SuccessPage"
 import ProfilePage from "../views/ProfilePage"
 import AdminPage from "../views/AdminPage"
+import EditProfilePage from "../views/EditProfilePage"
 
 Vue.use(VueRouter)
 
@@ -64,6 +65,11 @@ const routes = [
       name : 'Admin Page' ,
       component : AdminPage
   } ,
+  {
+      path : '/editprofile',
+      name : 'Edit Profile Page',
+      component : EditProfilePage
+  }
 
 
 ]
