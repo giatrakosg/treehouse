@@ -26,7 +26,7 @@
         <v-spacer></v-spacer>
 
         <v-card-title class="white--text pl-12 pt-12">
-          <div class="display-1 pl-12 pt-12">Ali Conners</div>
+          <div class="display-1 pl-12 pt-12">{{user.fname + ' ' + user.surname}}</div>
         </v-card-title>
       </v-row>
     </v-img>
@@ -39,17 +39,8 @@
         </v-list-item-icon>
 
         <v-list-item-content>
-          <v-list-item-title>aliconnors@example.com</v-list-item-title>
+          <v-list-item-title>{{user.email}}</v-list-item-title>
           <v-list-item-subtitle>Personal</v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
-
-      <v-list-item >
-        <v-list-item-action></v-list-item-action>
-
-        <v-list-item-content>
-          <v-list-item-title>ali_connors@example.com</v-list-item-title>
-          <v-list-item-subtitle>Work</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
 
@@ -57,12 +48,12 @@
 
       <v-list-item >
         <v-list-item-icon>
-          <v-icon color="indigo">mdi-map-marker</v-icon>
+          <v-icon color="indigo">mdi-cellphone</v-icon>
         </v-list-item-icon>
 
         <v-list-item-content>
-          <v-list-item-title>221B Baker Street</v-list-item-title>
-          <v-list-item-subtitle>London, UK</v-list-item-subtitle>
+          <v-list-item-title>Phone</v-list-item-title>
+          <v-list-item-subtitle>{{user.phone}}</v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -71,7 +62,12 @@
 
 <script>
 export default {
-    name : 'ProfileInfoCard'
+    name : 'ProfileInfoCard' ,
+    computed : {
+        user() {
+            return this.$store.state.user ;
+        }
+    }
 }
 </script>
 
