@@ -14,64 +14,65 @@ import AdminPage from "../views/AdminPage"
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/register',
-    name: 'RegisterPage',
-    component: RegisterPage
-  },
-  {
-    path: '/login',
-    name: 'LoginPage',
-    component: LoginPage
-  },
-  {
-  path: '/roomlistings',
-  name: 'RoomListings',
-  component: RoomListings
-  },
-  {
-      path: '/room/:room_title',
-      name: 'RoomInfo',
-      component: RoomInfo
-  },
-  {
-    path: '/hostrooms',
-    name: 'HostRooms',
-    component: HostRooms
-  },
-  {
-      path: '/hostrooms/:room_title',
-      name: 'HostRoomEdit',
-      component: HostRoomEdit
-  } ,
-  {
-      path : '/success' ,
-      name : 'Success Page' ,
-      component : SuccessPage
-  },
-  {
-      path : '/profile' ,
-      name : 'Profile Page' ,
-      component : ProfilePage
-  } ,
-  {
-      path : '/admin' ,
-      name : 'Admin Page' ,
-      component : AdminPage
-  } ,
+    {
+        path: '/',
+        name: 'Home',
+        component: Home
+    },
+    {
+        path: '/register',
+        name: 'RegisterPage',
+        component: RegisterPage
+    },
+    {
+        path: '/login',
+        name: 'LoginPage',
+        component: LoginPage
+    },
+    {
+        path: '/roomlistings',
+        name: 'RoomListings',
+        component: RoomListings,
+        props: true
+    },
+    {
+        path: '/room/:room_title',
+        name: 'RoomInfo',
+        component: RoomInfo
+    },
+    {
+        path: '/hostrooms',
+        name: 'HostRooms',
+        component: HostRooms
+    },
+    {
+        path: '/hostrooms/:room_title',
+        name: 'HostRoomEdit',
+        component: HostRoomEdit
+    },
+    {
+        path: '/success',
+        name: 'Success Page',
+        component: SuccessPage
+    },
+    {
+        path: '/profile',
+        name: 'Profile Page',
+        component: ProfilePage
+    },
+    {
+        path: '/admin',
+        name: 'Admin Page',
+        component: AdminPage
+    },
 
 
 ]
 
 const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes
+    mode: 'history',
+    base: process.env.BASE_URL,
+    routes
 })
 
 export default router

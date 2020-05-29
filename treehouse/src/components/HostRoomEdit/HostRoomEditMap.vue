@@ -3,7 +3,7 @@
         <v-row dense>
             <v-col>
 
-                <l-map style="height: 750px;z-index: 0;border-radius: 8px;" :zoom="zoom" :center="center">
+                <l-map style="height: 900px;z-index: 0;border-radius: 8px;" :zoom="zoom" :center="center">
                     <l-tile-layer
                             :url="url"
                     />

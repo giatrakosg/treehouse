@@ -6,7 +6,8 @@
                              v-on:order-by="orderBy($event)"
                              v-on:new-rooms="newRoom($event)"
                              v-bind:init_dates="dates"
-                             v-bind:init_place="place"/>
+                             v-bind:init_place="place"
+                             v-bind:init_persons="persons"/>
             </v-col>
         </v-row>
         <v-divider></v-divider>
@@ -27,6 +28,7 @@
     export default {
         name: "RoomListings",
         components: {RoomOptions, RoomsList},
+        props: ['date_from', 'date_to', 'place_label', 'place_lat', 'place_lng', 'persons'],
         data: () => ({
 
             rooms: [],
@@ -41,6 +43,11 @@
             empty: false,
         }),
         created() {
+
+            this.dates = [this.date_from, this.date_to]
+            this.place.label = this.place_label
+            this.place.latlng = [this.place_lat, this.place_lng]
+
             this.getRooms(this.dates, this.place.latlng, null);
         },
 

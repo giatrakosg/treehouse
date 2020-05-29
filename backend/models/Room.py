@@ -52,6 +52,8 @@ class Room(db.Model):
 
     reservations = db.relationship('Reservation', backref='room', lazy=True)
 
+    threads = db.relationship('Thread', backref='room', lazy=True)
+
     @hybrid_property
     def rating(self):
 
