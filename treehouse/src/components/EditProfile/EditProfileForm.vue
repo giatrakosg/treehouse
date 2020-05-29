@@ -7,11 +7,20 @@
             <v-flex sm8 md8 lg8>
                 <v-card tile>
                     <v-card-title class="justify-center">
-                        <v-img
-                                src="https://source.unsplash.com/1600x900/?nature,sunrise"
-                                height="320"
+                        <v-sheet
+                          :color="`grey ${theme.isDark ? 'darken-2' : 'lighten-4'}`"
                         >
-                        </v-img>
+                          <v-skeleton-loader
+                            type="image"
+                          >
+                              <v-img
+                                      src="https://source.unsplash.com/1600x900/?nature,sunrise"
+                                      height="320"
+                              >
+                              </v-img>
+                          </v-skeleton-loader>
+                        </v-sheet>
+
                     </v-card-title>
                     <v-card-title class="justify-center">Register
                         <v-icon>
@@ -104,20 +113,17 @@
     });
     export default {
         name: 'EditProfileForm',
+        inject: ['theme'],
         components: {
             ValidationProvider
         },
         data() {
             return {
                 email: '',
-                password: '',
-                passwordRetype: '',
                 tel: '',
                 uname: '',
                 fname : '',
                 surname: '',
-                address: '',
-                AMKA_id: '',
                 loader: null,
                 loading: false,
                 isHost : false
