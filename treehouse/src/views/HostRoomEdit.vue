@@ -18,7 +18,7 @@
                 <HostRoomEditReviews v-bind:reviews="reviews" v-bind:rating="rating"/>
             </v-col>
             <v-col cols="12" xl="7">
-                <HostRoomEditMessages/>
+                <HostRoomEditMessages v-bind:message_threads="message_threads"/>
             </v-col>
 
         </v-row>
@@ -83,6 +83,7 @@
 
 
             reviews: [],
+            message_threads: [],
             rating: 0
         }),
         created() {
@@ -121,6 +122,9 @@
 
                 this.reviews = [];
                 this.rating = 0;
+
+                this.message_threads = [];
+
                 this.room_desc.reservations = [{date_from: new Date().toISOString().slice(0, 10), date_to: null}];
 
 
@@ -187,6 +191,16 @@
 
                     this.room_desc.location = result.data.location;
                     this.reviews = result.data.reviews;
+                    this.message_threads = result.data.threads.sort(function (a, b) {
+                        if (new Date(a.last_message.timestamp) <= new Date(b.last_message.timestamp)) {
+                            return 1;
+                        } else {
+                            return -1;
+                        }
+                    });
+                    console.log(this.message_threads);
+
+
                     this.rating = result.data.rating;
 
                     this.loaded = true;

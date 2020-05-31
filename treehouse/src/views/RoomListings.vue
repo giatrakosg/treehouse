@@ -4,7 +4,7 @@
             <v-col>
                 <RoomOptions v-on:apply-filters="applyFilters($event)"
                              v-on:order-by="orderBy($event)"
-                             v-on:new-rooms="newRoom($event)"
+                             v-on:new-rooms="newRooms($event)"
                              v-bind:init_dates="dates"
                              v-bind:init_place="place"
                              v-bind:init_persons="persons"/>
@@ -48,13 +48,13 @@
             this.place.label = this.place_label
             this.place.latlng = [this.place_lat, this.place_lng]
 
-            this.getRooms(this.dates, this.place.latlng, null);
+            this.getRooms(this.dates, this.place.latlng, this.persons);
         },
 
         methods: {
-            newRoom(event) {
+            newRooms(event) {
                 console.log(event)
-                this.getRooms(event[0], event[1], event[2]);
+                this.getRooms(event[0], [event[1].lat, event[1].lng], event[2]);
             },
 
             getRooms(dates, loc, filters) {

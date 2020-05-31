@@ -22,7 +22,8 @@
                         <v-tooltip top color="brown">
                         <template v-slot:activator="{ on }">
 
-                        <v-btn color="brown" text to="/"  v-ripple="false" class="text-capitalize" v-on="on">
+                        <v-btn color="brown" text @click="sendMessage" v-ripple="false" class="text-capitalize"
+                               v-on="on">
                             John
                             <i class="fas fa-external-link-square-alt "></i>
                         </v-btn>
@@ -38,16 +39,31 @@
 
 
         </v-list-item-content>
+        <v-dialog max-width="60%" v-model="contact">
+            <v-card class="pa-2">
+
+                <Messages user="John" :room_title="title"/>
+            </v-card>
+        </v-dialog>
 
     </v-list-item>
 </template>
 
 <script>
+    import Messages from "../../views/Messages";
     export default {
         name: "RoomTitle",
+        components: {Messages},
         props: ['title', 'rating', 'reviews_number'],
         data: function () {
-            return {}
+            return {
+                contact: false
+            }
+        },
+        methods: {
+            sendMessage() {
+                this.contact = true;
+            }
         }
     }
 </script>

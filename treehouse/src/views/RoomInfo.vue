@@ -29,6 +29,7 @@
 
         </v-row>
     </v-container>
+
 </template>
 
 <script>
@@ -42,6 +43,7 @@
     export default {
         name: "RoomInfo",
         components: {RoomReservation, RoomReviews, RoomLocation, RoomDescription, RoomImages, RoomTitle},
+        contact: false,
         data: () => ({
             images: null,
             room_desc: {
