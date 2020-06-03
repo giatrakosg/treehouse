@@ -1,9 +1,21 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import https from 'https'
 
 Vue.use(Vuex)
 
+//https.globalAgent.options.rejectUnauthorized = false;
+
+const agent = new https.Agent({
+  rejectUnauthorized: false
+}) ;
+const instance = axios.create({
+  httpsAgent: agent ,
+  baseURL : 'https://localhost:5000'
+});
+
+//const url = 'https://localhost:5000/'
 export default new Vuex.Store({
   state: {
       status: '',
@@ -49,7 +61,8 @@ export default new Vuex.Store({
         const Basic = 'Basic ' + hash;
         return new Promise((resolve, reject) => {
           commit('auth_request')
-          axios({ url: 'http://localhost:5000/login', headers : {'Authorization' : Basic}, method: 'GET' })
+          instance({ url: '/login',
+           headers : {'Authorization' : Basic}, method: 'GET' })
             .then(resp => {
               const token = resp.data.token
               const user = resp.data.user
@@ -75,7 +88,7 @@ export default new Vuex.Store({
     register({ commit }, user) {
       return new Promise((resolve, reject) => {
         commit('auth_request')
-        axios({ url: 'http://localhost:5000/user', data: user, method: 'POST' })
+        instance({ url: 'user', data: user, method: 'POST' })
           .then(resp => {
             console.log(resp.data)
             resolve(resp)
@@ -90,7 +103,7 @@ export default new Vuex.Store({
     getUserList({commit}) {
         var token = localStorage.getItem('token');
         return new Promise((resolve, reject) => {
-          axios({ url: 'http://localhost:5000/user/pending', headers : {
+          instance({ url: '/user/pending', headers : {
               common : {
                   'x-access-token' : token
               }
@@ -111,7 +124,7 @@ export default new Vuex.Store({
         var token = localStorage.getItem('token');
         var pid = state.users[index].public_id
         return new Promise((resolve, reject) => {
-          axios({ url: 'http://localhost:5000/user/pending/'+pid, headers : {
+          instance({ url: '/user/pending/' + pid, headers : {
               common : {
                   'x-access-token' : token
               }
@@ -131,7 +144,7 @@ export default new Vuex.Store({
         var token = localStorage.getItem('token');
         var pid = state.users[index].public_id
         return new Promise((resolve, reject) => {
-          axios({ url: 'http://localhost:5000/user/pending/'+pid, headers : {
+          instance({ url: 'user/pending/' + pid, headers : {
               common : {
                   'x-access-token' : token
               }
@@ -151,7 +164,7 @@ export default new Vuex.Store({
         var token = localStorage.getItem('token');
         var pid = state.user.public_id ;
         return new Promise((resolve, reject) => {
-          axios({ url: 'http://localhost:5000/user/' + pid, headers : {
+          instance({ url: 'user/' + pid, headers : {
               common : {
                   'x-access-token' : token
               }
