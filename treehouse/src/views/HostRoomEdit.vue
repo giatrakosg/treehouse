@@ -1,17 +1,6 @@
 <template>
     <v-container>
-        <v-row>
-            <v-spacer/>
-            <v-col cols="auto">
-                <ValidationProvider v-slot="{ errors }" rules="required">
 
-                    <v-text-field name="alpha_field" label="Room Name" v-model="room_desc.title" style="width: 400px"
-                                  :error-messages="errors" v-if="loaded"/>
-                </ValidationProvider>
-            </v-col>
-            <v-spacer/>
-        </v-row>
-        <v-divider></v-divider>
         <v-row dense align="center">
             <v-col cols="12" md="12" lg="6" xl="4" order-lg="1" order-xl="1">
                 <HostRoomEditImages v-bind:images="images" v-on:new-images="updateImages" v-if="loaded"/>
@@ -25,11 +14,11 @@
             </v-col>
         </v-row>
         <v-row>
-            <v-col cols="12" lg="6">
+            <v-col cols="12" xl="5">
                 <HostRoomEditReviews v-bind:reviews="reviews" v-bind:rating="rating"/>
             </v-col>
-            <v-col cols="12" lg="6">
-                MESSAGES
+            <v-col cols="12" xl="7">
+                <HostRoomEditMessages/>
             </v-col>
 
         </v-row>
@@ -42,24 +31,20 @@
     import HostRoomEditMap from "../components/HostRoomEdit/HostRoomEditMap";
     import HostRoomEditReviews from "../components/HostRoomEdit/HostRoomEditReviews";
     import moment from 'moment'
-    import {extend} from "vee-validate";
-    import {required} from "vee-validate/dist/rules";
-    import {ValidationProvider} from 'vee-validate';
 
 
-    extend('required', {
-        ...required,
-        message: ' '
-    });
+    import HostRoomEditMessages from "../components/HostRoomEdit/HostRoomEditMessages";
+
 
     export default {
         name: "HostRoomEdit",
         components: {
+            HostRoomEditMessages,
             HostRoomEditReviews,
             HostRoomEditMap,
             HostRoomEditImages,
             HostRoomEditDescription,
-            ValidationProvider
+
         },
         data: () => ({
             loaded: false,

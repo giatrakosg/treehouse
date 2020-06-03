@@ -5,6 +5,7 @@ from models.Room import Room, RoomTypes
 from models.Image import Image
 from models.Reservation import Reservation, Status
 from models.Review import Review
+from models.Thread import Thread
 
 import json
 import random
@@ -53,12 +54,25 @@ def get_host_rooms():
 @rooms_blueprint.route("/rooms/<string:room_title>", methods=['GET', 'POST', 'DELETE'])
 def get_room(room_title):
     room = Room.query.filter_by(title=room_title).first()
-    if room is None:
-        return jsonify({'message': 'ERROR'})
+
+    is_host = True
 
     if request.method == 'GET':
 
+        if room is None:
+            return jsonify({'message': 'ERROR'})
+
         room_to_dict = room.to_dict_all()
+
+        if is_host:
+            dict_threads = []
+
+            for t in room.threads:
+                dict_threads.append(t.to_dict_short())
+            room_to_dict['threads'] = dict_threads
+
+            print(room_to_dict)
+
         return jsonify(room_to_dict)
 
     elif request.method == 'POST':
@@ -142,7 +156,7 @@ def new_review(room_title):
 
 
 def get_random_data():
-    rooms_number = 500
+    rooms_number = 100
     rooms = []
 
     for i in range(rooms_number):
@@ -154,6 +168,13 @@ def get_random_data():
                     37.9754983 + random.uniform(-1, 1), 23.7356671 + random.uniform(-1, 1),
                     "address", "info", random.randint(1, 5), random.randint(23, 300), random.uniform(10, 70),
                     random_sentence(3), random.randint(6, 20), random.randint(1, 3))
+        for z in range(30):
+            t = Thread()
+
+            t.get_random_messages()
+
+            room.threads.append(t)
+
         for y in range(10):
             room.images.append(Image('https://picsum.photos/id/' + str(i * 10 + y) + '/400/400'))
             room.reviews.append(Review(random.uniform(1, 5), random_sentence(3), random_sentence(10), 0))

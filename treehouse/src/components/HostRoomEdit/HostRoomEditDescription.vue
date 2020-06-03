@@ -5,9 +5,18 @@
                 <v-list-item-content>
 
                     <v-container>
+                        <v-row>
+                            <v-col>
+                                <ValidationProvider v-slot="{ errors }" rules="required">
+
+                                    <v-text-field name="alpha_field" label="Room Name" v-model="room_desc.title"
+
+                                                  :error-messages="errors"/>
+                                </ValidationProvider>
+                            </v-col>
+                        </v-row>
                         <v-row dense align="center">
                             <v-col cols="6">
-
 
 
                                 <places
@@ -442,7 +451,7 @@
             async saveChanges() {
                 console.log(this.room_desc);
 
-                if (await this.$refs.observer.validate() && (this.room_desc.title !== '' || this.room_desc.title !== null) && (this.room_desc.address !== '' || this.room_desc.address !== null)) {
+                if (await this.$refs.observer.validate() && (this.room_desc.address !== '' || this.room_desc.address !== null)) {
                     this.loading = true;
                     console.log(this.room_desc);
 

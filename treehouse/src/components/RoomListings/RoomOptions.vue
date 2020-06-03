@@ -205,7 +205,7 @@
     export default {
         name: "RoomOptions",
         components: {Places},
-        props: ['init_dates', 'init_place'],
+        props: ['init_dates', 'init_place', 'init_persons'],
         data: function () {
             return {
                 menu: false,
@@ -225,7 +225,7 @@
                     parking: false,
                     elevator: false,
                     dates_formatted: [],
-                    persons: '',
+                    persons: this.init_persons,
                     max_price: '',
                     air_condition: false,
 

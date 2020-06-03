@@ -1,16 +1,16 @@
 <template>
-    <v-container>
-        <v-list height="600px" style="overflow: auto;border-radius: 8px;padding-top: 0px" elevation="2" three-line>
 
-            <v-card-title
+    <v-list height="669px" style="overflow: auto;border-radius: 8px;padding-top: 0px" elevation="2" three-line>
 
-                    style="position: sticky;top: 0;background-color: white;z-index: 1"
-            >
+        <v-card-title
 
-                Reviews
-                <v-rating style="display:inline-flex;margin-left: 20px;"
-                          half-increments
-                          v-model="rating"
+                style="position: sticky;top: 0;background-color: white;z-index: 1"
+        >
+
+            Reviews
+            <v-rating style="display:inline-flex;margin-left: 20px;"
+                      half-increments
+                      v-model="rating"
                           readonly
                           dense
                 ></v-rating>
@@ -32,7 +32,7 @@
             </template>
         </v-list>
 
-    </v-container>
+
 </template>
 
 <script>
