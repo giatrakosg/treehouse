@@ -28,9 +28,10 @@ export default new Vuex.Store({
         state.status = 'error'
       },
       logout(state) {
-        state.status = ''
-        state.token = ''
-        state.user = {}
+        state.status = '';
+        state.token = '';
+        state.user = {};
+        state.isLoggedIn = false ;
       },
       addUsers(state,payload) {
           state.users = payload.users
@@ -66,6 +67,9 @@ export default new Vuex.Store({
               reject(err)
             })
         })
+    },
+    logout({commit}){
+        commit('logout');
     },
     register({ commit }, user) {
       return new Promise((resolve, reject) => {
