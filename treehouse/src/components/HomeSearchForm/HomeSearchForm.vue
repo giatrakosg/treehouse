@@ -41,7 +41,7 @@
                             <v-date-picker v-model="dates" :min="nowDate" no-title scrollable range color="primary">
                                 <v-spacer></v-spacer>
                                 <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
-                                <v-btn text color="primary" @click="this.$refs.menu.save(this.dates)">OK</v-btn>
+                                <v-btn text color="primary" @click="$refs.menu.save(dates)">OK</v-btn>
                             </v-date-picker>
                         </v-menu>
 
@@ -55,7 +55,8 @@
                                 v-model="place.label"
                                 @change=" updateLatLong($event)"
                                 :options="places_options"
-                                :class="place.label === '' ? 'ap-input1': 'ap-input2' "
+                                ref="location"
+
 
                         >
                         </places>
@@ -159,12 +160,36 @@
             },
             updateLatLong(suggestion) {
 
+                this.$refs.location.options.container.style.borderColor = '';
 
-                if (this.place.latlng !== suggestion.latlng) {
-                    this.place.latlng = suggestion.latlng
-                }
+                this.place.latlng = suggestion.latlng
+
 
             },
+            async getRooms() {
+                console.log(this.place.label);
+
+                if (await this.$refs.observer.validate() && (this.place.label !== null || this.place.label !== '')) {
+
+                    console.log(this.place.latlng)
+                    await this.$router.push({
+                        name: 'RoomListings',
+                        params: {
+                            date_from: this.dates[0],
+                            date_to: this.dates[1],
+                            place_label: this.place.label,
+                            place_lat: this.place.latlng.lat,
+                            place_lng: this.place.latlng.lng,
+                            persons: this.persons
+
+                        }
+                    })
+
+                } else if (this.place.label === '' || this.place.label === null) {
+                    this.$refs.location.options.container.style.borderColor = '#ff0d47';
+                }
+
+            }
         }
 
     }
@@ -175,8 +200,6 @@
         border-color: #ff0d47;
 
     }
-
-
 
 
 </style>
