@@ -32,6 +32,7 @@ export default new Vuex.Store({
         state.token = '';
         state.user = {};
         state.isLoggedIn = false ;
+        localStorage.clear()
       },
       addUsers(state,payload) {
           state.users = payload.users
