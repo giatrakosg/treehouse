@@ -11,6 +11,7 @@ import SuccessPage from "../views/SuccessPage"
 import ProfilePage from "../views/ProfilePage"
 import AdminPage from "../views/AdminPage"
 import EditProfilePage from "../views/EditProfilePage"
+import SentEmailPage from "../views/SentEmailPage"
 
 Vue.use(VueRouter)
 
@@ -69,7 +70,13 @@ const routes = [
       path : '/editprofile',
       name : 'Edit Profile Page',
       component : EditProfilePage
-  }
+  },
+  {
+      path : '/sentemail',
+      name : 'Sent Email Page',
+      component : SentEmailPage
+  },
+
 
 
 ]
