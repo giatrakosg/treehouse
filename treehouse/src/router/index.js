@@ -19,72 +19,121 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home ,
+    meta : {
+        requiresAuth : false
+    }
   },
   {
     path: '/register',
     name: 'RegisterPage',
-    component: RegisterPage
+    component: RegisterPage ,
+    meta : {
+        requiresAuth : false
+    }
   },
   {
     path: '/login',
     name: 'LoginPage',
-    component: LoginPage
+    component: LoginPage ,
+    meta : {
+        requiresAuth : false
+    }
   },
   {
-  path: '/roomlistings',
-  name: 'RoomListings',
-  component: RoomListings
+    path: '/roomlistings',
+    name: 'RoomListings',
+    component: RoomListings,
+    meta : {
+        requiresAuth : false
+    }
   },
   {
       path: '/room/:room_title',
       name: 'RoomInfo',
-      component: RoomInfo
+      component: RoomInfo,
+      meta : {
+          requiresAuth : false
+      }
   },
   {
-    path: '/hostrooms',
-    name: 'HostRooms',
-    component: HostRooms
+      path: '/hostrooms',
+      name: 'HostRooms',
+      component: HostRooms,
+      meta : {
+          requiresAuth : false
+      }
   },
   {
       path: '/hostrooms/:room_title',
       name: 'HostRoomEdit',
-      component: HostRoomEdit
+      component: HostRoomEdit,
+      meta : {
+          requiresAuth : false
+      }
+
   } ,
   {
       path : '/success' ,
       name : 'Success Page' ,
-      component : SuccessPage
+      component : SuccessPage ,
+      meta : {
+          requiresAuth : false
+      }
   },
   {
       path : '/profile' ,
       name : 'Profile Page' ,
-      component : ProfilePage
+      component : ProfilePage ,
+      meta : {
+          requiresAuth : true
+      }
   } ,
   {
       path : '/admin' ,
       name : 'Admin Page' ,
-      component : AdminPage
+      component : AdminPage,
+      meta : {
+          requiresAuth : true
+      }
+
   } ,
   {
       path : '/editprofile',
       name : 'Edit Profile Page',
-      component : EditProfilePage
+      component : EditProfilePage,
+      meta : {
+          requiresAuth : true
+      }
   },
   {
       path : '/sentemail',
       name : 'Sent Email Page',
-      component : SentEmailPage
+      component : SentEmailPage,
+      meta : {
+          requiresAuth : false
+      }
   },
-
-
-
 ]
 
 const router = new VueRouter({
     mode: 'history',
     base: process.env.BASE_URL,
     routes
+})
+
+router.beforeEach((to, from, next) => {
+  // redirect to login page if not logged in and trying to access a restricted page
+  const publicPages = ['/login','/login/admin','/register','/success','/sentemail','/hostrooms',
+'/roomlistings'];
+  const authRequired = !publicPages.includes(to.path);
+  const loggedIn = localStorage.getItem('token');
+
+  if (authRequired && !loggedIn) {
+    return next('/login');
+  }
+
+  next();
 })
 
 export default router
