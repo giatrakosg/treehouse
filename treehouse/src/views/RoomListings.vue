@@ -60,7 +60,7 @@
             getRooms(dates, loc, filters) {
 
 
-                this.$http.get('http://' + this.$hostname + ':5000/rooms', {
+                this.$http.get('https://' + this.$hostname + ':5000/rooms', {
                     params: {
                         'date_from': dates[0],
                         'date_to': dates[1],

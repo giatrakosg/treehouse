@@ -55,7 +55,7 @@
 
             <v-col cols="auto">
                     <span style="font-weight: 500">{{reservation.add_persons_cost}}&euro;/extra person + {{reservation.cost_per_day}}&euro;* {{dates_diff}} days=
-                        <span style="font-size: 22px">{{reservation.add_persons_cost *extra_persons + reservation.cost_per_day * dates_diff}}&euro;</span></span>
+                        <span style="font-size: 22px">{{(reservation.add_persons_cost *extra_persons + reservation.cost_per_day * dates_diff) | formatCost }}&euro;</span></span>
             </v-col>
         </v-row>
         <v-row dense justify="center">
@@ -115,6 +115,7 @@
                 return formatted;
 
             },
+
             allowedDates(date) {
                 let date_from, date_to;
 
@@ -147,6 +148,7 @@
                     return `${formatted[0]} - ${formatted[1]}`
                 }
             },
+
         },
         watch: {
             dates() {
@@ -159,6 +161,11 @@
 
                 }
 
+            }
+        },
+        filters: {
+            formatCost: function (value) {
+                return value.toFixed(2)
             }
         }
 

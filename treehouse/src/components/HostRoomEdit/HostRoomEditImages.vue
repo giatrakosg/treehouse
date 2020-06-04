@@ -1,66 +1,74 @@
 <template>
     <v-container>
-        <v-row dense>
-            <v-col class="d-inline-flex ">
-                <v-img v-if="images[0]===undefined || images[0]===null" style="border-radius: 8px 8px 0 0" class="fade"
-                       @click="dialog=true" width="200px"
-                       max-width="528px" height="450px"
+        <v-row dense align="center" justify="center">
+            <v-col cols="auto" class="d-inline-flex">
+                <v-img v-if="images[0]===undefined || images[0]===null" style="border-radius: 8px 0px 0 8px"
+                       class="fade"
+                       @click="dialog=true"
+                       width="450px" height="468px"
                        :src="require('../../assets/empty_thumbnail.png')">
                 </v-img>
 
-                <v-img v-else style="border-radius: 8px 8px 0 0" class="fade" @click="dialog=true" width="200px"
-                       max-width="528px" height="450px"
+                <v-img v-else style="border-radius: 8px 0px 0 8px" class="fade" @click="dialog=true"
+                       width="450" height="468px"
                        :src="images[0].src">
                 </v-img>
             </v-col>
-        </v-row>
-        <v-row justify="start" dense>
-            <v-col class="hidden-sm-and-down" cols="auto">
-                <v-img v-if="images[1]===undefined || images[2]===null" style="border-radius: 8px 8px 0 0" class="fade"
-                       @click="dialog=true" width="260px" height="225px"
-                       :src="require('../../assets/empty_thumbnail.png')">
-                </v-img>
-                <v-img v-else class="fade" @click="dialog=true" width="260px" height="225px"
-                       :src="images[1].src">
-                </v-img>
-            </v-col>
+            <v-col cols="auto">
+                <v-row justify="start" dense>
+                    <v-col class="hidden-sm-and-down" cols="auto">
+                        <v-img v-if="images[1]===undefined || images[2]===null" style="border-radius: 8px 8px 0 0"
+                               class="fade"
+                               @click="dialog=true" width="260px" height="230px"
+                               :src="require('../../assets/empty_thumbnail.png')">
+                        </v-img>
+                        <v-img v-else class="fade" @click="dialog=true" width="260px" height="230px"
+                               :src="images[1].src">
+                        </v-img>
+                    </v-col>
 
-            <v-col class="hidden-sm-and-down">
-                <v-img v-if="images[2]===undefined || images[2]===null" style="border-radius: 8px 8px 0 0" class="fade"
-                       @click="dialog=true" width="260px" height="225px"
-                       :src="require('../../assets/empty_thumbnail.png')">
-                </v-img>
-                <v-img v-else class="fade" @click="dialog=true" width="260px" height="225px"
-                       :src="images[2].src">
-                </v-img>
-            </v-col>
+                    <v-col class="hidden-sm-and-down">
+                        <v-img v-if="images[2]===undefined || images[2]===null" style="border-radius: 0 8px 0 0"
+                               class="fade"
+                               @click="dialog=true" width="260px" height="230px"
+                               :src="require('../../assets/empty_thumbnail.png')">
+                        </v-img>
+                        <v-img v-else class="fade" @click="dialog=true" width="260px" height="230px"
+                               style="border-radius: 0 8px 0 0"
+                               :src="images[2].src">
+                        </v-img>
+                    </v-col>
 
-        </v-row>
-        <v-row justify="start" dense>
-            <v-col class="hidden-sm-and-down" cols="auto">
-                <v-img v-if="images[3]===undefined || images[3]===null" style="border-radius: 8px 8px 0 0" class="fade"
-                       @click="dialog=true"
-                       width="260px" height="200px"
-                       :src="require('../../assets/empty_thumbnail.png')">
-                </v-img>
-                <v-img v-else class="fade" @click="dialog=true" width="260px" height="225px"
-                       style="border-radius: 0 0 0 8px"
-                       :src="images[3].src">
-                </v-img>
-            </v-col>
+                </v-row>
+                <v-row justify="start" dense>
+                    <v-col class="hidden-sm-and-down" cols="auto">
+                        <v-img v-if="images[3]===undefined || images[3]===null" style="border-radius: 0 0 0 0"
+                               class="fade"
+                               @click="dialog=true"
+                               width="260px" height="230px"
+                               :src="require('../../assets/empty_thumbnail.png')">
+                        </v-img>
+                        <v-img v-else class="fade" @click="dialog=true" width="260px" height="230px"
+                               style="border-radius: 0 0 0 0"
+                               :src="images[3].src">
+                        </v-img>
+                    </v-col>
 
-            <v-col class="hidden-sm-and-down">
-                <v-img v-if="images[4]===undefined || images[4]===null" style="border-radius: 8px 8px 0 0" class="fade"
-                       @click="dialog=true"
-                       width="260px" height="200px"
-                       :src="require('../../assets/empty_thumbnail.png')">
-                </v-img>
-                <v-img v-else class="fade" @click="dialog=true" width="260px" height="225px"
-                       style="border-radius: 0 0 8px 0"
-                       :src="images[4].src">
-                </v-img>
-            </v-col>
+                    <v-col class="hidden-sm-and-down">
+                        <v-img v-if="images[4]===undefined || images[4]===null" style="border-radius: 8px 8px 0 0"
+                               class="fade"
+                               @click="dialog=true"
+                               width="260px" height="230px"
+                               :src="require('../../assets/empty_thumbnail.png')">
+                        </v-img>
+                        <v-img v-else class="fade" @click="dialog=true" width="260px" height="230px"
+                               style="border-radius: 0 0 8px 0"
+                               :src="images[4].src">
+                        </v-img>
+                    </v-col>
 
+                </v-row>
+            </v-col>
         </v-row>
 
 

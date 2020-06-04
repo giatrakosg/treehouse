@@ -2,16 +2,21 @@
     <v-container>
 
         <v-row dense align="center">
-            <v-col cols="12" md="12" lg="6" xl="4" order-lg="1" order-xl="1">
-                <HostRoomEditImages v-bind:images="images" v-on:new-images="updateImages" v-if="loaded"/>
-            </v-col>
 
-            <v-col cols="12" md="12" lg="12" xl="4" order-lg="3" order-xl="2">
+
+            <v-col>
                 <HostRoomEditDescription :room_desc="this.room_desc" v-if="loaded"/>
             </v-col>
-            <v-col cols="12" md="12" lg="6" xl="4" order-lg="2" order-xl="3">
+
+        </v-row>
+        <v-row align="center">
+            <v-col cols="12" md="12" lg="12" xl="7" order-lg="1" order-xl="1">
+                <HostRoomEditImages v-bind:images="images" v-on:new-images="updateImages" v-if="loaded"/>
+            </v-col>
+            <v-col cols="12" md="12" lg="12" xl="5" order-lg="2" order-xl="3">
                 <HostRoomEditMap :center="this.room_desc.location" v-if="loaded"/>
             </v-col>
+
         </v-row>
         <v-row>
             <v-col cols="12" xl="5">
@@ -132,7 +137,7 @@
             } else {
 
 
-                let url = 'http://' + this.$hostname + ':5000/rooms/' + this.$route.params.room_title;
+                let url = 'https://' + this.$hostname + ':5000/rooms/' + this.$route.params.room_title;
 
                 this.$http.get(url, {}).then((result) => {
 

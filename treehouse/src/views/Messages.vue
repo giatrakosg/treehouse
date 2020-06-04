@@ -125,7 +125,6 @@
                     console.log(result)
                     this.messages = result.data.messages;
 
-                    this.loaded = true;
 
                 }).catch(error => console.log(error));
 
@@ -133,10 +132,7 @@
 
 
             },
-            room_title: function () {
 
-                this.loaded = true;
-            }
         },
 
         methods: {
