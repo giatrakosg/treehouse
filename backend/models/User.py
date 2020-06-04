@@ -29,5 +29,18 @@ class User(db.Model):
         self.surname = surname
         self.email = email
         self.phone = phone
+    def to_dict(self) :
+        dict = {}
+        dict['public_id'] = self.public_id
+        dict['isAdmin'] = self.isAdmin
+        dict['isHost'] = self.isHost
+        dict['isPending'] = self.isPending
+        dict['uname'] = self.uname
+        dict['fname'] = self.fname
+        dict['surname'] = self.surname
+        dict['email'] = self.email
+        dict['phone'] = self.phone
+        return dict
+
 
 """///////////////////////////////////////////////////////////"""
