@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask import Flask ,request, jsonify, make_response , redirect , url_for
 # noinspection PyUnresolvedReferences
 from flask_migrate import Migrate, MigrateCommand
-from flask_script import Manager
+from flask_script import Manager , Server
 import sys
 import os
 
@@ -34,4 +34,7 @@ db = SQLAlchemy(app)
 
 migrate = Migrate(app, db)
 manager = Manager(app)
+
+server = Server(port=5000,ssl_crt='./ssl_certificates/cert.pem',ssl_key='./ssl_certificates/key.pem')
 manager.add_command('db', MigrateCommand)
+manager.add_command('runserver',server)
