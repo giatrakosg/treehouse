@@ -39,6 +39,10 @@ class Thread(db.Model):
 
         return d
 
+    def destroy(self):
+        for m in self.messages:
+            db.session.delete(m)
+
 
 def random_sentence(words_number):
     letters = string.ascii_letters

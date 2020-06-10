@@ -6,6 +6,7 @@ from models.Image import Image
 from models.Reservation import Reservation, Status
 from models.Review import Review
 from models.Thread import Thread
+from models.Message import Message
 
 import json
 import random
@@ -71,8 +72,6 @@ def get_room(room_title):
                 dict_threads.append(t.to_dict_short())
             room_to_dict['threads'] = dict_threads
 
-            print(room_to_dict)
-
         return jsonify(room_to_dict)
 
     elif request.method == 'POST':
@@ -85,8 +84,12 @@ def get_room(room_title):
 
         return jsonify({'message': 'SUCCESS'})
     elif request.method == 'DELETE':
-        for a in room.availabilities:
+        for a in room.reservations:
             db.session.delete(a)
+
+        for t in room.threads:
+            t.destroy()
+            db.session.delete(t)
 
         for i in room.images:
             db.session.delete(i)

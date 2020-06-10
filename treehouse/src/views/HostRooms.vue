@@ -36,7 +36,7 @@
         }),
         created() {
 
-            let url = 'http://' + this.$hostname + ':5000/rooms/host';
+            let url = 'https://' + this.$hostname + ':5000/rooms/host';
 
             this.$http.get(url, {
                 params: {

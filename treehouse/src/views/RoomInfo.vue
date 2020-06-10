@@ -2,7 +2,8 @@
     <v-container>
         <v-row>
             <v-col>
-                <RoomTitle v-bind:rating="rating" v-bind:reviews_number="reviews_num" v-bind:title="room_desc.title"/>
+                <RoomTitle v-if="loaded" v-bind:rating="rating" v-bind:reviews_number="reviews_num"
+                           v-bind:title="room_desc.title"/>
             </v-col>
             <v-spacer/>
         </v-row>
@@ -12,8 +13,8 @@
                 <RoomImages v-bind:images="images"/>
             </v-col>
             <v-col xl="5" sm="auto">
-                <RoomDescription v-bind:room_desc="room_desc"/>
-                <RoomReservation v-bind:reservation="reservation" class="ml-3 mr-4"/>
+                <RoomDescription v-if="loaded" v-bind:room_desc="room_desc"/>
+                <RoomReservation v-if="loaded" v-bind:reservation="reservation" class="ml-3 mr-4"/>
             </v-col>
 
         </v-row>
@@ -21,7 +22,8 @@
 
         <v-row>
             <v-col cols="12" lg="6">
-                <RoomReviews v-bind:reviews="reviews" v-bind:rating="rating" :room_title="room_desc.title"/>
+                <RoomReviews v-if="loaded" v-bind:reviews="reviews" v-bind:rating="rating"
+                             :room_title="room_desc.title"/>
             </v-col>
             <v-col cols="12" lg="6">
                 <RoomLocation :address="address" v-bind:transport_info="transport_info" :location="location"/>
@@ -29,6 +31,7 @@
 
         </v-row>
     </v-container>
+
 </template>
 
 <script>
@@ -42,6 +45,7 @@
     export default {
         name: "RoomInfo",
         components: {RoomReservation, RoomReviews, RoomLocation, RoomDescription, RoomImages, RoomTitle},
+        contact: false,
         data: () => ({
             images: null,
             room_desc: {
@@ -81,7 +85,9 @@
 
             reviews: [],
             rating: 0,
-            reviews_num: 0
+            reviews_num: 0,
+
+            loaded: false
 
         }),
         created() {
@@ -127,6 +133,8 @@
                     this.reviews = result.data.reviews;
                     this.rating = result.data.rating;
                     this.reviews_num = result.data.reviews_num;
+
+                    this.loaded = true;
 
 
                 })

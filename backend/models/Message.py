@@ -18,6 +18,8 @@ class Message(db.Model):
         d = {
             'text': self.text,
             'timestamp': self.timestamp,
-            'is_read': self.is_read
+            'is_read': self.is_read,
+            'sender': 'John_test',
+            'id': self.id
         }
         return d
