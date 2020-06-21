@@ -90,8 +90,13 @@
             loaded: false
 
         }),
+        computed : {
+            room() {
+                this.$store.state.room ;
+            }
+        }
         created() {
-
+            this.$store.dispatch('getRoom',room_id);
             let url = 'http://' + this.$hostname + ':5000/rooms/' + this.$route.params.room_title;
 
             this.$http.get(url)

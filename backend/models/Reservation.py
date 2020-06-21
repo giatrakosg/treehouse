@@ -1,10 +1,8 @@
 from enum import Enum
-
 from database import db
-
 from models.User import User
 
-"""////////  AVAILABILITY   ///////////////////"""
+"""////////  AVAILABILITY ///////////////////"""
 class Status(Enum):
     not_available = 0
     rented = 1

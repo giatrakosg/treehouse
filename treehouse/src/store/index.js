@@ -22,7 +22,8 @@ export default new Vuex.Store({
       token: localStorage.getItem('token') || '',
       user: {} ,
       users : [],
-      isLoggedIn : false
+      isLoggedIn : false,
+      room : ''
   },
   mutations: {
       addUser(state,payload) {
@@ -51,6 +52,9 @@ export default new Vuex.Store({
       },
       removeUser(state,payload) {
           state.users.splice(payload.index,1)
+      } ,
+      addRoom(state,payload) {
+          state.room = payload.room;
       }
 
   },
@@ -178,7 +182,23 @@ export default new Vuex.Store({
             })
       }) ;
     },
+    getRoom({commit},roomid) {
+        var token = localStorage.getItem('token');
+        var pid = state.user.public_id ;
+        return new Promise((resolve, reject) => {
+          instance({ url: 'user/' + roomid, headers : {
+          } , method: 'GET' })
+            .then(resp => {
+                var room = resp.data.room ;
+                commit('addRoom',room)
+              resolve(resp)
+            })
+            .catch(err => {
+                reject(err)
+            })
+      }) ;
 
+    }
 
   },
   modules: {
