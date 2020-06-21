@@ -6,7 +6,7 @@ from datetime import datetime
 from models.Reservation import Reservation, Status
 from models.Image import Image
 from models.Review import Review
-
+from models.User import User
 """////////  ROOM   ///////////////////               """
 
 
@@ -45,6 +45,8 @@ class Room(db.Model):
     title = db.Column(db.String(30), nullable=False)
     area = db.Column(db.Float, nullable=False)
     min_stay = db.Column(db.Integer, nullable=False)
+
+    owner_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     images = db.relationship('Image', backref='room', lazy=True)
 

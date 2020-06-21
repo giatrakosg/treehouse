@@ -3,13 +3,14 @@ from datetime import datetime, timedelta
 import random
 
 from models.Message import Message
+from models.User import User
 import string
 
 
 class Thread(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    # host_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    # renter_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    host_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    renter_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     room_id = db.Column(db.Integer, db.ForeignKey('room.id'), nullable=False)
 
     messages = db.relationship('Message', backref='thread', lazy=True)
