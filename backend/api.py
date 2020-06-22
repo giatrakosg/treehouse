@@ -19,9 +19,7 @@ app.register_blueprint(users_blueprint)
 app.register_blueprint(messages_blueprint)
 
 db.create_all()
-
 db.session.commit()
-
 
 @app.route('/', methods=['GET'])
 def hello():
