@@ -305,7 +305,6 @@
             },
             applyFilters() {
                 if (this.dates_changed || this.location_changed) {
-                    console.log(this.place.latlng.lng)
 
                     this.$emit('new-rooms', [this.dates, this.place.latlng, this.filters]);
 

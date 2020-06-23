@@ -50,7 +50,6 @@
 <script>
     export default {
         name: "HostRoomEditMessagesRenters",
-        props: ['threads'],
         methods: {
             getMessages(item) {
                 item.last_message.is_read = true;

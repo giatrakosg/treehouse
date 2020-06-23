@@ -1,4 +1,5 @@
 from database import db
+from models.User import User
 
 """////////  REVIEW   ///////////////////               """
 
@@ -18,10 +19,12 @@ class Review(db.Model):
         self.title = title
 
     def to_dict(self):
+        user_name = User.query.filter_by(id=self.user_id).with_entities(User.uname).first()
+
         r = {'rating': self.rating,
              'title': self.title,
              'description': self.description,
-             'user_id': self.user_id}
+             'user_name': user_name[0]}
         return r
 
 

@@ -132,7 +132,6 @@
 <script>
     export default {
         name: "HostRoomEditImages",
-        props: ['images'],
         data: function () {
             return {
                 dialog: false,
@@ -142,6 +141,11 @@
 
                 tmp_images: []
 
+            }
+        },
+        computed: {
+            images() {
+                return this.$store.state.room.images
             }
         },
         watch: {

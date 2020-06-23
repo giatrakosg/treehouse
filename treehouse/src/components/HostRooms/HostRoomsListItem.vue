@@ -1,5 +1,5 @@
 <template>
-    <v-list-item :to="{name:'HostRoomEdit',params:{room_title:room.title}}"
+    <v-list-item :to="{name:'HostRoomEdit',params:{room_id:room.id}}"
                  v-on:mouseover="$root.$emit('highlight',$vnode.key)"
                  v-on:mouseleave="$root.$emit('default',$vnode.key)">
         <v-list-item-avatar tile size="200px" width="300px">

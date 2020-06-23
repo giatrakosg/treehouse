@@ -10,7 +10,7 @@
 
         >
             <l-icon>
-                <img :src="rooms[index].image" class="highlight" style="width: 85px;height:85px;border-radius: 30px"
+                <img :src="item.thumbnail" class="highlight" style="width: 85px;height:85px;border-radius: 30px"
                      ref="img"/>
             </l-icon>
 
@@ -25,20 +25,23 @@
 
     export default {
         name: "HostRoomsMap",
-        props: ['rooms'],
         data() {
             return {
                 url: 'http://mt.google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z}',
-                zoom: 10,
+                zoom: 7,
                 center: [37.984888, 23.730851],
 
 
             };
         },
+        computed: {
+            rooms() {
+                return this.$store.state.rooms
+            }
+        },
         watch: {
             rooms() {
                 let sum = [0, 0];
-                console.log(this.rooms)
 
                 for (let c of this.rooms) {
                     sum[0] = sum[0] + c.location[0];

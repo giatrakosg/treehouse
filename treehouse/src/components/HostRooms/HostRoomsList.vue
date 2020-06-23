@@ -9,13 +9,13 @@
             <h3>Rooms</h3>
             <label style="margin-left: 20px;font-size: 13px;">({{rooms.length}})</label>
             <v-spacer/>
-            <v-text-field label="Search Room" prepend-icon="mdi-magnify" @input="searchRoom($event)"/>
+            <v-text-field v-model="search_title" label="Search Room" prepend-icon="mdi-magnify"/>
             <v-spacer/>
             <v-spacer/>
             <v-tooltip top color="primary">
                 <template v-slot:activator="{ on }">
                     <v-btn color="primary" :ripple="false" v-on="on"
-                           :to="{name:'HostRoomEdit',params:{room_title:'New_Room'}}">
+                           :to="{name:'HostRoomEdit',params:{room_id:-1}}">
                         <v-icon>mdi-plus</v-icon>
 
                     </v-btn>
@@ -23,7 +23,7 @@
                 Add New Room
             </v-tooltip>
         </v-card-title>
-        <template v-for="(item,index) in display_rooms">
+        <template v-for="(item,index) in rooms">
 
             <HostRoomsListItem :key="index" :room="item" :id="'#room'+'_'+index"/>
 
@@ -39,31 +39,19 @@
 
     export default {
         name: "HostRoomsList",
-        props: ['rooms'],
         components: {HostRoomsListItem},
         data: () => ({
-            display_rooms: []
+            display_rooms: [],
+            search_title: ''
         }),
-        watch: {
+        computed: {
             rooms() {
-                console.log(this.rooms);
-                this.display_rooms = this.rooms
+                console.log(this.$store.state.rooms)
+                return this.$store.state.rooms.filter(room => room.title.toLowerCase().search(this.search_title.toLowerCase()) !== -1)
             }
         },
-        methods: {
-            searchRoom(str) {
-                console.log(str);
-                this.display_rooms = [];
-                for (let i of this.rooms) {
-                    if (i.title.toLowerCase().search(str.toLowerCase()) !== -1) {
-                        this.display_rooms.push(i)
-                    }
-                }
 
-            }
-        },
         mounted() {
-
             this.$root.$on('scroll-to-room', (index) => {
                 document.getElementById("#list").scroll(0, index * 232)
 

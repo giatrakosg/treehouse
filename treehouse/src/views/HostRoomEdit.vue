@@ -5,25 +5,25 @@
 
 
             <v-col>
-                <HostRoomEditDescription :room_desc="this.room_desc" v-if="loaded"/>
+                <HostRoomEditDescription v-if="loaded"/>
             </v-col>
 
         </v-row>
         <v-row align="center">
             <v-col cols="12" md="12" lg="12" xl="7" order-lg="1" order-xl="1">
-                <HostRoomEditImages v-bind:images="images" v-on:new-images="updateImages" v-if="loaded"/>
+                <HostRoomEditImages v-on:new-images="updateImages" v-if="loaded"/>
             </v-col>
             <v-col cols="12" md="12" lg="12" xl="5" order-lg="2" order-xl="3">
-                <HostRoomEditMap :center="this.room_desc.location" v-if="loaded"/>
+                <HostRoomEditMap :center="this.room.location" v-if="loaded"/>
             </v-col>
 
         </v-row>
         <v-row>
             <v-col cols="12" xl="5">
-                <HostRoomEditReviews v-bind:reviews="reviews" v-bind:rating="rating"/>
+                <!--               // <HostRoomEditReviews />-->
             </v-col>
             <v-col cols="12" xl="7">
-                <HostRoomEditMessages v-bind:message_threads="message_threads"/>
+                <!--                <HostRoomEditMessages />-->
             </v-col>
 
         </v-row>
@@ -34,18 +34,18 @@
     import HostRoomEditDescription from "../components/HostRoomEdit/HostRoomEditDescription";
     import HostRoomEditImages from "../components/HostRoomEdit/HostRoomEditImages";
     import HostRoomEditMap from "../components/HostRoomEdit/HostRoomEditMap";
-    import HostRoomEditReviews from "../components/HostRoomEdit/HostRoomEditReviews";
-    import moment from 'moment'
-
-
-    import HostRoomEditMessages from "../components/HostRoomEdit/HostRoomEditMessages";
+    // import HostRoomEditReviews from "../components/HostRoomEdit/HostRoomEditReviews";
+    //
+    //
+    //
+    // import HostRoomEditMessages from "../components/HostRoomEdit/HostRoomEditMessages";
 
 
     export default {
         name: "HostRoomEdit",
         components: {
-            HostRoomEditMessages,
-            HostRoomEditReviews,
+            // HostRoomEditMessages,
+            // HostRoomEditReviews,
             HostRoomEditMap,
             HostRoomEditImages,
             HostRoomEditDescription,
@@ -53,165 +53,95 @@
         },
         data: () => ({
             loaded: false,
-
-            images: null,
-            room_desc: {
-                air_condition: Boolean,
-                elevator: Boolean,
-                kitchen: Boolean,
-                lounge: Boolean,
-                parking: Boolean,
-                refrigerator: Boolean,
-                baths_num: Number,
-                beds_num: Number,
-                bedrooms_num: Number,
-                tv: Boolean,
-                area: Number,
-                type: String,
-                wireless_internet: Boolean,
-                description: String,
-                smoking_allowed: Boolean,
-                pets_allowed: Boolean,
-                events_allowed: Boolean,
-                min_stay: Number,
-                persons_num: Number,
-                title: String,
-                address: String,
-                transport_info: String,
-                add_persons_cost: Number,
-                cost_per_day: Number,
-                reservations: Array,
-                location: []
-
-
-            },
-
-
-            reviews: [],
-            message_threads: [],
-            rating: 0
         }),
-        created() {
+        computed: {
+            room() {
+                return this.$store.state.room
+            }
+        },
+        async created() {
 
-            if (this.$route.params.room_title === 'New_Room') {
+            if (this.$route.params.room_id == -1) {
+                this.$store.state.room = {
+                    title: '',
+                    air_condition: false,
+                    elevator: false,
+                    kitchen: false,
+                    lounge: false,
+                    parking: false,
+                    refrigerator: false,
+                    baths_num: 0,
+                    beds_num: 0,
+                    bedrooms_num: 0,
+                    tv: false,
+                    area: 0,
+                    type: '',
+                    description: '',
+                    wireless_internet: false,
+                    smoking_allowed: false,
+                    pets_allowed: false,
+                    events_allowed: false,
+                    min_stay: 0,
+                    persons_num: 0,
+                    address: '',
+                    transport_info: '',
+                    cost_per_day: 0,
+                    add_persons_cost: 0,
+                    reservations: [{date_from: new Date().toISOString().slice(0, 10), date_to: null}],
+                    images: [],
+                    reviews_num: 0,
+                    location: [37.983810, 23.727539]
 
-                this.images = [];
-
-                this.room_desc.title = '';
-                this.room_desc.air_condition = false;
-                this.room_desc.elevator = false;
-                this.room_desc.kitchen = false;
-                this.room_desc.lounge = false;
-                this.room_desc.parking = false;
-                this.room_desc.refrigerator = false;
-                this.room_desc.baths_num = 0;
-                this.room_desc.beds_num = 0;
-                this.room_desc.bedrooms_num = 0;
-                this.room_desc.tv = false;
-                this.room_desc.area = 0;
-                this.room_desc.type = '';
-                this.room_desc.description = '';
-                this.room_desc.wireless_internet = false;
-                this.room_desc.smoking_allowed = false;
-                this.room_desc.pets_allowed = false;
-                this.room_desc.events_allowed = false;
-                this.room_desc.min_stay = 0;
-                this.room_desc.persons_num = 0;
-                this.room_desc.title = '';
-                this.room_desc.address = '';
-                this.room_desc.transport_info = '';
-                this.room_desc.cost_per_day = 0;
-                this.room_desc.add_persons_cost = 0;
-
-                this.room_desc.location = [37.97945, 23.71622];
-
-                this.reviews = [];
-                this.rating = 0;
-
-                this.message_threads = [];
-
-                this.room_desc.reservations = [{date_from: new Date().toISOString().slice(0, 10), date_to: null}];
+                }
 
 
                 this.loaded = true;
             } else {
+                await this.$store.dispatch('getRoom', this.$route.params.room_id)
+                console.log(this.$store.state.room)
+
+                // let formatted_dates = [];
+                //
+                // for (let a of result.data.reservations) {
+                //     if (a.status === 0) {
+                //         if (a.date_to === null) {
+                //             formatted_dates.push({
+                //                 date_from: moment(a.date_from).format('YYYY-MM-DD'),
+                //                 date_to: null
+                //             });
+                //         } else {
+                //             formatted_dates.push({
+                //                 date_from: moment(a.date_from).format('YYYY-MM-DD'),
+                //                 date_to: moment(a.date_to).format('YYYY-MM-DD')
+                //             });
+                //         }
+                //
+                //     }
+                //
+                // }
+
+                // this.room_desc.reservations = formatted_dates;
+                //
+                //
+                // console.log(result.data);
+                //
+                // this.room_desc.location = result.data.location;
+                // this.reviews = result.data.reviews;
+                // this.message_threads = result.data.threads.sort(function (a, b) {
+                //     if (new Date(a.last_message.timestamp) <= new Date(b.last_message.timestamp)) {
+                //         return 1;
+                //     } else {
+                //         return -1;
+                //     }
+                // });
+                // console.log(this.message_threads);
+                //
+                //
+                // this.rating = result.data.rating;
+
+                this.loaded = true;
 
 
-                let url = 'https://' + this.$hostname + ':5000/rooms/' + this.$route.params.room_title;
-
-                this.$http.get(url, {}).then((result) => {
-
-
-                    this.images = result.data.images;
-
-                    this.room_desc.air_condition = result.data.air_condition;
-                    this.room_desc.elevator = result.data.elevator;
-                    this.room_desc.kitchen = result.data.kitchen;
-                    this.room_desc.lounge = result.data.lounge;
-                    this.room_desc.parking = result.data.parking;
-                    this.room_desc.refrigerator = result.data.refrigerator;
-                    this.room_desc.baths_num = result.data.baths_number;
-                    this.room_desc.beds_num = result.data.beds_number;
-                    this.room_desc.bedrooms_num = result.data.bedrooms_number;
-                    this.room_desc.tv = result.data.tv;
-                    this.room_desc.area = result.data.area;
-                    this.room_desc.type = result.data.type;
-                    this.room_desc.description = result.data.description;
-                    this.room_desc.wireless_internet = result.data.wireless_internet;
-                    this.room_desc.smoking_allowed = result.data.smoking_allowed;
-                    this.room_desc.pets_allowed = result.data.pets_allowed;
-                    this.room_desc.events_allowed = result.data.events_allowed;
-                    this.room_desc.min_stay = result.data.min_stay;
-                    this.room_desc.persons_num = result.data.persons_number;
-                    this.room_desc.title = result.data.title;
-                    this.room_desc.address = result.data.address;
-                    this.room_desc.transport_info = result.data.transport_info;
-                    this.room_desc.cost_per_day = result.data.cost_per_day;
-                    this.room_desc.add_persons_cost = result.data.add_persons_cost.toFixed(2);
-
-                    let formatted_dates = [];
-
-                    for (let a of result.data.reservations) {
-                        if (a.status === 0) {
-                            if (a.date_to === null) {
-                                formatted_dates.push({
-                                    date_from: moment(a.date_from).format('YYYY-MM-DD'),
-                                    date_to: null
-                                });
-                            } else {
-                                formatted_dates.push({
-                                    date_from: moment(a.date_from).format('YYYY-MM-DD'),
-                                    date_to: moment(a.date_to).format('YYYY-MM-DD')
-                                });
-                            }
-
-                        }
-
-                    }
-
-                    this.room_desc.reservations = formatted_dates;
-
-
-                    console.log(result.data);
-
-                    this.room_desc.location = result.data.location;
-                    this.reviews = result.data.reviews;
-                    this.message_threads = result.data.threads.sort(function (a, b) {
-                        if (new Date(a.last_message.timestamp) <= new Date(b.last_message.timestamp)) {
-                            return 1;
-                        } else {
-                            return -1;
-                        }
-                    });
-                    console.log(this.message_threads);
-
-
-                    this.rating = result.data.rating;
-
-                    this.loaded = true;
-
-
-                }).catch(error => console.log(error));
             }
 
         },
@@ -219,7 +149,7 @@
             updateImages(updated_images) {
                 this.images = updated_images;
 
-                let url = 'http://127.0.0.1:5000/rooms/' + this.$route.params.room_title + '/update_images';
+                let url = 'https://127.0.0.1:5000/rooms/' + this.$route.params.room_title + '/update_images';
 
                 this.$http.post(url, {
                     'images': this.images

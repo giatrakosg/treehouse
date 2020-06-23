@@ -80,10 +80,6 @@
 
                 this.page_rooms = [];
 
-
-                console.log("----------");
-                console.log(this.rooms);
-
                 let rem;
 
                 let total_rooms = this.rooms.length;

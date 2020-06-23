@@ -1,7 +1,7 @@
 <template>
     <v-container class="grid-list-lg">
-        <div v-if="!loaded"></div>
-        <v-layout v-else>
+
+        <v-layout>
             <v-flex class="d-inline-flex ">
                 <v-img v-if="images[0]===undefined || images[0]===null" style="border-radius: 8px 8px 0 0" class="fade"
                        @click="openAllImages(0)"
@@ -93,7 +93,6 @@
 <script>
     export default {
         name: "RoomImages",
-        props: ['images'],
         data: function () {
             return {
                 dialog: false,
@@ -111,6 +110,11 @@
             openAllImages(index) {
                 this.dialog = true;
                 this.first_image = index;
+            }
+        },
+        computed: {
+            images() {
+                return this.$store.state.room.images
             }
         }
     }

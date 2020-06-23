@@ -10,13 +10,13 @@
                 Reviews
                 <v-rating style="display:inline-flex;margin-left: 20px;"
                           half-increments
-                          v-model="rating"
+                          v-model="reviews.rating"
                           readonly
                           dense
                 ></v-rating>
                 <label style="margin-left: 20px;font-size: 13px;">{{reviews.length}} reviews</label>
                 <v-spacer/>
-                <v-btn color="primary" @click="show_review_form=true">
+                <v-btn color="primary" @click="onOpenReviewForm">
                     <v-icon class="fas fa-edit"></v-icon>
                     Write a Review
                 </v-btn>
@@ -24,10 +24,11 @@
             <template v-for="(item,index) in reviews">
                 <RoomReview v-bind:key="index"
                             avatar="https://cdn.vuetifyjs.com/images/lists/2.jpg"
-                            username="John"
+                            v-bind:username="item.user_name"
                             v-bind:content="item.description"
                             v-bind:title="item.title"
                             v-bind:rating="item.rating"
+
                 />
                 <v-divider v-bind:key="index+reviews.length"/>
 
@@ -35,8 +36,6 @@
         </v-list>
         <v-dialog v-model="show_review_form" width="500px"  >
             <RoomReviewForm
-                    :room_title="room_title"
-                    @new-review="onNewReview"
                     @close-review-form="onCloseReviewForm"/>
         </v-dialog>
     </v-container>
@@ -49,23 +48,33 @@
 
     export default {
         components: {RoomReviewForm, RoomReview},
-        props: ['reviews', 'rating', 'room_title'],
         data: () => ({
 
             show_review_form: false,
 
         }),
         methods: {
-            onNewReview(review) {
-                this.show_review_form = false;
-                console.log(review);
 
-                this.reviews.push(review);
-            },
             onCloseReviewForm() {
                 this.show_review_form = false;
+            },
+            onOpenReviewForm() {
+                if (this.$store.state.isLoggedIn) {
+                    this.show_review_form = true
+                } else {
+                    //ok
+                }
             }
+        },
+        computed: {
+            reviews() {
+                return this.$store.state.reviews
+            }
+        },
+        async created() {
+            await this.$store.dispatch('getReviews', this.$store.state.room.Id)
         }
+
     }
 </script>
 

@@ -54,8 +54,8 @@
 
 
             <v-col cols="auto">
-                    <span style="font-weight: 500">{{reservation.add_persons_cost}}&euro;/extra person + {{reservation.cost_per_day}}&euro;* {{dates_diff}} days=
-                        <span style="font-size: 22px">{{(reservation.add_persons_cost *extra_persons + reservation.cost_per_day * dates_diff) | formatCost }}&euro;</span></span>
+                    <span style="font-weight: 500">{{room.add_persons_cost | formatFloat}}&euro;/extra person + {{room.cost_per_day | formatFloat}}&euro;* {{dates_diff}} days=
+                        <span style="font-size: 22px">{{(room.add_persons_cost *extra_persons + room.cost_per_day * dates_diff) | formatFloat }}&euro;</span></span>
             </v-col>
         </v-row>
         <v-row dense justify="center">
@@ -76,16 +76,7 @@
 
     export default {
         name: "RoomReservation",
-        props: {
-            reservation: {
-                min_stay: Number,
-                add_persons_cost: Number,
-                persons_number: Number,
-                cost_per_day: Number,
-                reserved_dates: Array
-            }
 
-        },
         data: function () {
             return {
                 menu: false,
@@ -98,6 +89,7 @@
             }
 
         },
+
         methods: {
             formatDate(dates) {
                 let formatted = [];
@@ -148,6 +140,9 @@
                     return `${formatted[0]} - ${formatted[1]}`
                 }
             },
+            room() {
+                return this.$store.state.room
+            }
 
         },
         watch: {
@@ -161,11 +156,6 @@
 
                 }
 
-            }
-        },
-        filters: {
-            formatCost: function (value) {
-                return value.toFixed(2)
             }
         }
 
