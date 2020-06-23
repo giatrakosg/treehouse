@@ -11,10 +11,24 @@ import json
 messages_blueprint = Blueprint('messages', __name__)
 
 
-@messages_blueprint.route("/threads/<int:thread_id>/message", methods=['POST', 'DELETE', 'PUT'])
-def new_message(thread_id):
+@messages_blueprint.route("/threads/<int:thread_id>/messages", methods=['POST', 'GET', 'DELETE', 'PUT'])
+def thread_messages(thread_id):
     args_data = request.get_json()
     print(args_data)
+
+    if request.method == 'GET':
+
+        thread = Thread.query.filter_by(id=thread_id).first()
+
+        if thread is None:
+            return jsonify({'message': 'ERROR'})
+
+        thread.messages[-1].is_read = True
+
+        messages = thread.to_dict()
+        db.session.commit()
+
+        return jsonify(messages)
 
     if request.method == 'POST':
 
@@ -73,18 +87,17 @@ def new_message(thread_id):
     return jsonify({'message': 'SUCCESS'})
 
 
-@messages_blueprint.route("/threads/<int:thread_id>", methods=['GET'])
-def get_thread_messages(thread_id):
-    thread = Thread.query.filter_by(id=thread_id).first()
+@messages_blueprint.route("/rooms/<int:room_id>/threads", methods=['GET'])
+def get_threads(room_id):
+    room = Room.query.filter_by(id=room_id).first()
 
-    if thread is None:
+    if room is None:
         return jsonify({'message': 'ERROR'})
 
-    thread_messages = Message.query.filter_by(thread_id=thread_id, is_read=False).all()
-    for m in thread_messages:
-        m.is_read = True
-        db.session.commit()
+    threads_dict = []
+    threads = room.threads
 
-    messages = thread.to_dict()
+    for t in threads:
+        threads_dict.append(t.to_dict())
 
-    return jsonify(messages)
+    return jsonify(threads_dict)

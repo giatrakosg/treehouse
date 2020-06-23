@@ -41,21 +41,22 @@ const routes = [
     }
   },
   {
-    path: '/roomlistings',
-    name: 'RoomListings',
-    component: RoomListings,
-    meta : {
-        requiresAuth : false
-    }
-  },
-  {
-      path: '/room/:room_title',
-      name: 'RoomInfo',
-      component: RoomInfo,
-      meta : {
-          requiresAuth : false
+      path: '/roomlistings',
+      name: 'RoomListings',
+      component: RoomListings,
+      props: true,
+      meta: {
+          requiresAuth: false
       }
   },
+    {
+        path: '/room/:room_id',
+        name: 'RoomInfo',
+        component: RoomInfo,
+        meta: {
+            requiresAuth: false
+        }
+    },
   {
       path: '/hostrooms',
       name: 'HostRooms',
@@ -64,15 +65,15 @@ const routes = [
           requiresAuth : false
       }
   },
-  {
-      path: '/hostrooms/:room_title',
-      name: 'HostRoomEdit',
-      component: HostRoomEdit,
-      meta : {
-          requiresAuth : false
-      }
+    {
+        path: '/hostrooms/:room_id',
+        name: 'HostRoomEdit',
+        component: HostRoomEdit,
+        meta: {
+            requiresAuth: false
+        }
 
-  } ,
+    } ,
   {
       path : '/success' ,
       name : 'Success Page' ,

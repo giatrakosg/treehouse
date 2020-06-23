@@ -167,11 +167,9 @@
 
             },
             async getRooms() {
-                console.log(this.place.label);
 
                 if (await this.$refs.observer.validate() && (this.place.label !== null || this.place.label !== '')) {
 
-                    console.log(this.place.latlng)
                     await this.$router.push({
                         name: 'RoomListings',
                         params: {

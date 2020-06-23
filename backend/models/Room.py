@@ -7,6 +7,7 @@ from models.Reservation import Reservation, Status
 from models.Image import Image
 from models.Review import Review
 from models.User import User
+
 """////////  ROOM   ///////////////////               """
 
 
@@ -71,7 +72,7 @@ class Room(db.Model):
                  smoking_all, pets_all, events_all, wifi, ac, refrigerator, kitchen, tv,
                  parking, elevator, latitude, longitude,
                  address, tran_info, pers_num,
-                 standard_cost, add_prs_cost, title, area, min_stay):
+                 standard_cost, add_prs_cost, title, area, min_stay, owner_id):
         self.type = rt
         self.beds_num = beds_num
         self.baths_num = baths_num
@@ -98,6 +99,7 @@ class Room(db.Model):
         self.title = title
         self.area = area
         self.min_stay = min_stay
+        self.owner_id = owner_id
 
     def to_dict_all(self):
 
@@ -113,6 +115,7 @@ class Room(db.Model):
             images.append(image_dict)
 
         r = {
+            'Id': self.id,
             'type': self.type,
             'beds_number': self.beds_num,
             'baths_number': self.baths_num,
@@ -141,7 +144,6 @@ class Room(db.Model):
             'cost_per_day': self.standard_cost,
             'images': images,
             'bedrooms_number': self.bedrooms_num,
-            'reviews': reviews,
             'reviews_num': len(self.reviews)
 
         }
@@ -160,6 +162,7 @@ class Room(db.Model):
              'address': self.address,
              'reviews_number': len(self.reviews),
              'location': [self.lat_coordinate, self.long_coordinate],
+             'id': self.id
              }
 
         if len(self.images) == 0:
@@ -197,9 +200,9 @@ class Room(db.Model):
     def update(self, data):
 
         self.type = RoomTypes(data['type'])
-        self.beds_num = data['beds_num']
-        self.baths_num = data['baths_num']
-        self.bedrooms_num = data['bedrooms_num']
+        self.beds_num = data['beds_number']
+        self.baths_num = data['baths_number']
+        self.bedrooms_num = data['bedrooms_number']
         self.lounge = data['lounge']
         self.description = data['description']
         self.smoking_allowed = data['smoking_allowed']
@@ -216,7 +219,7 @@ class Room(db.Model):
         self.long_coordinate = data['location']['lng']
         self.address = data['address']
         self.transport_info = data['transport_info']
-        self.persons_num = data['persons_num']
+        self.persons_num = data['persons_number']
         self.standard_cost = data['cost_per_day']
         self.add_persons_cost = data['add_persons_cost']
         self.title = data['title']
@@ -230,11 +233,11 @@ class Room(db.Model):
                 db.session.delete(a)
 
         for a in reservations:
-            d_from = datetime.strptime(a['date_from'], '%Y-%m-%d')
+            d_from = datetime.strptime(a['date_from'], "%a, %d %b %Y %H:%M:%S GMT")
             if a['date_to'] is None:
                 d_to = None
             else:
-                d_to = datetime.strptime(a['date_to'], '%Y-%m-%d')
+                d_to = datetime.strptime(a['date_to'], "%a, %d %b %Y %H:%M:%S GMT")
             status = Status.not_available
 
             self.reservations.append(Reservation(d_from, d_to, status))

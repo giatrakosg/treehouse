@@ -119,7 +119,7 @@
         }),
         watch: {
             thread_id: function () {
-                let url = 'http://' + this.$hostname + ':5000/threads/' + this.thread_id;
+                let url = 'https://' + this.$hostname + ':5000/threads/' + this.thread_id;
 
                 this.$http.get(url, {}).then((result) => {
                     console.log(result)
@@ -143,7 +143,7 @@
                     this.message.timestamp = moment().format("DD/MM/YYYY  HH:mm")
 
 
-                    let url = 'http://' + this.$hostname + ':5000/threads/' + this.thread_id + '/message';
+                    let url = 'https://' + this.$hostname + ':5000/threads/' + this.thread_id + '/message';
 
                     if (this.user_is_renter) { //user is renter
                         this.$http.put(url, {
@@ -169,7 +169,7 @@
             },
             deleteMessage(item, index) {
 
-                let url = 'http://' + this.$hostname + ':5000/threads/' + this.thread_id + '/message';
+                let url = 'https://' + this.$hostname + ':5000/threads/' + this.thread_id + '/message';
 
                 this.$http.delete(url, {
                     data: {

@@ -9,7 +9,7 @@
                             <v-col>
                                 <ValidationProvider v-slot="{ errors }" rules="required">
 
-                                    <v-text-field name="alpha_field" label="Room Name" v-model="room_desc.title"
+                                    <v-text-field name="alpha_field" label="Room Name" v-model="room.title"
 
                                                   :error-messages="errors"/>
                                 </ValidationProvider>
@@ -21,7 +21,7 @@
 
                                 <places
                                         placeholder="Location"
-                                        v-model="room_desc.address"
+                                        v-model="room.address"
                                         @change=" updateLatLong($event)"
                                         :options="places_options"
                                 >
@@ -32,7 +32,7 @@
                             <v-col cols="6">
 
                                 <v-text-field color="primary" label="Transport Info"
-                                              v-model="room_desc.transport_info">
+                                              v-model="room.transport_info">
 
                                 </v-text-field>
                             </v-col>
@@ -42,16 +42,16 @@
                             <v-col cols="auto">
                                 <ValidationProvider v-slot="{ errors }" rules="required">
                                     <v-select :items="room_types"
-                                              v-model="room_desc.type"
+                                              v-model="room.type"
                                               outlined
                                               :error-messages="errors"
                                               required
                                               dense
                                               label="Room Type"
                                               style="height: 40px;width: 180px"
-                                              :prepend-icon="room_desc.type === 'private room' ? 'mdi-account'
-                                                    : room_desc.type === 'shared room' ? 'mdi-account-multiple'
-                                                    : room_desc.type === 'house' ? 'mdi-home'
+                                              :prepend-icon="room.type === 'private room' ? 'mdi-account'
+                                                    : room.type === 'shared room' ? 'mdi-account-multiple'
+                                                    : room.type === 'house' ? 'mdi-home'
                                                     : '' "
                                               item-value="value"
                                               item-text="text"
@@ -87,7 +87,7 @@
                                         <ValidationProvider v-slot="{ errors }" rules="required">
                                             <v-text-field color="primary" prepend-icon="mdi-shower" v-on="on"
                                                           type="number" style="width: 70px" min="0"
-                                                          v-model="room_desc.baths_num"
+                                                          v-model="room.baths_number"
                                                           :error-messages="errors"
                                             />
                                         </ValidationProvider>
@@ -104,7 +104,7 @@
                                         <ValidationProvider v-slot="{ errors }" rules="required">
                                             <v-text-field color="primary" prepend-icon="mdi-bed-king" v-on="on"
                                                           type="number" style="width: 70px" min="0"
-                                                          v-model="room_desc.bedrooms_num"
+                                                          v-model="room.bedrooms_number"
                                                           :error-messages="errors"
                                             />
                                         </ValidationProvider>
@@ -122,7 +122,7 @@
                                         <ValidationProvider v-slot="{ errors }" rules="required">
                                             <v-text-field color="primary" prepend-icon="mdi-bed" v-on="on"
                                                           type="number" style="width: 70px" min="0"
-                                                          v-model="room_desc.beds_num"
+                                                          v-model="room.beds_number"
                                                           :error-messages="errors"
 
                                             />
@@ -135,7 +135,7 @@
                             <v-col cols="auto">
                                 <v-tooltip top color="primary">
                                     <template v-slot:activator="{ on }">
-                                        <v-checkbox v-model="room_desc.lounge" prepend-icon="mdi-sofa" v-on="on"/>
+                                        <v-checkbox v-model="room.lounge" prepend-icon="mdi-sofa" v-on="on"/>
                                     </template>
                                     Lounge
                                 </v-tooltip>
@@ -146,7 +146,7 @@
                                         <ValidationProvider v-slot="{ errors }" rules="required">
                                             <v-text-field color="primary" prepend-icon="mdi-fit-to-page" v-on="on"
                                                           type="number" style="width: 110px" min="0"
-                                                          v-model="room_desc.area"
+                                                          v-model="room.area"
                                                           :error-messages="errors">
                                                 <template slot="append"><i><sub>m<sup>2</sup></sub></i></template>
                                             </v-text-field>
@@ -158,7 +158,7 @@
                             <v-col cols="auto">
                                 <v-tooltip top color="primary">
                                     <template v-slot:activator="{ on }">
-                                        <v-checkbox v-model="room_desc.wireless_internet" prepend-icon="mdi-wifi"
+                                        <v-checkbox v-model="room.wireless_internet" prepend-icon="mdi-wifi"
                                                     v-on="on"/>
                                     </template>
                                     Wifi
@@ -167,7 +167,7 @@
                             <v-col cols="auto">
                                 <v-tooltip top color="primary">
                                     <template v-slot:activator="{ on }">
-                                        <v-checkbox v-model="room_desc.air_condition" prepend-icon="mdi-air-conditioner"
+                                        <v-checkbox v-model="room.air_condition" prepend-icon="mdi-air-conditioner"
                                                     v-on="on"/>
                                     </template>
                                     A/C
@@ -176,7 +176,7 @@
                             <v-col cols="auto">
                                 <v-tooltip top color="primary">
                                     <template v-slot:activator="{ on }">
-                                        <v-checkbox v-model="room_desc.refrigerator" prepend-icon="mdi-fridge"
+                                        <v-checkbox v-model="room.refrigerator" prepend-icon="mdi-fridge"
                                                     v-on="on"/>
                                     </template>
                                     Refrigerator
@@ -185,7 +185,7 @@
                             <v-col cols="auto">
                                 <v-tooltip top color="primary">
                                     <template v-slot:activator="{ on }">
-                                        <v-checkbox v-model="room_desc.kitchen" prepend-icon="mdi-stove" v-on="on"/>
+                                        <v-checkbox v-model="room.kitchen" prepend-icon="mdi-stove" v-on="on"/>
                                     </template>
                                     Kitchen
                                 </v-tooltip>
@@ -193,7 +193,7 @@
                             <v-col cols="auto">
                                 <v-tooltip top color="primary">
                                     <template v-slot:activator="{ on }">
-                                        <v-checkbox hint="ok" v-model="room_desc.tv" prepend-icon="mdi-television"
+                                        <v-checkbox hint="ok" v-model="room.tv" prepend-icon="mdi-television"
                                                     v-on="on"/>
                                     </template>
                                     TV
@@ -202,7 +202,7 @@
                             <v-col cols="auto">
                                 <v-tooltip top color="primary">
                                     <template v-slot:activator="{ on }">
-                                        <v-checkbox v-model="room_desc.parking" prepend-icon="mdi-garage-open-variant"
+                                        <v-checkbox v-model="room.parking" prepend-icon="mdi-garage-open-variant"
                                                     v-on="on"/>
                                     </template>
                                     Parking
@@ -212,7 +212,7 @@
                             <v-col cols="auto">
                                 <v-tooltip top color="primary">
                                     <template v-slot:activator="{ on }">
-                                        <v-checkbox v-model="room_desc.elevator" prepend-icon="mdi-elevator-passenger"
+                                        <v-checkbox v-model="room.elevator" prepend-icon="mdi-elevator-passenger"
                                                     v-on="on"/>
                                     </template>
                                     Elevator
@@ -232,7 +232,7 @@
                             <v-col cols="auto">
                                 <v-tooltip top color="brown">
                                     <template v-slot:activator="{ on }">
-                                        <v-checkbox color="brown" v-model="room_desc.smoking_allowed"
+                                        <v-checkbox color="brown" v-model="room.smoking_allowed"
                                                     prepend-icon="mdi-smoking" v-on="on"/>
                                     </template>
                                     Smocking Allowed
@@ -241,7 +241,7 @@
                             <v-col cols="auto">
                                 <v-tooltip top color="brown">
                                     <template v-slot:activator="{ on }">
-                                        <v-checkbox color="brown" v-model="room_desc.pets_allowed"
+                                        <v-checkbox color="brown" v-model="room.pets_allowed"
                                                     prepend-icon="mdi-paw"
                                                     v-on="on"/>
                                     </template>
@@ -251,7 +251,7 @@
                             <v-col cols="auto">
                                 <v-tooltip top color="brown">
                                     <template v-slot:activator="{ on }">
-                                        <v-checkbox color="brown" v-model="room_desc.events_allowed"
+                                        <v-checkbox color="brown" v-model="room.events_allowed"
                                                     prepend-icon="mdi-party-popper"
                                                     v-on="on"/>
                                     </template>
@@ -263,7 +263,7 @@
 
                                     <v-text-field color="brown" label="Minimum stay" suffix="days"
                                                   type="number" style="width: 140px" min="0"
-                                                  v-model="room_desc.min_stay"
+                                                  v-model="room.min_stay"
                                                   :error-messages="errors">
 
                                     </v-text-field>
@@ -273,7 +273,7 @@
                                 <ValidationProvider v-slot="{ errors }" rules="required">
                                     <v-text-field color="brown" label="Persons number"
                                                   type="number" style="width: 100px" min="0"
-                                                  v-model="room_desc.persons_num"
+                                                  v-model="room.persons_number"
                                                   :error-messages="errors">
 
                                     </v-text-field>
@@ -284,8 +284,9 @@
                         <v-row dense>
                             <v-col cols="auto">
 
+
                                 <HostRoomEditCalendar v-on:new-dates="saveDates"
-                                                      :reservation_date_ranges="room_desc.reservations"/>
+                                                      :reservation_date_ranges="room.reservations"/>
 
                             </v-col>
                             <v-col cols="auto">
@@ -293,7 +294,8 @@
 
                                     <v-text-field color="blue" label="Cost per day" suffix="€"
                                                   type="number" style="width: 120px" min="0"
-                                                  v-model="room_desc.cost_per_day"
+                                                  :value="room.cost_per_day | formatFloat"
+                                                  :v-model="room.cost_per_day"
                                                   :error-messages="errors">
 
                                     </v-text-field>
@@ -304,7 +306,8 @@
 
                                     <v-text-field color="blue" label="Extra person cost" suffix="€"
                                                   type="number" style="width: 140px" min="0"
-                                                  v-model="room_desc.add_persons_cost"
+                                                  :value="room.add_persons_cost | formatFloat"
+                                                  :v-model="room.add_persons_cost"
                                                   :error-messages="errors">
 
                                     </v-text-field>
@@ -323,7 +326,7 @@
                         <v-textarea
 
                                 auto-grow
-                                v-model="room_desc.description"
+                                v-model="room.description"
                                 label="Description"
                                 :error-messages="errors"
 
@@ -399,9 +402,7 @@
         components: {
             HostRoomEditCalendar, ValidationObserver, ValidationProvider, Places
         },
-        props: {
-            room_desc: {}
-        },
+
         data: () => ({
 
             menu: false,
@@ -423,46 +424,40 @@
             },
 
         }),
+        computed: {
+            room() {
+                return this.$store.state.room
+            }
+        },
         methods: {
 
 
             updateLatLong(suggestion) {
 
-                this.room_desc.location = suggestion.latlng;
+                this.room.location = suggestion.latlng;
 
             },
 
             deleteRoom() {
 
+                this.$store.dispatch('delRoom', this.room.Id)
 
-                let url = 'http://' + this.$hostname + ':5000/rooms/' + this.$route.params.room_title;
-
-                this.$http.delete(url).catch(error => console.log(error))
                 this.$router.go(-1);
 
 
             },
             saveDates(dates) {
 
-                this.room_desc.reservations = dates;
+                this.room.reservations = dates;
 
 
             },
             async saveChanges() {
-                console.log(this.room_desc);
 
-                if (await this.$refs.observer.validate() && (this.room_desc.address !== '' || this.room_desc.address !== null)) {
+
+                if (await this.$refs.observer.validate() && (this.room.address !== '' || this.room.address !== null)) {
                     this.loading = true;
-                    console.log(this.room_desc);
-
-
-                    let url = 'http://' + this.$hostname + ':5000/rooms/' + this.room_desc.title;
-
-                    this.$http.post(url, {
-
-                        'room': JSON.stringify(this.room_desc)
-
-                    }).catch(error => console.log(error));
+                    await this.$store.dispatch('updateRoom')
 
                     this.loading = false;
                     this.show_tick = true;
@@ -484,7 +479,7 @@
                 } else {
                     this.icon = '';
                 }
-                this.room_desc.room_type = this.selected_type;
+                this.room.room_type = this.selected_type;
             }
         }
     }

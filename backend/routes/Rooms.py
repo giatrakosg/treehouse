@@ -38,13 +38,14 @@ def update_rooms_images(room_title):
     return jsonify({'message': 'SUCCESS'})
 
 
-@rooms_blueprint.route("/rooms/host", methods=['GET'])
-def get_host_rooms():
+@rooms_blueprint.route("/rooms/host/<int:host_id>", methods=['GET'])
+def get_host_rooms(host_id):
     host_rooms_dict = []
 
-    host_id = request.args.get('host_id')
+    host_rooms = Room.query.filter_by(owner_id=host_id).limit(10)
 
-    host_rooms = Room.query.limit(20).all()
+    if host_rooms is None:
+        return jsonify({'message': 'ERROR'})
 
     for r in host_rooms:
         host_rooms_dict.append(r.to_dict_host_short())
@@ -52,11 +53,9 @@ def get_host_rooms():
     return jsonify(host_rooms_dict)
 
 
-@rooms_blueprint.route("/rooms/<string:room_title>", methods=['GET', 'POST', 'DELETE'])
-def get_room(room_title):
-    room = Room.query.filter_by(title=room_title).first()
-
-    is_host = True
+@rooms_blueprint.route("/rooms/<int:room_id>", methods=['GET', 'POST', 'DELETE'])
+def get_room(room_id):
+    room = Room.query.filter_by(id=room_id).first()
 
     if request.method == 'GET':
 
@@ -64,23 +63,18 @@ def get_room(room_title):
             return jsonify({'message': 'ERROR'})
 
         room_to_dict = room.to_dict_all()
-
-        if is_host:
-            dict_threads = []
-
-            for t in room.threads:
-                dict_threads.append(t.to_dict_short())
-            room_to_dict['threads'] = dict_threads
-
         return jsonify(room_to_dict)
 
     elif request.method == 'POST':
+
         data = request.get_json()
+        print(data)
         if data is None:
             return jsonify({'message': 'ERROR'})
 
         room_d = data['room']
-        room.update(json.loads(room_d))
+        print(room_d)
+        room.update(room_d)
 
         return jsonify({'message': 'SUCCESS'})
     elif request.method == 'DELETE':
@@ -112,6 +106,7 @@ def get_rooms():
     d_to = request.args.get('date_to')
     datetime_from = datetime.strptime(d_from, '%Y-%m-%d')
     datetime_to = datetime.strptime(d_to, '%Y-%m-%d')
+    persons = request.args.get('persons')
 
     location = [float(request.args.get('lat')), float(request.args.get('long'))]
 
@@ -144,22 +139,8 @@ def search_rooms_in_area(location):
     return close_rooms
 
 
-@rooms_blueprint.route("/rooms/<string:room_title>/new_review", methods=['POST'])
-def new_review(room_title):
-    data = request.get_json()
-
-    room = Room.query.filter_by(title=room_title).first()
-    if room is None:
-        return jsonify({'message': 'ERROR'})
-    print(room)
-    room.reviews.append(Review(data['rating'], data['title'], data['description'], 0))
-    db.session.commit()
-
-    return jsonify({'message': 'SUCCESS'})
-
-
 def get_random_data():
-    rooms_number = 100
+    rooms_number = 300
     rooms = []
 
     for i in range(rooms_number):
@@ -170,9 +151,9 @@ def get_random_data():
                     bool(random.getrandbits(1)), bool(random.getrandbits(1)), bool(random.getrandbits(1)),
                     37.9754983 + random.uniform(-1, 1), 23.7356671 + random.uniform(-1, 1),
                     "address", "info", random.randint(1, 5), random.randint(23, 300), random.uniform(10, 70),
-                    random_sentence(3), random.randint(6, 20), random.randint(1, 3))
+                    random_sentence(3), random.randint(6, 20), random.randint(1, 3), 3)
         for z in range(30):
-            t = Thread()
+            t = Thread(3, random.randint(1, 2) * 2)
 
             t.get_random_messages()
 
@@ -180,7 +161,8 @@ def get_random_data():
 
         for y in range(10):
             room.images.append(Image('https://picsum.photos/id/' + str(i * 10 + y) + '/400/400'))
-            room.reviews.append(Review(random.uniform(1, 5), random_sentence(3), random_sentence(10), 0))
+            room.reviews.append(
+                Review(random.uniform(1, 5), random_sentence(3), random_sentence(10), random.randint(1, 2) * 2))
 
         start_date = datetime.now()
 

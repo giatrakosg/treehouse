@@ -8,7 +8,7 @@
         <v-divider/>
         <v-row>
             <v-col cols="12" lg="6">
-                <HostRoomsList v-bind:rooms="rooms"/>
+                <HostRoomsList/>
             </v-col>
             <v-col cols="12" lg="6">
                 <HostRoomsMap v-bind:rooms="rooms_loc"/>
@@ -34,27 +34,11 @@
 
 
         }),
-        created() {
+        async created() {
+            let host_id = 3
+            //host -id = user.id
 
-            let url = 'https://' + this.$hostname + ':5000/rooms/host';
-
-            this.$http.get(url, {
-                params: {
-                    'host_id': 0
-                }
-
-            }).then((result) => {
-                this.rooms = result.data;
-                console.log(this.rooms);
-
-                for (let r of result.data) {
-
-                    this.rooms_loc.push({location: r.location, image: r.thumbnail})
-                }
-                console.log(this.rooms_loc)
-
-
-            }).catch(error => console.log(error));
+            await this.$store.dispatch('getHostRooms', host_id);
 
 
         }

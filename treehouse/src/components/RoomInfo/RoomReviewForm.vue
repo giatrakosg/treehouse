@@ -44,6 +44,7 @@
             </v-container>
 
             <v-card-actions>
+                <v-spacer/>
 
                 <v-btn color="primary" @click="Submit">Submit</v-btn>
                 <v-btn color="primary" text @click="Close">Close</v-btn>
@@ -84,30 +85,21 @@
         methods: {
             async Submit() {
                 if (await this.$refs.observer.validate()) {
-                    let url = 'http://127.0.0.1:5000/rooms/' + this.room_title + '/new_review';
+
+                    console.log(this.$store.state.user)
+
 
                     let new_review = {
                         title: this.title,
                         description: this.description,
                         rating: this.rating,
+                        user_name: 'test',
+                        user_id: 2
 
                     };
-
-                    this.$http.post(url, {
-                        'title': this.title,
-                        'description': this.description,
-                        'rating': this.rating
-                    }).then()
-                        .catch(error => console.log(error));
-
-
-                    console.log(this.room_title);
-
-
-                    this.$emit('new-review', new_review);
-                    this.title = '';
-                    this.description = '';
-                    this.rating = null;
+                    let room_id = this.$store.state.room.Id
+                    await this.$store.dispatch('saveReview', {new_review, room_id})
+                    this.Close()
 
                 }
             },

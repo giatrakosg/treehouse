@@ -33,9 +33,9 @@
                             <v-chip color="primary" v-ripple="false" v-on="on">
                                 <label style="font-size: 16px;">Room type</label>
                                 <span style="margin-left: 3px;margin-right: 3px">:</span>
-                                <v-icon v-if="room_desc.room_type==='private room'">mdi-account</v-icon>
-                                <v-icon v-if="room_desc.room_type==='shared room'">mdi-account-multiple</v-icon>
-                                <v-icon v-if="room_desc.room_type==='house'">mdi-home</v-icon>
+                                <v-icon v-if="room_desc.type==='private room'">mdi-account</v-icon>
+                                <v-icon v-if="room_desc.type==='shared room'">mdi-account-multiple</v-icon>
+                                <v-icon v-if="room_desc.type==='house'">mdi-home</v-icon>
                             </v-chip>
                         </template>
                         Room type
@@ -228,32 +228,12 @@
 
     export default {
         name: "RoomDescription",
-        props: {
-            room_desc: {
-                air_condition: Boolean,
-                elevator: Boolean,
-                kitchen: Boolean,
-                lounge: Boolean,
-                parking: Boolean,
-                refrigerator: Boolean,
-                baths_number: Number,
-                beds_number: Number,
-                bedrooms_number: Number,
-                tv: Boolean,
-                area: Number,
-                room_type: String,
-                wireless_internet: Boolean,
-                description: String,
-                smoking_allowed: Boolean,
-                pets_allowed: Boolean,
-                events_allowed: Boolean,
-                min_stay: Number,
-                persons_number: Number
+        computed: {
+            room_desc() {
+                return this.$store.state.room
             }
-        },
-        data: () => ({
-            loading: false
-        })
+
+        }
     }
 </script>
 

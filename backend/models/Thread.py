@@ -15,14 +15,13 @@ class Thread(db.Model):
 
     messages = db.relationship('Message', backref='thread', lazy=True)
 
+    def __init__(self, host_id, renter_id):
+        self.host_id = host_id
+        self.renter_id = renter_id
+
     def to_dict(self):
-        messages = []
-        d = {}
+        d = {'last_message': self.messages[-1].to_dict()}
 
-        for m in self.messages:
-            messages.append(m.to_dict())
-
-        d['messages'] = messages
         return d
 
     def get_random_messages(self):
@@ -31,7 +30,7 @@ class Thread(db.Model):
         for x in range(10):
             text = random_sentence(10)
 
-            self.messages.append(Message(False, time, text))
+            self.messages.append(Message(False, time, text, bool(random.getrandbits(1))))
 
             time = time + timedelta(days=random.randint(2, 30))
 
