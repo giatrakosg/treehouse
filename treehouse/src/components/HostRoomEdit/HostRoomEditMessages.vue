@@ -3,11 +3,10 @@
     <v-container class="pa-0 elevation-2" style="border-radius: 8px">
         <v-row dense>
             <v-col cols="5">
-                <HostRoomEditMessagesRenters v-on:get-messages="getMessages($event)"/>
+                <MessageThreads/>
             </v-col>
             <v-col cols="7">
-                <Messages :user="user" :thread_id="thread_id"
-                />
+                <Messages/>
             </v-col>
         </v-row>
     </v-container>
@@ -15,13 +14,13 @@
 </template>
 
 <script>
-    import HostRoomEditMessagesRenters from "./HostRoomEditMessagesRenters";
-    import Messages from "../../views/Messages";
+    import MessageThreads from "../Messages/MessageThreads";
+    import Messages from "../Messages/Messages";
 
 
     export default {
         name: "HostRoomEditMessages",
-        components: {Messages, HostRoomEditMessagesRenters},
+        components: {Messages, MessageThreads},
         data: () => ({
 
             messages: [],
@@ -31,16 +30,13 @@
 
 
         }),
-        methods: {
-            getMessages(thread_id) {
+        created() {
+            console.log(this.$store.state.room)
+            if (this.$store.state.room.Id !== null) {
+                this.$store.dispatch('getMessageThreadsRoom')
+            }
+        },
 
-                this.thread_id = thread_id;
-                alert("okokkok")
-
-
-            },
-
-        }
     }
 </script>
 

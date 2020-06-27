@@ -35,7 +35,7 @@
 
         }),
         async created() {
-            let host_id = 3
+            let host_id = this.$store.state.user.public_id
             //host -id = user.id
 
             await this.$store.dispatch('getHostRooms', host_id);

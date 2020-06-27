@@ -23,7 +23,12 @@ class Reservation(db.Model):
         self.status = status
 
     def to_dict(self):
-        r = {'date_from': self.date_from, 'date_to': self.date_to, 'status': self.status.value}
+        if self.date_to is None:
+            r = {'date_from': self.date_from.strftime("%Y-%m-%d"), 'date_to': self.date_to,
+                 'status': self.status.value}
+        else:
+            r = {'date_from': self.date_from.strftime("%Y-%m-%d"), 'date_to': self.date_to.strftime("%Y-%m-%d"),
+                 'status': self.status.value}
         return r
 
 

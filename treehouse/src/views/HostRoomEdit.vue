@@ -20,10 +20,10 @@
         </v-row>
         <v-row>
             <v-col cols="12" xl="5">
-                <!--               // <HostRoomEditReviews />-->
+                <HostRoomEditReviews v-if="loaded"/>
             </v-col>
             <v-col cols="12" xl="7">
-                <!--                <HostRoomEditMessages />-->
+                <HostRoomEditMessages v-if="loaded"/>
             </v-col>
 
         </v-row>
@@ -34,18 +34,15 @@
     import HostRoomEditDescription from "../components/HostRoomEdit/HostRoomEditDescription";
     import HostRoomEditImages from "../components/HostRoomEdit/HostRoomEditImages";
     import HostRoomEditMap from "../components/HostRoomEdit/HostRoomEditMap";
-    // import HostRoomEditReviews from "../components/HostRoomEdit/HostRoomEditReviews";
-    //
-    //
-    //
-    // import HostRoomEditMessages from "../components/HostRoomEdit/HostRoomEditMessages";
+    import HostRoomEditReviews from "../components/HostRoomEdit/HostRoomEditReviews";
+    import HostRoomEditMessages from "../components/HostRoomEdit/HostRoomEditMessages";
 
 
     export default {
         name: "HostRoomEdit",
         components: {
-            // HostRoomEditMessages,
-            // HostRoomEditReviews,
+            HostRoomEditMessages,
+            HostRoomEditReviews,
             HostRoomEditMap,
             HostRoomEditImages,
             HostRoomEditDescription,
@@ -59,10 +56,11 @@
                 return this.$store.state.room
             }
         },
-        async created() {
+        created() {
 
             if (this.$route.params.room_id == -1) {
                 this.$store.state.room = {
+                    Id: null,
                     title: '',
                     air_condition: false,
                     elevator: false,
@@ -87,17 +85,22 @@
                     transport_info: '',
                     cost_per_day: 0,
                     add_persons_cost: 0,
-                    reservations: [{date_from: new Date().toISOString().slice(0, 10), date_to: null}],
                     images: [],
                     reviews_num: 0,
-                    location: [37.983810, 23.727539]
+                    location: [37.983810, 23.727539],
+                    public_owner_id: this.$store.state.user.public_id
 
                 }
+                this.$store.state.room_reservations = [{
+                    date_from: new Date().toISOString().slice(0, 10),
+                    date_to: null
+                }]
 
 
                 this.loaded = true;
             } else {
-                await this.$store.dispatch('getRoom', this.$route.params.room_id)
+                this.$store.dispatch('getRoom', this.$route.params.room_id)
+
                 console.log(this.$store.state.room)
 
                 // let formatted_dates = [];

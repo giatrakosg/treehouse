@@ -80,6 +80,7 @@
                 await this.$store.dispatch('getRooms', {dates, loc});
                 this.rooms = this.$store.state.rooms
                 this.applyFilters(filters);
+                console.log(this.$store.state.user)
 
 
             },

@@ -32,7 +32,12 @@ export default new Vuex.Store({
         room: null,
         rooms: [],
         reviews: [],
-        message_threads: []
+
+        message_threads: [],
+        thread_messages: [],
+        current_thread: '',
+
+        room_reservations: []
     },
     mutations: {
         addUser(state, payload) {
@@ -78,7 +83,31 @@ export default new Vuex.Store({
         },
         addThreads(state, payload) {
             state.message_threads = payload
-        }
+        },
+        addThread(state, payload) {
+            state.current_thread = payload
+        },
+        addMessages(state, payload) {
+            state.thread_messages = payload
+        },
+        addMessage(state, payload) {
+            state.thread_messages.push(payload)
+        },
+        removeMessage(state, payload) {
+            console.log(payload)
+            console.log("REMOVED MESSAGE")
+
+            state.thread_messages = state.thread_messages.filter(function (m) {
+                return m.Id !== payload;
+            });
+        },
+        addReservations(state, payload) {
+            state.room_reservations = payload
+        },
+        addReservation(state, payload) {
+            state.room_reservations.push(payload)
+        },
+
 
     },
     actions: {
@@ -254,12 +283,56 @@ export default new Vuex.Store({
                 let room = state.room
 
                 instance({
-                    url: '/rooms/' + room_id, headers: {}, method: 'POST', data: {
+                    url: '/rooms/' + room_id, headers: {}, method: 'PATCH', data: {
                         room
                     }
                 })
                     .then(resp => {
 
+                        resolve(resp)
+                    })
+                    .catch(err => {
+                        reject(err)
+                    })
+            });
+
+        },
+
+        updateRoomImages({state}) {
+            return new Promise((resolve, reject) => {
+
+                let room_id = state.room.Id
+                let images = state.room.images
+
+                instance({
+                    url: '/rooms/' + room_id + '/update_images', headers: {}, method: 'POST', data: {
+                        images
+                    }
+                })
+                    .then(resp => {
+                        resolve(resp)
+                    })
+                    .catch(err => {
+                        reject(err)
+                    })
+            });
+
+        },
+        newRoom({state}) {
+
+            return new Promise((resolve, reject) => {
+
+                let room_id = null
+                let room = state.room
+
+                instance({
+                    url: '/rooms/' + room_id, headers: {}, method: 'POST', data: {
+                        room
+                    }
+                })
+                    .then(resp => {
+                        console.log(resp.data)
+                        state.room.Id = resp.data.room_id
                         resolve(resp)
                     })
                     .catch(err => {
@@ -290,6 +363,71 @@ export default new Vuex.Store({
             });
 
         },
+        getRoomReservations({commit, state}) {
+            let room_id = state.room.Id
+            return new Promise((resolve, reject) => {
+                instance({
+                    url: '/rooms/' + room_id + '/reservations',
+                    method: 'GET',
+                }).then(resp => {
+                    commit('addReservations', resp.data)
+                    resolve(resp)
+                }).catch(err => {
+                    reject(err)
+                })
+            });
+
+        },
+        newRoomReservation({state}, reservation) {
+            let room_id = state.room.Id
+            return new Promise((resolve, reject) => {
+                instance({
+                    url: '/rooms/' + room_id + '/reservations',
+                    method: 'PUT', data: {
+                        reservation
+                    }
+                }).then(resp => {
+                    resolve(resp)
+                }).catch(err => {
+                    reject(err)
+                })
+            });
+
+        },
+        updateRoomAvailableDates({state, commit}, new_reservations) {
+
+            let room_id = state.room.Id
+            return new Promise((resolve, reject) => {
+                instance({
+                    url: '/rooms/' + room_id + '/reservations/unavailable_dates',
+                    method: 'POST', data: {
+                        new_reservations
+                    }
+                }).then(resp => {
+                    commit('addReservations', new_reservations)
+                    resolve(resp)
+                }).catch(err => {
+                    reject(err)
+                })
+            });
+
+        },
+        getRoomAvailableDates({state, commit}) {
+            let room_id = state.room.Id
+            return new Promise((resolve, reject) => {
+                instance({
+                    url: '/rooms/' + room_id + '/reservations/unavailable_dates',
+                    method: 'GET'
+                }).then(resp => {
+                    commit('addReservations', resp.data)
+                    resolve(resp)
+                }).catch(err => {
+                    reject(err)
+                })
+            });
+
+        },
+
         getHostRooms({commit}, host_id) {
             return new Promise((resolve, reject) => {
                 instance({
@@ -304,7 +442,10 @@ export default new Vuex.Store({
             });
 
         },
-        getReviews({commit}, room_id) {
+        getReviews({commit, state}) {
+            console.log(state)
+
+            let room_id = state.room.Id
             return new Promise((resolve, reject) => {
                 instance({
                     url: '/rooms/' + room_id + '/reviews',
@@ -337,13 +478,85 @@ export default new Vuex.Store({
                 })
             });
         },
-        getMessageThreads({commit}, room_id) {
+        getMessageThreadsRoom({commit, state}) {
+            let room_id = state.room.Id
             return new Promise((resolve, reject) => {
                 instance({
-                    url: '/threads/' + room_id,
+                    url: '/rooms/' + room_id + '/threads',
                     method: 'GET',
                 }).then(resp => {
                     commit('addThreads', resp.data)
+                    resolve(resp)
+                }).catch(err => {
+                    reject(err)
+                })
+            });
+
+        },
+        getMessageThreadsUser({commit, state}) {
+            let room_id = state.room.Id
+            return new Promise((resolve, reject) => {
+                instance({
+                    url: '/rooms/' + room_id + '/threads',
+                    method: 'GET',
+                }).then(resp => {
+                    commit('addThreads', resp.data)
+                    resolve(resp)
+                }).catch(err => {
+                    reject(err)
+                })
+            });
+
+        },
+        newMessage({commit}, message) {
+            console.log(message)
+            return new Promise((resolve, reject) => {
+                instance({
+                    url: '/threads/thread/new_message',
+                    method: 'POST',
+                    params: {
+                        'user1_id': message.user1_id,
+                        'user2_id': message.user2_id,
+                    },
+                    data: {
+                        message
+                    },
+
+                }).then(resp => {
+                    commit('addMessage', message)
+                    resolve(resp)
+                }).catch(err => {
+                    reject(err)
+                })
+            });
+
+        },
+        deleteMessage({commit, state}, message_id) {
+            return new Promise((resolve, reject) => {
+                instance({
+                    url: '/threads/' + state.current_thread.Id + '/messages',
+                    method: 'DELETE',
+                    params: {
+                        'message_id': message_id,
+                    },
+
+                }).then(resp => {
+                    commit('removeMessage', message_id)
+                    resolve(resp)
+                }).catch(err => {
+                    reject(err)
+                })
+            });
+
+        },
+        getThreadMessages({commit}, thread) {
+            return new Promise((resolve, reject) => {
+                instance({
+                    url: '/threads/' + thread.Id + '/messages',
+                    method: 'GET',
+                }).then(resp => {
+                    commit('addMessages', resp.data)
+                    commit('addThread', thread)
                     resolve(resp)
                 }).catch(err => {
                     reject(err)

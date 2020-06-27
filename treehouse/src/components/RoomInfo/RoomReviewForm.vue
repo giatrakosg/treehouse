@@ -93,8 +93,8 @@
                         title: this.title,
                         description: this.description,
                         rating: this.rating,
-                        user_name: 'test',
-                        user_id: 2
+                        user_name: this.$store.state.user.uname,
+                        user_public_id: this.$store.state.user.public_id
 
                     };
                     let room_id = this.$store.state.room.Id

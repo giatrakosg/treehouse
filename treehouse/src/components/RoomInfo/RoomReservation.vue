@@ -61,7 +61,7 @@
         <v-row dense justify="center">
 
             <v-col cols="10">
-                <v-btn elevation="0" style="color: white;" color="blue" width="100%">
+                <v-btn elevation="0" style="color: white;" color="blue" width="100%" v-on:click="newReservation">
                     Book
                 </v-btn>
             </v-col>
@@ -89,6 +89,12 @@
             }
 
         },
+        async created() {
+            await this.$store.dispatch('getRoomReservations', this.room.Id)
+
+            this.$store.state.room_reservations.sort((r1, r2) => r1.date_from < r2.date_from ? -1 : 1)
+
+        },
 
         methods: {
             formatDate(dates) {
@@ -107,23 +113,39 @@
                 return formatted;
 
             },
+            newReservation() {
+                if (this.dates[0] > this.dates[1]) {
+                    let tmp = this.dates[0]
+                    this.dates[0] = this.dates[1]
+                    this.dates[1] = tmp
+                }
+
+                let reservation = {
+                    date_from: this.dates[0],
+                    date_to: this.dates[1],
+
+                }
+
+                this.$store.dispatch('newRoomReservation', reservation)
+            },
 
             allowedDates(date) {
                 let date_from, date_to;
 
-                for (let a of this.reservation.reserved_dates) {
 
-                    if (a.date_to === null) {
-                        if (date < a.date_from) {
-                            return true;
+                for (let a of this.reservations) {
+                    if (a.status === 1) {
+                        date_from = moment(a.date_from).format("YYYY-MM-DD")
+                        date_to = moment(a.date_to).format("YYYY-MM-DD")
+                        if (date >= date_from && date <= date_to) {
+                            console.log(date)
+                            return false
+                        }
+                    } else {
+                        if (a.date_to === null) {
+                            return date < a.date_from;
                         }
                     }
-                    date_from = moment(a.date_from).format("YYYY-MM-DD")
-                    date_to = moment(a.date_to).format("YYYY-MM-DD")
-                    if (date >= date_from && date <= date_to) {
-                        return false
-                    }
-
                 }
                 return true
             }
@@ -142,6 +164,9 @@
             },
             room() {
                 return this.$store.state.room
+            },
+            reservations() {
+                return this.$store.state.room_reservations
             }
 
         },

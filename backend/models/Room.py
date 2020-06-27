@@ -62,6 +62,8 @@ class Room(db.Model):
 
         r_sum = 0
         reviews_num = len(self.reviews)
+        if reviews_num == 0:
+            return 0
 
         for r in self.reviews:
             r_sum = r_sum + r.rating
@@ -104,16 +106,13 @@ class Room(db.Model):
     def to_dict_all(self):
 
         images = []
-        reviews = []
-
-        for i in self.reviews:
-            review_dict = i.to_dict()
-            reviews.append(review_dict)
 
         for i in self.images:
             image_dict = i.to_dict()
             images.append(image_dict)
 
+        public_owner = User.query.filter_by(id=self.owner_id).first()
+        public_owner_id = public_owner.public_id
         r = {
             'Id': self.id,
             'type': self.type,
@@ -144,15 +143,10 @@ class Room(db.Model):
             'cost_per_day': self.standard_cost,
             'images': images,
             'bedrooms_number': self.bedrooms_num,
-            'reviews_num': len(self.reviews)
+            'reviews_num': len(self.reviews),
+            'public_owner_id': public_owner_id
 
         }
-
-        reservations = []
-        for date_range in self.reservations:
-            reservations.append(date_range.to_dict())
-
-        r['reservations'] = reservations
         return r
 
     def to_dict_host_short(self):
@@ -215,8 +209,8 @@ class Room(db.Model):
         self.tv = data['tv']
         self.parking = data['parking']
         self.elevator = data['elevator']
-        self.lat_coordinate = data['location']['lat']
-        self.long_coordinate = data['location']['lng']
+        self.lat_coordinate = data['location'][0]
+        self.long_coordinate = data['location'][1]
         self.address = data['address']
         self.transport_info = data['transport_info']
         self.persons_num = data['persons_number']
@@ -225,22 +219,6 @@ class Room(db.Model):
         self.title = data['title']
         self.area = data['area']
         self.min_stay = data['min_stay']
-
-        reservations = data['reservations']
-
-        for a in self.reservations:
-            if a.status == Status.not_available:
-                db.session.delete(a)
-
-        for a in reservations:
-            d_from = datetime.strptime(a['date_from'], "%a, %d %b %Y %H:%M:%S GMT")
-            if a['date_to'] is None:
-                d_to = None
-            else:
-                d_to = datetime.strptime(a['date_to'], "%a, %d %b %Y %H:%M:%S GMT")
-            status = Status.not_available
-
-            self.reservations.append(Reservation(d_from, d_to, status))
 
         db.session.commit()
 

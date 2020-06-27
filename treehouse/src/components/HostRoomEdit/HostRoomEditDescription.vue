@@ -285,8 +285,7 @@
                             <v-col cols="auto">
 
 
-                                <HostRoomEditCalendar v-on:new-dates="saveDates"
-                                                      :reservation_date_ranges="room.reservations"/>
+                                <HostRoomEditCalendar/>
 
                             </v-col>
                             <v-col cols="auto">
@@ -338,11 +337,12 @@
                 <v-list-item-content>
                     <v-container>
                         <v-row>
-                            <v-btn color="red darken-3" style="color: white" :loading="loading" @click="dialog=true">
+                            <v-btn :disabled="room.Id===null" color="red darken-3" style="color: white"
+                                   :loading="loading_delete" @click="dialog=true">
                                 <div>Delete room</div>
                             </v-btn>
                             <v-spacer/>
-                            <v-btn color="primary" :loading="loading" @click="saveChanges">
+                            <v-btn color="primary" :loading="loading_save" @click="saveChanges">
                                 <v-icon v-if="show_tick"> mdi-check</v-icon>
                                 <div v-if="!show_tick">Save</div>
                             </v-btn>
@@ -406,7 +406,8 @@
         data: () => ({
 
             menu: false,
-            loading: false,
+            loading_delete: false,
+            loading_save: false,
             show_tick: false,
             room_types: [
                 {text: 'Private', value: 'private room'},
@@ -423,6 +424,9 @@
                 countries: ['GR'],
             },
 
+            reservations_changed: false
+
+
         }),
         computed: {
             room() {
@@ -434,32 +438,41 @@
 
             updateLatLong(suggestion) {
 
-                this.room.location = suggestion.latlng;
+                this.room.location[0] = suggestion.latlng.lat;
+                this.room.location[1] = suggestion.latlng.lng;
 
             },
 
             deleteRoom() {
 
+                this.loading_delete = true;
+
                 this.$store.dispatch('delRoom', this.room.Id)
+
+                this.loading_delete = false;
+                this.show_tick = true;
+                setTimeout(() => (this.show_tick = false), 4000);
 
                 this.$router.go(-1);
 
 
             },
-            saveDates(dates) {
 
-                this.room.reservations = dates;
-
-
-            },
             async saveChanges() {
 
 
                 if (await this.$refs.observer.validate() && (this.room.address !== '' || this.room.address !== null)) {
-                    this.loading = true;
-                    await this.$store.dispatch('updateRoom')
+                    this.loading_save = true;
+                    if (this.$store.state.room.Id === null) {
+                        await this.$store.dispatch('newRoom')
+                    } else {
+                        await this.$store.dispatch('updateRoom')
+                    }
+                    console.log(this.$store.state.room)
 
-                    this.loading = false;
+                    await this.$store.dispatch('updateRoomAvailableDates', this.$store.state.room_reservations)
+
+                    this.loading_save = false;
                     this.show_tick = true;
                     setTimeout(() => (this.show_tick = false), 4000);
                 }

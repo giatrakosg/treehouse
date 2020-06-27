@@ -9,7 +9,19 @@
         <div class="d-flex align-center">
 
 
-            <router-link to="/">
+            <router-link v-if="isHost" to="/hostrooms">
+                <v-img
+                        alt="Vuetify Logo"
+                        class="shrink mr-2"
+                        contain
+
+                        src="../../assets/treehouse.png"
+                        transition="scale-transition"
+                        width="40"
+                >
+                </v-img>
+            </router-link>
+            <router-link v-else to="/">
                 <v-img
                         alt="Vuetify Logo"
                         class="shrink mr-2"
@@ -22,18 +34,7 @@
                 </v-img>
             </router-link>
 
-        <v-btn
-                color="primary"
-                to="/roomlistings"
-        >
-            TMP Button for LIstings
-        </v-btn>
-        <v-btn
-                color="primary"
-                to="/hostrooms"
-        >
-            TMP Button for HostRooms
-        </v-btn>
+
         </div>
         <v-spacer></v-spacer>
         <div class="d-flex align-right mx-4" v-if="!isLoggedIn">
@@ -46,6 +47,7 @@
                         dark
                         slot="activator"
                         @click="dialog = true"
+                        elevation="0"
                 >
                     Login
                 </v-btn>
@@ -56,6 +58,7 @@
             <v-btn
                     color="primary"
                     to="/register"
+                    elevation="0"
             >
                 Register
             </v-btn>
@@ -64,6 +67,7 @@
             <v-btn
                     color="primary"
                     to="/profile"
+                    elevation="0"
             >
                 Profile
             </v-btn>
@@ -72,6 +76,7 @@
             <v-btn
                     color="primary"
                     to="/admin"
+                    elevation="0"
             >
                 Admin Dashboard
             </v-btn>
@@ -80,6 +85,7 @@
             <v-btn
                     color="primary"
                     @click="doLogout"
+                    elevation="0"
             >
                 Logout
             </v-btn>
@@ -92,6 +98,7 @@
 
 <script>
     import LoginForm from '../Login/LoginForm'
+    import router from "../../router";
 
     export default {
         name: 'AppBar',
@@ -106,17 +113,23 @@
         methods: {
             closeDialog: function () {
                 this.dialog = false
-            } ,
-            doLogout : function() {
+            },
+            doLogout: function () {
+
                 this.$store.dispatch('logout')
+                router.push({name: 'Home'})
+
             }
         },
-        computed : {
+        computed: {
             isLoggedIn() {
                 return this.$store.state.isLoggedIn;
             },
             isAdmin() {
-                return this.$store.state.user.isAdmin ;
+                return this.$store.state.user.isAdmin;
+            },
+            isHost() {
+                return this.$store.state.user.isHost;
             }
 
         }

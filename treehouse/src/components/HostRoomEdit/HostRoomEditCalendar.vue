@@ -91,7 +91,6 @@
 
     export default {
         name: "HostRoomEditCalendar",
-        props: ['reservation_date_ranges'],
         data: () => ({
             dates: [],
             menu: false,
@@ -108,13 +107,16 @@
 
             nowDate: new Date().toISOString().slice(0, 10),
         }),
-        mounted() {
-            console.log(this.reservation_date_ranges)
-            this.tmp_reservation_date_ranges = JSON.parse(JSON.stringify(this.reservation_date_ranges));
+        async mounted() {
+            if (this.$store.state.room.Id !== null) {
+                await this.$store.dispatch('getRoomAvailableDates');
+            }
+
+            this.tmp_reservation_date_ranges = JSON.parse(JSON.stringify(this.$store.state.room_reservations));
             this.tmp_reservation_date_ranges.sort((a, b) => a.date_from > b.date_from ? 1 : -1);
             this.loaded = true;
 
-            this.reserved_dates = this.getAllDates(this.reservation_date_ranges);
+            this.reserved_dates = this.getAllDates(this.$store.state.room_reservations);
             this.tmp_reserved_dates = JSON.parse(JSON.stringify(this.reserved_dates));
 
         },
@@ -123,7 +125,7 @@
             menu() {
                 if (!this.menu) {
                     this.tmp_reserved_dates = JSON.parse(JSON.stringify(this.reserved_dates));
-                    this.tmp_reservation_date_ranges = JSON.parse(JSON.stringify(this.reservation_date_ranges));
+                    this.tmp_reservation_date_ranges = JSON.parse(JSON.stringify(this.$store.state.room_reservations));
                 }
 
             },
@@ -164,8 +166,8 @@
 
 
                 this.reserved_dates = this.tmp_reserved_dates;
+                this.$store.state.room_reservations = this.tmp_reservation_date_ranges
 
-                this.$emit('new-dates', this.tmp_reservation_date_ranges);
                 this.menu = false;
 
 

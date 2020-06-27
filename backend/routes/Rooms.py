@@ -6,6 +6,7 @@ from models.Image import Image
 from models.Reservation import Reservation, Status
 from models.Review import Review
 from models.Thread import Thread
+from models.User import User
 from models.Message import Message
 
 import json
@@ -17,13 +18,13 @@ import string
 rooms_blueprint = Blueprint('rooms', __name__)
 
 
-@rooms_blueprint.route("/rooms/<string:room_title>/update_images", methods=['POST'])
-def update_rooms_images(room_title):
+@rooms_blueprint.route("/rooms/<int:room_id>/update_images", methods=['POST'])
+def update_rooms_images(room_id):
     data = request.get_json()
 
     images_dict = data['images']
 
-    room = Room.query.filter_by(title=room_title).first()
+    room = Room.query.filter_by(id=room_id).first()
     if room is None:
         return jsonify({'message': 'ERROR'})
 
@@ -38,11 +39,13 @@ def update_rooms_images(room_title):
     return jsonify({'message': 'SUCCESS'})
 
 
-@rooms_blueprint.route("/rooms/host/<int:host_id>", methods=['GET'])
-def get_host_rooms(host_id):
+@rooms_blueprint.route("/rooms/host/<string:public_host_id>", methods=['GET'])
+def get_host_rooms(public_host_id):
     host_rooms_dict = []
 
-    host_rooms = Room.query.filter_by(owner_id=host_id).limit(10)
+    host = User.query.filter_by(public_id=public_host_id).first()
+
+    host_rooms = Room.query.filter_by(owner_id=host.id)
 
     if host_rooms is None:
         return jsonify({'message': 'ERROR'})
@@ -53,31 +56,68 @@ def get_host_rooms(host_id):
     return jsonify(host_rooms_dict)
 
 
-@rooms_blueprint.route("/rooms/<int:room_id>", methods=['GET', 'POST', 'DELETE'])
+@rooms_blueprint.route("/rooms/<room_id>", methods=['GET', 'PATCH', 'DELETE', 'POST'])
 def get_room(room_id):
-    room = Room.query.filter_by(id=room_id).first()
-
     if request.method == 'GET':
+
+        room = Room.query.filter_by(id=room_id).first()
 
         if room is None:
             return jsonify({'message': 'ERROR'})
 
         room_to_dict = room.to_dict_all()
+        print(room_to_dict)
+
         return jsonify(room_to_dict)
 
-    elif request.method == 'POST':
+    elif request.method == 'PATCH':
+
+        room = Room.query.filter_by(id=room_id).first()
 
         data = request.get_json()
-        print(data)
+
         if data is None:
             return jsonify({'message': 'ERROR'})
 
         room_d = data['room']
-        print(room_d)
+
         room.update(room_d)
 
         return jsonify({'message': 'SUCCESS'})
+    elif request.method == 'POST':
+
+        data = request.get_json()
+        print(data)
+
+        if data is None:
+            return jsonify({'message': 'ERROR'})
+
+        room_dict = data['room']
+
+        owner_id = room_dict['public_owner_id']
+        owner = User.query.filter_by(public_id=owner_id).first()
+
+        room = Room(room_dict['type'], room_dict['beds_num'], room_dict['baths_num'], room_dict['bedrooms_num'],
+                    room_dict['lounge'], room_dict['description'], room_dict['smoking_allowed'],
+                    room_dict['pets_allowed'], room_dict['events_allowed'], room_dict['wireless_internet'],
+                    room_dict['air_condition'], room_dict['refrigerator'], room_dict['kitchen'], room_dict['tv'],
+                    room_dict['parking'], room_dict['elevator'], room_dict['location'][0], room_dict['location'][1],
+                    room_dict['address'], room_dict['transport_info'], room_dict['persons_number'],
+                    room_dict['elevator'], room_dict['cost_per_day'], room_dict['title'], room_dict['area'],
+                    room_dict['min_stay'], owner.id)
+
+        db.session.add(room)
+        db.session.commit()
+
+        return jsonify({'room_id': room.id})
+
     elif request.method == 'DELETE':
+
+        room = Room.query.filter_by(id=room_id).first()
+
+        if room is None:
+            return jsonify({'message': 'ERROR'})
+
         for a in room.reservations:
             db.session.delete(a)
 
@@ -106,7 +146,6 @@ def get_rooms():
     d_to = request.args.get('date_to')
     datetime_from = datetime.strptime(d_from, '%Y-%m-%d')
     datetime_to = datetime.strptime(d_to, '%Y-%m-%d')
-    persons = request.args.get('persons')
 
     location = [float(request.args.get('lat')), float(request.args.get('long'))]
 

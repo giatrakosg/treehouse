@@ -10,7 +10,7 @@
                 Reviews
                 <v-rating style="display:inline-flex;margin-left: 20px;"
                           half-increments
-                          v-model="reviews.rating"
+                          v-model="room.rating"
                           readonly
                           dense
                 ></v-rating>
@@ -69,10 +69,14 @@
         computed: {
             reviews() {
                 return this.$store.state.reviews
+            },
+            room() {
+                return this.$store.state.room
             }
         },
         async created() {
-            await this.$store.dispatch('getReviews', this.$store.state.room.Id)
+            await this.$store.dispatch('getReviews')
+
         }
 
     }

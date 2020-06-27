@@ -10,7 +10,11 @@
 
         >
             <l-icon>
-                <img :src="item.thumbnail" class="highlight" style="width: 85px;height:85px;border-radius: 30px"
+                <img v-if="item.thumbnail===''" class="highlight" style="width: 85px;height:85px;border-radius: 30px"
+                     ref="img"
+                     :src="require('../../assets/empty_thumbnail.png')"/>
+
+                <img v-else :src="item.thumbnail" class="highlight" style="width: 85px;height:85px;border-radius: 30px"
                      ref="img"/>
             </l-icon>
 

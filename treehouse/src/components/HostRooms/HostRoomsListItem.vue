@@ -4,8 +4,11 @@
                  v-on:mouseleave="$root.$emit('default',$vnode.key)">
         <v-list-item-avatar tile size="200px" width="300px">
 
+            <v-img v-if="room.thumbnail===''" style="border-radius: 8px 8px 0 0"
 
-            <v-img style="border-radius: 8px" :src="room.thumbnail">
+                   :src="require('../../assets/empty_thumbnail.png')">
+            </v-img>
+            <v-img v-else style="border-radius: 8px" :src="room.thumbnail">
 
             </v-img>
 
@@ -59,6 +62,9 @@
         name: "HostRoomsListItem",
         props: ['room'],
         data: () => ({}),
+        created() {
+            console.log(this.room)
+        }
 
 
     }

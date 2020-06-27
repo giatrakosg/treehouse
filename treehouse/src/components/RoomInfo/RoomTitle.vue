@@ -50,7 +50,7 @@
 </template>
 
 <script>
-    import Messages from "../../views/Messages";
+    import Messages from "../Messages/Messages";
     export default {
         name: "RoomTitle",
         components: {Messages},
@@ -61,7 +61,9 @@
         },
         methods: {
             sendMessage() {
-                this.contact = true;
+
+                this.contact = this.$store.state.isLoggedIn;
+
             }
         },
         computed: {
