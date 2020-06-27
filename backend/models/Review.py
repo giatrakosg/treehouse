@@ -20,6 +20,7 @@ class Review(db.Model):
 
     def to_dict(self):
         user_name = User.query.filter_by(id=self.user_id).with_entities(User.uname).first()
+        print(self.user_id)
 
         r = {'rating': self.rating,
              'title': self.title,

@@ -7,6 +7,7 @@ from models.Reservation import Reservation, Status
 from models.Review import Review
 from models.Thread import Thread
 from models.Message import Message
+from models.User import User
 
 import json
 import random
@@ -39,7 +40,13 @@ def new_review(room_id):
         return jsonify({'message': 'ERROR'})
     print(data)
     review = data['review']
-    room.reviews.append(Review(review['rating'], review['title'], review['description'], review['user_id']))
+
+    user_public_id = review['user_public_id']
+    user = User.query.filter_by(public_id=user_public_id).first()
+    user_id = user.id
+    print(user_id)
+
+    room.reviews.append(Review(review['rating'], review['title'], review['description'], user_id))
     db.session.commit()
 
     return jsonify({'message': 'SUCCESS'})

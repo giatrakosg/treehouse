@@ -106,15 +106,14 @@
 
                 <v-card-actions>
                     <v-spacer style="width: 14%"/>
-                    <v-tooltip top color="primary">
-                        <template v-slot:activator="{ on }">
-                            <input type="file" ref="file" style="display: none">
-                            <v-btn color="primary" v-on="on" @click="$refs.file.click()">
-                                <v-icon>mdi-plus</v-icon>
-                            </v-btn>
-                        </template>
-                        Add Image
-                    </v-tooltip>
+
+
+                    <div class="d-inline-flex" style="align-items: center">
+                        <v-text-field class="mr-2" label="Image Link" v-model="image_link"></v-text-field>
+                        <v-btn color="primary" @click="addImage"> Add</v-btn>
+                    </div>
+
+
                     <v-spacer></v-spacer>
 
                     <v-btn style="position: sticky;top: 2;z-index: 3" color="primary" @click="saveImages">Save</v-btn>
@@ -139,7 +138,8 @@
                 show_image: false,
                 image_to_show: '',
 
-                tmp_images: []
+                tmp_images: [],
+                image_link: ''
 
             }
         },
@@ -168,10 +168,16 @@
             removeImage(index) {
                 this.tmp_images.splice(index, 1);
             },
+            addImage() {
+                if (this.image_link !== '') {
+                    this.$store.state.room.images.push({src: this.image_link})
+                }
+
+            },
             saveImages() {
 
 
-                this.$emit('new-images', this.tmp_images);
+                this.$store.dispatch('updateRoomImages')
 
                 this.dialog = false
             },

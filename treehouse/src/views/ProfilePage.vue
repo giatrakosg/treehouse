@@ -1,13 +1,13 @@
 <template lang="html">
-    <v-layout row>
+    <v-layout row align-center>
         <v-flex sm1 md1 lg1>
             <v-spacer></v-spacer>
         </v-flex>
         <v-flex sm3 md3 lg3 class="ma-3">
-            <ProfileInfoCard />
+            <ProfileInfoCard/>
         </v-flex>
         <v-flex sm7 md7 lg7 class="ma-3">
-            <ReviewCard />
+            <ReviewCard/>
         </v-flex>
     </v-layout>
 </template>

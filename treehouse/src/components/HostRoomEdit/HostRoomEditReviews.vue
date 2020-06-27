@@ -10,9 +10,9 @@
             Reviews
             <v-rating style="display:inline-flex;margin-left: 20px;"
                       half-increments
-                      v-model="rating"
-                          readonly
-                          dense
+                      v-model="room.rating"
+                      readonly
+                      dense
                 ></v-rating>
                 <label style="margin-left: 20px;font-size: 13px;">({{reviews.length}})</label>
                 <v-spacer/>
@@ -41,8 +41,23 @@
     export default {
         name: "HostRoomEditReviews",
         components: {RoomReview},
-        props: ['reviews', 'rating'],
-        data: () => ({})
+        data: () => ({}),
+        created() {
+            console.log(this.$store.state.room)
+            if (this.$store.state.room.Id !== null) {
+                this.$store.dispatch('getReviews')
+            }
+
+
+        },
+        computed: {
+            reviews() {
+                return this.$store.state.reviews
+            },
+            room() {
+                return this.$store.state.room
+            }
+        }
     }
 </script>
 

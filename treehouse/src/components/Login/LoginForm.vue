@@ -74,6 +74,7 @@
     import {extend} from 'vee-validate';
     import {required} from 'vee-validate/dist/rules';
     import {ValidationProvider} from 'vee-validate';
+    import router from "../../router";
 
     extend('required', {
         ...required,
@@ -101,15 +102,21 @@
             },
         },
         methods: {
-            handleSubmit() {
-              this.loader = 'loading'
-              console.log(this.email,this.password);
-              let data = {
-                uname: this.uname,
-                password: this.password,
-              };
-              this.$store.dispatch("login", data);
-              this.$emit('close-dialog')
+            async handleSubmit() {
+                this.loader = 'loading'
+                console.log(this.email, this.password);
+                let data = {
+                    uname: this.uname,
+                    password: this.password,
+                };
+                await this.$store.dispatch("login", data);
+                this.$emit('close-dialog')
+                if (this.$store.state.user.isHost) {
+                    await router.push({name: 'HostRooms'})
+                } else {
+                    await router.push({name: 'Home'})
+                }
+
             },
         }
     }

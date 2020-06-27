@@ -9,18 +9,20 @@ import string
 
 class Thread(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    host_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    renter_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user1_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user2_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     room_id = db.Column(db.Integer, db.ForeignKey('room.id'), nullable=False)
 
     messages = db.relationship('Message', backref='thread', lazy=True)
 
-    def __init__(self, host_id, renter_id):
-        self.host_id = host_id
-        self.renter_id = renter_id
+    def __init__(self, user1_id, user2_id):
+        self.user1_id = user1_id
+        self.user2_id = user2_id
 
     def to_dict(self):
-        d = {'last_message': self.messages[-1].to_dict()}
+        d = {'Id': self.id, 'last_message': self.messages[-1].to_dict(),
+             'profile': 'https://cdn.vuetifyjs.com/images/lists/1.jpg', 'user1_id': self.user1_id,
+             'user2_id': self.user2_id}
 
         return d
 
@@ -30,14 +32,9 @@ class Thread(db.Model):
         for x in range(10):
             text = random_sentence(10)
 
-            self.messages.append(Message(False, time, text, bool(random.getrandbits(1))))
+            self.messages.append(Message(False, time, text, random.randint(1, 2) * 2))
 
             time = time + timedelta(days=random.randint(2, 30))
-
-    def to_dict_short(self):
-        d = {'username': 'john', 'last_message': self.messages[-1].to_dict(), 'id': self.id}
-
-        return d
 
     def destroy(self):
         for m in self.messages:
