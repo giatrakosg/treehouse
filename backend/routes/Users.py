@@ -2,6 +2,9 @@ from flask import Blueprint, jsonify, request
 from database import *
 
 from models.User import User
+from models.Reservation import Reservation
+from models.Review import Review
+from models.Room import Room
 
 import json
 import random
@@ -204,3 +207,39 @@ def updateUser(current_user,public_id):
     db.session.commit()
 
     return jsonify({'message' : 'Successfull change'})
+
+@users_blueprint.route('/export/json', methods=['GET'])
+@token_required
+def exportJSON(current_user):
+
+    if not current_user.isAdmin :
+        return jsonify({'message' : 'Operation not permitted!'})
+
+
+    rooms = Room.query.all()
+    reviews = Review.query.all()
+    users = User.query.all()
+    reservations = Reservation.query.all()
+    rooms = Room.query.all()
+
+
+    roomsList = []
+    reviewsList = []
+    usersList = []
+    reservationsList = []
+
+    for room in rooms:
+        roomsList.append(room.to_dict_all())
+    for review in reviews:
+        reviewsList.append(review.to_dict())
+    for user in users:
+        usersList.append(user.to_dict())
+    for reservation in reservations:
+        reservationsList.append(reservation.to_dict())
+
+    data = {}
+    data['rooms'] = roomsList
+    data['reviews'] = reviewsList
+    data['reservations'] = reservationsList
+    data['users'] = usersList
+    return jsonify({'data':data})

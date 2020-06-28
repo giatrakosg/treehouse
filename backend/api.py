@@ -15,12 +15,14 @@ from routes.Users import users_blueprint
 from routes.Messages import messages_blueprint
 from routes.Reviews import reviews_blueprint
 from routes.Reservations import reservations_blueprint
+from routes.Recommendations import recommendations_blueprint
 
 app.register_blueprint(reservations_blueprint)
 app.register_blueprint(rooms_blueprint)
 app.register_blueprint(users_blueprint)
 app.register_blueprint(messages_blueprint)
 app.register_blueprint(reviews_blueprint)
+app.register_blueprint(recommendations_blueprint)
 
 db.create_all()
 db.session.commit()
