@@ -17,7 +17,7 @@
             <v-flex>
                 <v-layout>
                     <v-flex class="hidden-sm-and-down">
-                        <v-img v-if="images[0]===undefined || images[0]===null" style="border-radius: 8px 8px 0 0"
+                        <v-img v-if="images[1]===undefined || images[1]===null" style="border-radius: 8px 8px 0 0"
                                class="fade" @click="openAllImages(0)"
                                width="245px" height="217px"
                                :src="require('../../assets/empty_thumbnail.png')">
@@ -29,7 +29,7 @@
                 </v-layout>
                 <v-layout>
                     <v-flex class="hidden-sm-and-down">
-                        <v-img v-if="images[0]===undefined || images[0]===null" style="border-radius: 8px 8px 0 0"
+                        <v-img v-if="images[2]===undefined || images[2]===null" style="border-radius: 8px 8px 0 0"
                                class="fade" @click="openAllImages(0)"
                                width="245px" height="217px"
                                :src="require('../../assets/empty_thumbnail.png')">
@@ -43,7 +43,7 @@
             <v-flex>
                 <v-layout>
                     <v-flex class="hidden-sm-and-down">
-                        <v-img v-if="images[0]===undefined || images[0]===null" style="border-radius: 8px 8px 0 0"
+                        <v-img v-if="images[3]===undefined || images[3]===null" style="border-radius: 8px 8px 0 0"
                                class="fade" @click="openAllImages(0)"
                                width="245px" height="217px"
                                :src="require('../../assets/empty_thumbnail.png')">
@@ -56,7 +56,7 @@
                 </v-layout>
                 <v-layout>
                     <v-flex class="hidden-sm-and-down">
-                        <v-img v-if="images[0]===undefined || images[0]===null" style="border-radius: 8px 8px 0 0"
+                        <v-img v-if="images[4]===undefined || images[4]===null" style="border-radius: 8px 8px 0 0"
                                class="fade" @click="openAllImages(0)"
                                width="245px" height="217px"
                                :src="require('../../assets/empty_thumbnail.png')">
@@ -101,11 +101,7 @@
 
             }
         },
-        watch: {
-            images() {
-                this.loaded = true;
-            }
-        },
+
         methods: {
             openAllImages(index) {
                 this.dialog = true;

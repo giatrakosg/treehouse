@@ -8,19 +8,15 @@
     >
       <v-row class="fill-height">
         <v-card-title>
-          <v-btn dark icon>
-            <v-icon>mdi-chevron-left</v-icon>
-          </v-btn>
 
-          <v-spacer></v-spacer>
+
+        <v-spacer></v-spacer>
 
           <v-btn dark icon class="mr-4" to="/editprofile">
             <v-icon>mdi-pencil</v-icon>
           </v-btn>
 
-          <v-btn dark icon>
-            <v-icon>mdi-dots-vertical</v-icon>
-          </v-btn>
+
         </v-card-title>
 
         <v-spacer></v-spacer>

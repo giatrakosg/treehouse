@@ -25,7 +25,7 @@ class Message(db.Model):
             'timestamp': self.timestamp,
             'is_read': self.is_read,
             'sender': user.uname,
-            'sender_id': user.id,
+            'sender_public_id': user.public_id,
             'id': self.id,
             'thread_id': self.thread_id
         }

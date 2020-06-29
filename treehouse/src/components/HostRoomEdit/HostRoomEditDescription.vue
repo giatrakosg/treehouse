@@ -294,7 +294,7 @@
                                     <v-text-field color="blue" label="Cost per day" suffix="€"
                                                   type="number" style="width: 120px" min="0"
                                                   :value="room.cost_per_day | formatFloat"
-                                                  :v-model="room.cost_per_day"
+                                                  v-model="room.cost_per_day"
                                                   :error-messages="errors">
 
                                     </v-text-field>
@@ -306,7 +306,7 @@
                                     <v-text-field color="blue" label="Extra person cost" suffix="€"
                                                   type="number" style="width: 140px" min="0"
                                                   :value="room.add_persons_cost | formatFloat"
-                                                  :v-model="room.add_persons_cost"
+                                                  v-model="room.add_persons_cost"
                                                   :error-messages="errors">
 
                                     </v-text-field>
@@ -462,6 +462,7 @@
 
 
                 if (await this.$refs.observer.validate() && (this.room.address !== '' || this.room.address !== null)) {
+
                     this.loading_save = true;
                     if (this.$store.state.room.Id === null) {
                         await this.$store.dispatch('newRoom')
