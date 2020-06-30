@@ -570,7 +570,7 @@ export default new Vuex.Store({
             });
 
         },
-        getData(){
+        getDataJSON(){
             var token = localStorage.getItem('token');
             return new Promise((resolve, reject) => {
                 instance({
@@ -595,7 +595,34 @@ export default new Vuex.Store({
                         reject(err)
                     })
             });
+        },
+        getDataXML(){
+            var token = localStorage.getItem('token');
+            return new Promise((resolve, reject) => {
+                instance({
+                    url: '/export/xml', headers: {
+                        common: {
+                            'x-access-token': token
+                        }
+                    }, method: 'GET'
+                })
+                    .then(resp => {
+                        const url = window.URL.createObjectURL(new Blob([resp.data]));
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.setAttribute('download', 'download.xml'); //or any other extension
+                        document.body.appendChild(link);
+                        link.click();
+
+                        console.log(resp.data)
+                        resolve(resp)
+                    })
+                    .catch(err => {
+                        reject(err)
+                    })
+            });
         }
+
     },
     modules: {}
 })

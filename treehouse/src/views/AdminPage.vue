@@ -4,7 +4,8 @@
             <UserList title="Users"/>
         </v-layout>
         <v-layout row>
-            <v-btn @click="getData">Export to JSON</v-btn>
+            <v-btn @click="getDataJSON">Export to JSON</v-btn>
+            <v-btn @click="getDataXML">Export to XML</v-btn>
         </v-layout>
     </v-container>
 </template>
@@ -25,9 +26,13 @@ export default {
         this.$store.dispatch('getUserList');
     },
     methods : {
-        getData() {
-            this.$store.dispatch('getData');
+        getDataJSON() {
+            this.$store.dispatch('getDataJSON');
+        },
+        getDataXML() {
+            this.$store.dispatch('getDataXML');
         }
+
     }
 }
 </script>
