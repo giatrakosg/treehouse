@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request
 from database import db
+from sqlalchemy import or_
 
 from models.Thread import Thread
 from models.Message import Message
@@ -14,23 +15,32 @@ messages_blueprint = Blueprint('messages', __name__)
 
 @messages_blueprint.route("/threads/thread/new_message", methods=['POST'])
 def new_thread_message():
-    user1_id = request.args.get('user1_id')
-    user2_id = request.args.get('user2_id')
+    sender_public_id = request.args.get('sender_public_id')
+    receiver_public_id = request.args.get('receiver_public_id')
+    room_id = request.args.get('room_id')
 
-    user1 = User.query.filter_by(public_id=user1_id).first()
-    user2 = User.query.filter_by(public_id=user2_id).first()
+    print(sender_public_id)
+    print(receiver_public_id)
+    print(room_id)
+
+    user1 = User.query.filter_by(public_id=sender_public_id).first()
+    user2 = User.query.filter_by(public_id=receiver_public_id).first()
 
     user1_id = user1.id
     user2_id = user2.id
 
     print(user1_id)
     print(user2_id)
+    print(room_id)
 
-    thread = Thread.query.filter((Thread.user1_id == user1_id and Thread.user2_id == user2_id) or (
-            Thread.user1_id == user2_id and Thread.user2_id == user1_id)).first()
+    thread = Thread.query.filter_by(user1_id=user1_id, user2_id=user2_id).first()
+    if thread is None:
+        thread = Thread.query.filter_by(user2_id=user1_id, user1_id=user2_id).first()
 
     if thread is None:
         thread = Thread(user1_id, user2_id)
+        room = Room.query.filter_by(id=room_id).first()
+        room.threads.append(thread)
 
     args_data = request.get_json()
 
@@ -39,7 +49,7 @@ def new_thread_message():
 
     format_date = datetime.strptime(message_data['timestamp'], '%d/%m/%Y %H:%M')
 
-    sender = User.query.filter_by(public_id=message_data['sender_id']).first()
+    sender = User.query.filter_by(public_id=sender_public_id).first()
 
     thread.messages.append(Message(False, format_date, message_data['text'], sender.id))
 
@@ -94,8 +104,23 @@ def thread_messages(thread_id):
     return jsonify({'message': 'SUCCESS'})
 
 
+@messages_blueprint.route("/users/<public_user_id>/threads", methods=['GET'])
+def get_user_threads(public_user_id):
+    user = User.query.filter_by(public_id=public_user_id).first()
+
+    if user is None:
+        return jsonify({'message': 'SUCCESS'})
+
+    threads = Thread.query.filter(or_(Thread.user1_id == user.id, Thread.user2_id == user.id)).all()
+    threads_dict = []
+
+    for t in threads:
+        threads_dict.append(t.to_dict())
+    return jsonify(threads_dict)
+
+
 @messages_blueprint.route("/rooms/<int:room_id>/threads", methods=['GET'])
-def get_threads(room_id):
+def get_room_threads(room_id):
     room = Room.query.filter_by(id=room_id).first()
 
     if room is None:

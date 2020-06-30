@@ -144,7 +144,8 @@ class Room(db.Model):
             'images': images,
             'bedrooms_number': self.bedrooms_num,
             'reviews_num': len(self.reviews),
-            'public_owner_id': public_owner_id
+            'public_owner_id': public_owner_id,
+            'owner_name': public_owner.fname + ' ' + public_owner.surname
 
         }
         return r
