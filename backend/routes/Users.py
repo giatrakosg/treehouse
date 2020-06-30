@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, url_for
 from database import *
 
 from models.User import User
@@ -242,4 +242,7 @@ def exportJSON(current_user):
     data['reviews'] = reviewsList
     data['reservations'] = reservationsList
     data['users'] = usersList
-    return jsonify({'data':data})
+
+    with open('../data/exports/result.json','w') as fp:
+        json.dump(data,fp)
+    return jsonify({'Message':url_for('data',filename='result.json')})

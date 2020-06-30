@@ -319,12 +319,9 @@ export default new Vuex.Store({
 
         },
         newRoom({state}) {
-
             return new Promise((resolve, reject) => {
-
                 let room_id = null
                 let room = state.room
-
                 instance({
                     url: '/rooms/' + room_id, headers: {}, method: 'POST', data: {
                         room
@@ -564,7 +561,25 @@ export default new Vuex.Store({
             });
 
         },
-
+        getData(){
+            var token = localStorage.getItem('token');
+            return new Promise((resolve, reject) => {
+                instance({
+                    url: '/export/json', headers: {
+                        common: {
+                            'x-access-token': token
+                        }
+                    }, method: 'GET'
+                })
+                    .then(resp => {
+                        console.log(resp.data)
+                        resolve(resp)
+                    })
+                    .catch(err => {
+                        reject(err)
+                    })
+            });
+        }
     },
     modules: {}
 })

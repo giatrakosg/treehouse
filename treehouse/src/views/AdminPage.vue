@@ -1,7 +1,12 @@
 <template lang="html">
-    <div class="">
-        <UserList title="Users"/>
-    </div>
+    <v-container>
+        <v-layout row>
+            <UserList title="Users"/>
+        </v-layout>
+        <v-layout row>
+            <v-btn @click="getData">Export to JSON</v-btn>
+        </v-layout>
+    </v-container>
 </template>
 
 <script>
@@ -11,8 +16,18 @@ export default {
     components : {
         UserList
     },
+    data() {
+        return {
+            'active' : false
+        }
+    },
     created() {
         this.$store.dispatch('getUserList');
+    },
+    methods : {
+        getData() {
+            this.$store.dispatch('getData');
+        }
     }
 }
 </script>
