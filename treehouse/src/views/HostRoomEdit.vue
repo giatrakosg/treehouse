@@ -101,46 +101,8 @@
             } else {
                 this.$store.dispatch('getRoom', this.$route.params.room_id)
 
-                console.log(this.$store.state.room)
 
-                // let formatted_dates = [];
-                //
-                // for (let a of result.data.reservations) {
-                //     if (a.status === 0) {
-                //         if (a.date_to === null) {
-                //             formatted_dates.push({
-                //                 date_from: moment(a.date_from).format('YYYY-MM-DD'),
-                //                 date_to: null
-                //             });
-                //         } else {
-                //             formatted_dates.push({
-                //                 date_from: moment(a.date_from).format('YYYY-MM-DD'),
-                //                 date_to: moment(a.date_to).format('YYYY-MM-DD')
-                //             });
-                //         }
-                //
-                //     }
-                //
-                // }
 
-                // this.room_desc.reservations = formatted_dates;
-                //
-                //
-                // console.log(result.data);
-                //
-                // this.room_desc.location = result.data.location;
-                // this.reviews = result.data.reviews;
-                // this.message_threads = result.data.threads.sort(function (a, b) {
-                //     if (new Date(a.last_message.timestamp) <= new Date(b.last_message.timestamp)) {
-                //         return 1;
-                //     } else {
-                //         return -1;
-                //     }
-                // });
-                // console.log(this.message_threads);
-                //
-                //
-                // this.rating = result.data.rating;
 
                 this.loaded = true;
 

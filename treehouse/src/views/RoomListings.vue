@@ -78,9 +78,11 @@
 
 
                 await this.$store.dispatch('getRooms', {dates, loc});
+                console.log(this.$store.state.rooms)
                 this.rooms = this.$store.state.rooms
+                console.log(filters)
                 this.applyFilters(filters);
-                console.log(this.$store.state.user)
+                console.log(this.filtered_rooms)
 
 
             },
@@ -88,9 +90,9 @@
 
                 let filtered = this.rooms.filter(function (room) {
 
-                        if (filters.persons !== room.persons_number) {
-                            return false;
-                        }
+                    if (parseInt(filters.persons) !== room.persons_number) {
+                        return false;
+                    }
 
 
                         if (filters.max_price !== '' && room.cost_per_day > parseFloat(filters.max_price)) {

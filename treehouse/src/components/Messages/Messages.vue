@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <v-row v-if="user.isHost">
+        <v-row>
             <v-list-item style="border-bottom:groove">
                 <v-list-item-avatar size="55">
                     <img
@@ -15,14 +15,14 @@
             </v-list-item>
 
         </v-row>
-        <v-row v-if="user.isHost">
+        <v-row>
 
             <v-list three-line dense style="overflow: auto;height: 450px;width: 100%;border-bottom: groove">
                 <template v-for="(item,index) in messages">
 
 
                     <v-list-item
-                            v-if="item.sender_id===user_id"
+                            v-if="item.sender_public_id===user.public_id"
                             :key="index"
                             style="width: 340px;"
                             class="ma-1 mr-0 pa-0 ml-auto"
@@ -106,19 +106,19 @@
         name: "Messages",
         data: () => ({
             message: {
-                sender_id: '',
+                sender_public_id: '',
+                receiver_public_id: '',
                 text: '',
                 timestamp: null,
-                user1_id: '',
-                user2_id: ''
+
 
             },
-            user_id: 4,
             username: "John"
 
         }),
         computed: {
             messages() {
+                console.log(this.$store.state.thread_messages)
                 return this.$store.state.thread_messages
 
             },
@@ -127,24 +127,30 @@
             }
         },
         methods: {
-            pushMessage() {
+            async pushMessage() {
                 if (this.message.text !== '' && this.message.text !== null) {
-                    this.message.sender_id = this.$store.state.user.public_id
-                    this.message.user1_id = this.message.sender_id
 
-                    console.log(this.$store.state.user)
+                    this.message.sender_public_id = this.$store.state.user.public_id
 
-                    if (this.$store.state.current_thread === "") {
-                        this.message.user2_id = this.$store.state.room.public_owner_id
+
+                    if (this.$store.state.current_thread.user2_public_id === this.$store.state.user.public_id) {
+                        this.message.receiver_public_id = this.$store.state.current_thread.user1_public_id
                     } else {
-                        this.message.user2_id = this.$store.state.current_thread.user2_id
+                        this.message.receiver_public_id = this.$store.state.current_thread.user2_public_id
                     }
 
-                    this.message.timestamp = moment().format("DD/MM/YYYY  HH:mm")
+
+                    this.message.timestamp = moment().format("DD/MM/YYYY HH:mm")
                     console.log(this.message)
 
                     let mess = this.message;
-                    this.$store.dispatch('newMessage', mess);
+                    await this.$store.dispatch('newMessage', mess);
+
+                    this.message.sender_public_id = ''
+                    this.message.receiver_public_id = ''
+                    this.message.text = ''
+                    this.message.timestamp = null
+
 
                 }
             },
@@ -155,8 +161,14 @@
 
             },
             showDate: function (date) {
+                console.log(date)
+                if (date === this.message.timestamp) {
+                    return date;
+                } else {
+                    return moment(date).format("DD/MM/YYYY HH:mm")
+                }
 
-                return moment(date).format(("DD/MM/YYYY - HH:mm"));
+
             },
         },
 

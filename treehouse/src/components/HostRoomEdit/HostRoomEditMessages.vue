@@ -31,9 +31,10 @@
 
         }),
         created() {
-            console.log(this.$store.state.room)
+
             if (this.$store.state.room.Id !== null) {
                 this.$store.dispatch('getMessageThreadsRoom')
+                console.log(this.$store.state.message_threads)
             }
         },
 

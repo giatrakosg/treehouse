@@ -60,6 +60,10 @@ export default new Vuex.Store({
             state.user = {};
             state.isLoggedIn = false;
             localStorage.clear()
+            state.message_threads = []
+            state.thread_messages = []
+            state.current_thread = []
+
         },
         addUsers(state, payload) {
             state.users = payload.users
@@ -91,14 +95,17 @@ export default new Vuex.Store({
             state.thread_messages = payload
         },
         addMessage(state, payload) {
-            state.thread_messages.push(payload)
+            console.log(payload)
+
+            state.thread_messages.push(JSON.parse(JSON.stringify(payload)))
+
         },
         removeMessage(state, payload) {
             console.log(payload)
             console.log("REMOVED MESSAGE")
 
             state.thread_messages = state.thread_messages.filter(function (m) {
-                return m.Id !== payload;
+                return m.id !== payload;
             });
         },
         addReservations(state, payload) {
@@ -440,7 +447,7 @@ export default new Vuex.Store({
 
         },
         getReviews({commit, state}) {
-            console.log(state)
+
 
             let room_id = state.room.Id
             return new Promise((resolve, reject) => {
@@ -491,10 +498,10 @@ export default new Vuex.Store({
 
         },
         getMessageThreadsUser({commit, state}) {
-            let room_id = state.room.Id
+            let user_id = state.user.public_id
             return new Promise((resolve, reject) => {
                 instance({
-                    url: '/rooms/' + room_id + '/threads',
+                    url: '/users/' + user_id + '/threads',
                     method: 'GET',
                 }).then(resp => {
                     commit('addThreads', resp.data)
@@ -505,15 +512,17 @@ export default new Vuex.Store({
             });
 
         },
-        newMessage({commit}, message) {
+        newMessage({commit, state}, message) {
             console.log(message)
+            console.log(state.current_thread)
             return new Promise((resolve, reject) => {
                 instance({
                     url: '/threads/thread/new_message',
                     method: 'POST',
                     params: {
-                        'user1_id': message.user1_id,
-                        'user2_id': message.user2_id,
+                        'sender_public_id': message.sender_public_id,
+                        'receiver_public_id': message.receiver_public_id,
+                        'room_id': state.room.Id
                     },
                     data: {
                         message

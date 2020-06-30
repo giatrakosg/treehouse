@@ -113,7 +113,7 @@
                 this.$emit('close-dialog')
                 if (this.$store.state.user.isHost) {
                     await router.push({name: 'HostRooms'})
-                } else {
+                } else if (this.$router.currentRoute.path !== "/") {
                     await router.push({name: 'Home'})
                 }
 

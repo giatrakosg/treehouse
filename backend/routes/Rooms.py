@@ -80,6 +80,7 @@ def get_room(room_id):
             return jsonify({'message': 'ERROR'})
 
         room_d = data['room']
+        print(data)
 
         room.update(room_d)
 
@@ -150,6 +151,7 @@ def get_rooms():
     location = [float(request.args.get('lat')), float(request.args.get('long'))]
 
     location_rooms = search_rooms_in_area(location)
+    print(location_rooms)
 
     if len(location_rooms):
 
@@ -163,6 +165,7 @@ def get_rooms():
             if flag:
                 rooms_dict.append(room.to_dict_short())
 
+    print(rooms_dict)
     return jsonify(rooms_dict)
 
 
@@ -179,7 +182,7 @@ def search_rooms_in_area(location):
 
 
 def get_random_data():
-    rooms_number = 300
+    rooms_number = 100
     rooms = []
 
     for i in range(rooms_number):
@@ -190,34 +193,28 @@ def get_random_data():
                     bool(random.getrandbits(1)), bool(random.getrandbits(1)), bool(random.getrandbits(1)),
                     37.9754983 + random.uniform(-1, 1), 23.7356671 + random.uniform(-1, 1),
                     "address", "info", random.randint(1, 5), random.randint(23, 300), random.uniform(10, 70),
-                    random_sentence(3), random.randint(6, 20), random.randint(1, 3), 3)
-        for z in range(30):
-            t = Thread(3, random.randint(1, 2) * 2)
-
-            t.get_random_messages()
-
-            room.threads.append(t)
+                    random_sentence(3), random.randint(6, 20), random.randint(1, 3), 7)
 
         for y in range(10):
             room.images.append(Image('https://picsum.photos/id/' + str(i * 10 + y) + '/400/400'))
             room.reviews.append(
-                Review(random.uniform(1, 5), random_sentence(3), random_sentence(10), random.randint(1, 2) * 2))
+                Review(random.uniform(1, 5), random_sentence(3), random_sentence(10), 4))
 
-        start_date = datetime.now()
+            start_date = datetime.now()
 
-        for x in range(10):
-            next_date = start_date + timedelta(days=random.randint(2, 30))
+            for x in range(10):
+                next_date = start_date + timedelta(days=random.randint(2, 30))
 
             room.reservations.append(Reservation(start_date, next_date, Status.rented))
 
             start_date = next_date + timedelta(days=random.randint(20, 40))
 
-        next_date = None
-        room.reservations.append(Reservation(start_date, next_date, Status.not_available))
+            next_date = None
+            room.reservations.append(Reservation(start_date, next_date, Status.not_available))
 
-        db.session.add(room)
+            db.session.add(room)
 
-    db.session.commit()
+            db.session.commit()
 
 
 def random_sentence(words_number):

@@ -20,9 +20,12 @@ class Thread(db.Model):
         self.user2_id = user2_id
 
     def to_dict(self):
+        user1 = User.query.filter_by(id=self.user1_id).first()
+        user2 = User.query.filter_by(id=self.user2_id).first()
+
         d = {'Id': self.id, 'last_message': self.messages[-1].to_dict(),
-             'profile': 'https://cdn.vuetifyjs.com/images/lists/1.jpg', 'user1_id': self.user1_id,
-             'user2_id': self.user2_id}
+             'profile': 'https://cdn.vuetifyjs.com/images/lists/1.jpg', 'user1_public_id': user1.public_id,
+             'user2_public_id': user2.public_id}
 
         return d
 
