@@ -11,9 +11,14 @@
                     <v-col cols="7">
                         <HomeSearchForm/>
                     </v-col>
-
                     <v-spacer></v-spacer>
-
+                </v-row>
+                <v-row v-if="isLoggedIn">
+                    <v-spacer></v-spacer>
+                    <v-col cols="7">
+                        <RecsCarousel />
+                    </v-col>
+                    <v-spacer></v-spacer>
                 </v-row>
             </v-img>
         </v-container>
@@ -22,11 +27,17 @@
 
 <script>
     import HomeSearchForm from '../components/HomeSearchForm/HomeSearchForm'
-
+    import RecsCarousel from '../components/Recommendations/RecsCarousel'
     export default {
         name: 'Home',
         components: {
-            HomeSearchForm
+            HomeSearchForm,
+            RecsCarousel
+        },
+        computed : {
+            isLoggedIn() {
+                return this.$store.state.isLoggedIn;
+            },
         }
     }
 </script>

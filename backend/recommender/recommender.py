@@ -1,7 +1,15 @@
+import sys
+sys.path.append('../')
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from ExplicitMF import Recommender, train_test_split
+
+from database import db
+from models.User import User
+from models.Room import Room
+from models.Recommendation import
 
 pd.set_option('display.max_rows', 500)
 pd.set_option('display.max_columns', 500)
@@ -23,7 +31,7 @@ for idx,row in reviews.iterrows():
     ratings[row[7],row[8]] = row[6]
 
 
-mf = Recommender(n_epochs=25)
+mf = Recommender(n_epochs=5)
 
 train, val = train_test_split(ratings)
 
