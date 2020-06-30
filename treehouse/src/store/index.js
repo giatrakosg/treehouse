@@ -581,6 +581,13 @@ export default new Vuex.Store({
                     }, method: 'GET'
                 })
                     .then(resp => {
+                        const url = window.URL.createObjectURL(new Blob([JSON.stringify(resp.data)]));
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.setAttribute('download', 'download.json'); //or any other extension
+                        document.body.appendChild(link);
+                        link.click();
+
                         console.log(resp.data)
                         resolve(resp)
                     })
