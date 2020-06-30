@@ -408,7 +408,7 @@ export default new Vuex.Store({
                 instance({
                     url: '/rooms/' + room_id + '/reservations/unavailable_dates',
                     method: 'POST', data: {
-                        new_reservations
+                       new_reservations
                     }
                 }).then(resp => {
                     commit('addReservations', new_reservations)

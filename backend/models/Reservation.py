@@ -16,11 +16,13 @@ class Reservation(db.Model):
     date_to = db.Column(db.DateTime)
     room_id = db.Column(db.Integer, db.ForeignKey('room.id'), nullable=False)
     status = db.Column(db.Enum(Status), nullable=False)
+    renter_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
-    def __init__(self, date_from, date_to, status):
+    def __init__(self, date_from, date_to, status, renter_id):
         self.date_from = date_from
         self.date_to = date_to
         self.status = status
+        self.renter_id = renter_id
 
     def to_dict(self):
         if self.date_to is None:

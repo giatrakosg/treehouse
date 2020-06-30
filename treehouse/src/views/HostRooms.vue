@@ -8,10 +8,10 @@
         <v-divider/>
         <v-row>
             <v-col cols="12" lg="6">
-                <HostRoomsList/>
+                <HostRoomsList v-if="loaded"/>
             </v-col>
             <v-col cols="12" lg="6">
-                <HostRoomsMap v-bind:rooms="rooms_loc"/>
+                <HostRoomsMap v-if="loaded"/>
             </v-col>
 
         </v-row>
@@ -31,6 +31,7 @@
             rooms: [],
             rooms_loc: [],
             key: 0,
+            loaded: false
 
 
         }),
@@ -39,6 +40,7 @@
             //host -id = user.id
 
             await this.$store.dispatch('getHostRooms', host_id);
+            this.loaded = true
 
 
         }
