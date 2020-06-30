@@ -7,6 +7,7 @@ from models.Reservation import Reservation, Status
 from models.Image import Image
 from models.Review import Review
 from models.User import User
+from models.Thread import Thread
 
 """////////  ROOM   ///////////////////               """
 
