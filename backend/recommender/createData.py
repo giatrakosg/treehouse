@@ -54,17 +54,16 @@ def createRoom(rec):
     elev = bool(random.getrandbits(1))
     area = random.randrange(150)
 
-
     room = Room(rt=rt,beds_num=rec['beds'],baths_num=rec['bathrooms'],bedr_num=rec['bedrooms'],
     lounge=lounge,desc=rec['description'],smoking_all=smoking,pets_all=pets,events_all=events,
     wifi=wifi,ac=ac,refrigerator=refr,kitchen=kitch,tv=tv,parking=parking,elevator=elev,latitude=rec['latitude'],
     longitude=rec['longitude'],address=rec['street']+','+rec['city'],tran_info=rec['transit'],pers_num=rec['guests_included'],
     standard_cost=rec['price'],add_prs_cost=3,title=rec['name'],area=area,min_stay=rec['minimum_nights'],owner_id=host.id
-    )
+    ,listing_id=rec['id'])
     db.session.add(room)
 
 revpd = pd.read_csv('../data/reviews_less.csv',index_col=0)
-roompd = pd.read_csv('../data/listings.csv',index_col='id')
+roompd = pd.read_csv('../data/listings.csv')
 
 # We remove the . thousand(separator) and the first char that is the dollar sign
 roompd['price'] = roompd['price'].apply(lambda x: x.split()[0].replace(',', ''))
