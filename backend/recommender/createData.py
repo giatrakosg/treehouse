@@ -12,14 +12,19 @@ import uuid
 import re
 import numpy as np
 from tqdm import tqdm
+import requests
 
 def createUser(seen,rec):
     if rec['reviewer_id'] in seen:
         return
     pwd = generate_password_hash(rec['reviewer_name'])
     pid = str(uuid.uuid4())
+    isHost = bool(random.getrandbits(1))
+
     user = User(public_id=pid,password=pwd,fname=rec['reviewer_name'],
-    surname="Doe",uname=rec['reviewer_name']+str(rec['reviewer_id']),email=rec['reviewer_name']+'@hotmail.com',phone='69',isHost=False,isPending=False)
+    surname="Doe",uname=rec['reviewer_name']+str(rec['reviewer_id']),email=rec['reviewer_name']+'@hotmail.com',phone='69',isHost=isHost,isPending=False,
+    avatar='https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80')
+
     db.session.add(user)
     seen.add(rec['reviewer_id'])
 
@@ -76,7 +81,8 @@ roompd['bathrooms'].fillna(0,inplace=True)
 roompd['beds'].fillna(0,inplace=True)
 roompd['bedrooms'].fillna(0,inplace=True)
 
-roompd.progress_apply(lambda x : createRoom(x),axis=1)
 revpd.progress_apply(lambda x : createUser(seen,x),axis=1)
+db.session.commit()
 
+roompd.progress_apply(lambda x : createRoom(x),axis=1)
 db.session.commit()

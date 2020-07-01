@@ -16,8 +16,9 @@ class User(db.Model):
     surname = db.Column(db.String(32))
     email = db.Column(db.String(32))
     phone = db.Column(db.String(15))
+    avatar = db.Column(db.String(50))
 
-    def __init__(self,public_id,isHost,uname,password,fname,surname,email,phone,isPending=True,isAdmin=False):
+    def __init__(self,public_id,isHost,uname,password,fname,surname,email,phone,avatar,isPending=True,isAdmin=False):
         #self.id = id
         self.public_id = public_id
         self.isAdmin = isAdmin
@@ -29,6 +30,7 @@ class User(db.Model):
         self.surname = surname
         self.email = email
         self.phone = phone
+        self.avatar = avatar
     def to_dict(self) :
         dict = {}
         dict['public_id'] = self.public_id
@@ -40,6 +42,7 @@ class User(db.Model):
         dict['surname'] = self.surname
         dict['email'] = self.email
         dict['phone'] = self.phone
+        dict['avatar'] = self.avatar
         return dict
 
 
