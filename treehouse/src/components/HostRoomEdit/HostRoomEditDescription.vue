@@ -471,7 +471,12 @@
                     }
                     console.log(this.$store.state.room)
 
-                    await this.$store.dispatch('updateRoomAvailableDates', this.$store.state.room_reservations)
+                    let new_avail_days = {
+                        'reservations': this.$store.state.room_reservations,
+                        'public_user_id': this.$store.state.user.public_id
+                    }
+
+                    await this.$store.dispatch('updateRoomAvailableDates', new_avail_days)
 
                     this.loading_save = false;
                     this.show_tick = true;

@@ -123,6 +123,7 @@
                 let reservation = {
                     date_from: this.dates[0],
                     date_to: this.dates[1],
+                    public_user_id: this.$store.state.user.public_id
 
                 }
 
