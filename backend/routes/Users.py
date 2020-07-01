@@ -1,7 +1,13 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, url_for, send_file
 from database import *
+from xmltodict import parse, unparse
+from xml.dom.minidom import parse, parseString
+
 
 from models.User import User
+from models.Reservation import Reservation
+from models.Review import Review
+from models.Room import Room
 
 import json
 import random
@@ -16,7 +22,6 @@ def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         token = None
-        print(request.headers)
         if 'x-access-token' in request.headers:
             token = request.headers['x-access-token']
 
@@ -204,3 +209,82 @@ def updateUser(current_user,public_id):
     db.session.commit()
 
     return jsonify({'message' : 'Successfull change'})
+
+@users_blueprint.route('/export/json', methods=['GET'])
+@token_required
+def exportJSON(current_user):
+
+    if not current_user.isAdmin :
+        return jsonify({'message' : 'Operation not permitted!'})
+
+
+    rooms = Room.query.all()
+    reviews = Review.query.all()
+    users = User.query.all()
+    reservations = Reservation.query.all()
+    rooms = Room.query.all()
+
+
+    roomsList = []
+    reviewsList = []
+    usersList = []
+    reservationsList = []
+
+    for room in rooms:
+        roomsList.append(room.to_dict_all())
+    for review in reviews:
+        reviewsList.append(review.to_dict())
+    for user in users:
+        usersList.append(user.to_dict())
+    for reservation in reservations:
+        reservationsList.append(reservation.to_dict())
+
+    data = {}
+    data['rooms'] = roomsList
+    data['reviews'] = reviewsList
+    data['reservations'] = reservationsList
+    data['users'] = usersList
+
+    with open('/tmp/results.json','w') as fp:
+        json.dump(data,fp)
+    return send_file('/tmp/results.json')
+
+@users_blueprint.route('/export/xml', methods=['GET'])
+@token_required
+def exportXML(current_user):
+
+    if not current_user.isAdmin :
+        return jsonify({'message' : 'Operation not permitted!'})
+
+
+    rooms = Room.query.all()
+    reviews = Review.query.all()
+    users = User.query.all()
+    reservations = Reservation.query.all()
+    rooms = Room.query.all()
+
+
+    roomsList = []
+    reviewsList = []
+    usersList = []
+    reservationsList = []
+
+    for room in rooms:
+        roomsList.append(room.to_dict_all())
+    for review in reviews:
+        reviewsList.append(review.to_dict())
+    for user in users:
+        usersList.append(user.to_dict())
+    for reservation in reservations:
+        reservationsList.append(reservation.to_dict())
+
+    data = {}
+    data['rooms'] = roomsList
+    data['reviews'] = reviewsList
+    data['reservations'] = reservationsList
+    data['users'] = usersList
+    data = {'root' : data}
+
+    with open('/tmp/results.xml','w') as fp:
+        fp.write(unparse(data))
+    return send_file('/tmp/results.xml')
