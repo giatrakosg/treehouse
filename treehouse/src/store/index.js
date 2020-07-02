@@ -32,7 +32,7 @@ export default new Vuex.Store({
         room: null,
         rooms: [],
         reviews: [],
-
+        recs : [],
         message_threads: [],
         thread_messages: [],
         current_thread: '',
@@ -75,8 +75,10 @@ export default new Vuex.Store({
             state.room = payload;
         },
         addRooms(state, payload) {
-
             state.rooms = payload;
+        },
+        addRecs(state, payload) {
+            state.recs = payload;
         },
         addReviews(state, payload) {
             state.reviews = payload
@@ -131,13 +133,16 @@ export default new Vuex.Store({
                     .then(resp => {
                         const token = resp.data.token
                         const user = resp.data.user
-                        console.log(user)
+                        const recs = resp.data.recs
+                        console.log(resp.data)
+                        console.log(recs)
                         //console.log(user)
                         localStorage.setItem('token', token)
                         // Add the following line:
                         axios.defaults.headers.common['x-access-token'] = token
                         commit('auth_success', {token})
                         commit('addUser', {user})
+                        commit('addRecs', {recs})
                         resolve(resp)
                     })
                     .catch(err => {
