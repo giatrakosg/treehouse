@@ -4,7 +4,7 @@
             <v-spacer></v-spacer>
         </v-flex>
         <v-flex sm3 md3 lg3 class="ma-3">
-            <ProfileInfoCard/>
+            <ProfileInfoCard :user="profile"/>
         </v-flex>
         <v-flex sm7 md7 lg7 class="ma-3">
             <v-container class="pa-0 elevation-2" style="border-radius: 8px;">
@@ -35,10 +35,19 @@
         },
         data: () => ({}),
         created() {
-            console.log(this.$store.state.room)
-
-            this.$store.dispatch('getMessageThreadsUser')
+            console.log(this.$store.state.room);
+            this.$store.dispatch('getMessageThreadsUser');
         },
+        computed : {
+            profile() {
+                if (this.$route.params.id == 'me') {
+                    return this.$store.state.user ;
+                } else {
+                    this.$store.dispatch('getUser',this.$route.params.id);
+                    return this.$store.state.user_profile ;
+                }
+            }
+        }
     }
 </script>
 

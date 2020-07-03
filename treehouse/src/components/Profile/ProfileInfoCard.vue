@@ -59,10 +59,8 @@
 <script>
 export default {
     name : 'ProfileInfoCard' ,
+    props : ['user'],
     computed : {
-        user() {
-            return this.$store.state.user ;
-        },
         avatar() {
             return this.user.avatar ;
         }

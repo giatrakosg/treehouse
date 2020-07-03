@@ -62,7 +62,23 @@ def createRoom(rec):
     ,listing_id=rec['id'])
     db.session.add(room)
 
-revpd = pd.read_csv('../data/reviews_less.csv',index_col=0)
+def createReview(rec):
+    room = Room.query.filter_by(listingid=rec['listing_id']).first()
+    renters = User.query.filter_by(isHost=0,isAdmin=0).all()
+
+    if room :
+        ind = random.randrange(len(renters))
+        user_id = renters[ind].id
+        uname = renters[ind].uname
+        room.reviews.append(Review(int(rec['scores']),'Review from user {}'.format(rec['reviewer_name']),rec['comments'],user_id))
+    else :
+        rooms = Room.query.filter_by().all()
+        ridx = random.randrange(len(rooms))
+        user_id = renters[ind].id
+        uname = renters[ind].uname
+        rooms[ridx].reviews.append(Review(int(rec['scores']),'Review from user {}'.format(rec['reviewer_name']),rec['comments'],user_id))
+
+revpd = pd.read_csv('../data/reviews_with_scores.csv',index_col=0)
 roompd = pd.read_csv('../data/listings.csv')
 
 # We remove the . thousand(separator) and the first char that is the dollar sign
@@ -84,4 +100,7 @@ revpd.progress_apply(lambda x : createUser(seen,x),axis=1)
 db.session.commit()
 
 roompd.progress_apply(lambda x : createRoom(x),axis=1)
+db.session.commit()
+
+revpd.progress_apply(lambda x : createReview(x),axis=1)
 db.session.commit()

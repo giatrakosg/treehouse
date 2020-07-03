@@ -218,6 +218,15 @@ def updateUser(current_user,public_id):
 
     return jsonify({'message' : 'Successfull change'})
 
+@users_blueprint.route('/user/<public_id>', methods=['GET'])
+def getUser(public_id):
+    user = User.query.filter_by(public_id=public_id).first()
+    if not user:
+        return jsonify({'message' : 'No user found!'})
+    if current_user.public_id != public_id:
+        return jsonify({'message' : 'Operation not permitted!'})
+    return jsonify({'user' : user.to_dict()})
+
 @users_blueprint.route('/export/json', methods=['GET'])
 @token_required
 def exportJSON(current_user):

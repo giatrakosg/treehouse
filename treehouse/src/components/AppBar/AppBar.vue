@@ -66,7 +66,7 @@
         <div class="d-flex align-right mx-4" v-if="isLoggedIn & !isAdmin">
             <v-btn
                     color="primary"
-                    to="/profile"
+                    to="/user/me"
                     elevation="0"
             >
                 Profile

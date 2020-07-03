@@ -36,12 +36,15 @@ export default new Vuex.Store({
         message_threads: [],
         thread_messages: [],
         current_thread: '',
-
+        user_profile : '',
         room_reservations: []
     },
     mutations: {
         addUser(state, payload) {
             state.user = payload.user;
+        },
+        addUserProfile(state,payload) {
+            state.user_profile = payload.profile ;
         },
         auth_request(state) {
             state.status = 'loading'
@@ -288,12 +291,9 @@ export default new Vuex.Store({
 
         },
         updateRoom({state}) {
-
             return new Promise((resolve, reject) => {
-
                 let room_id = state.room.Id
                 let room = state.room
-
                 instance({
                     url: '/rooms/' + room_id, headers: {}, method: 'PATCH', data: {
                         room
@@ -307,9 +307,21 @@ export default new Vuex.Store({
                         reject(err)
                     })
             });
-
         },
-
+        getUser({commit},payload) {
+            return new Promise((resolve, reject) => {
+                instance({
+                    url: '/user/' + payload.public_id, headers: {}, method: 'GET'
+                })
+                    .then(resp => {
+                        commit('addUserProfile',resp.data.user);
+                        resolve(resp)
+                    })
+                    .catch(err => {
+                        reject(err)
+                    })
+            });
+        },
         updateRoomImages({state}) {
             return new Promise((resolve, reject) => {
 
