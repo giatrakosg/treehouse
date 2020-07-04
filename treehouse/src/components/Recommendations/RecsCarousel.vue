@@ -1,6 +1,7 @@
 <template lang="html">
-    <v-card>
-        <v-card-text>
+<!--    <v-card>
+        <v-card-text> -->
+        <v-container>
             <v-row>
                 <v-col cols="12" sm="2" md="2" lg="2" v-for="(room,index) in recs" :key="index">
                     <RoomCard v-bind:type="room.type"
@@ -14,8 +15,9 @@
                     />
                 </v-col>
             </v-row>
-        </v-card-text>
-    </v-card>
+        </v-container>
+         <!-- </v-card-text> -->
+<!--    </v-card> -->
 </template>
 
 <script>

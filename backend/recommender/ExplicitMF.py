@@ -4,17 +4,8 @@ from sklearn.metrics import mean_squared_error
 from tqdm import tqdm
 
 
-# Wi = Wi - a(ei,jHj-lwHj)
-# Hj = Hj - a(ei,jWi-lhWi)
-
-
 MIN_USER_RATINGS = 35
 DELETE_RATING_COUNT = 15
-
-def rmse(prediction, ground_truth):
-    prediction = prediction[ground_truth.nonzero()].flatten()
-    ground_truth = ground_truth[ground_truth.nonzero()].flatten()
-    return sqrt(mean_squared_error(prediction, ground_truth))
 
 def train_test_split(ratings):
 
@@ -41,17 +32,16 @@ class Recommender:
     self.n_latent_features = n_latent_features
     self.lmbda = lmbda
     self.learning_rate = learning_rate
-
   def predictions(self, P, Q):
     return np.dot(P.T, Q)
 
   def fit(self, X_train, X_val):
+    self.X_train = X_train
     m, n = X_train.shape
 
     self.P = 3 * np.random.rand(self.n_latent_features, m)
     self.Q = 3 * np.random.rand(self.n_latent_features, n)
 
-    self.train_error = []
     self.val_error = []
 
     users, items = X_train.nonzero()
@@ -62,12 +52,9 @@ class Recommender:
             self.P[:, u] += self.learning_rate * (error * self.Q[:, i] - self.lmbda * self.P[:, u])
             self.Q[:, i] += self.learning_rate * (error * self.P[:, u] - self.lmbda * self.Q[:, i])
 
-        train_rmse = rmse(self.predictions(self.P, self.Q), X_train)
-        self.train_error.append(train_rmse)
-
     return self
 
-  def predict(self, X_train, user_index):
+  def predict(self, user_index):
     y_hat = self.predictions(self.P, self.Q)
-    predictions_index = np.where(X_train[user_index, :] == 0)[0]
+    predictions_index = np.where(self.X_train[user_index, :] == 0)[0]
     return y_hat[user_index, predictions_index].flatten()

@@ -95,7 +95,7 @@ const routes = [
       name : 'User Page' ,
       component : ProfilePage ,
       meta : {
-          requiresAuth : true
+          requiresAuth : false
       }
   },
   {
@@ -112,7 +112,7 @@ const routes = [
       name : 'Edit Profile Page',
       component : EditProfilePage,
       meta : {
-          requiresAuth : true
+          requiresAuth : false
       }
   },
   {
@@ -132,17 +132,29 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  // redirect to login page if not logged in and trying to access a restricted page
+    /*
+
   const publicPages = ['/login','/login/admin','/register','/success','/sentemail','/hostrooms',
-'/roomlistings','/'];
+'/roomlistings','/','/room'];
   const authRequired = !publicPages.includes(to.path);
-  const loggedIn = localStorage.getItem('token');
 
   if (authRequired && !loggedIn) {
     return next('/login');
   }
 
   next();
+  */
+    const loggedIn = localStorage.getItem('token');
+    if (to.matched.some((record) => record.meta.requiresAuth)) {
+        if (loggedIn) {
+            next()
+            return
+        }
+        next('/login')
+    }
+    next()
+
+
 })
 
 export default router

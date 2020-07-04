@@ -25,7 +25,7 @@ from pprint import pprint
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'thisissecret'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///backups/treehouse_jul3.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///treehouse.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
 cors = CORS(app)
