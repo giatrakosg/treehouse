@@ -31,15 +31,15 @@ reviews['iidx'] = reviews['listing_id'].apply(lambda x: np.where(items==x)[0][0]
 for idx,row in reviews.iterrows():
     ratings[row[7],row[8]] = row[6]
 
-mf = Recommender(n_epochs=5)
+mf = Recommender(n_epochs=20)
 train, val = train_test_split(ratings)
 mf.fit(train,val)
 
 renters = User.query.filter_by(isHost=False,isAdmin=False).all()
 rentidx = 0
 
-for u in tqdm(range(253)):
-    rat_u = mf.predict(train,u)
+for u in tqdm(range(200)):
+    rat_u = mf.predict(u)
     top_5 = rat_u.argsort()[0:5]
     renterid = renters[rentidx].id
     rentidx+=1
