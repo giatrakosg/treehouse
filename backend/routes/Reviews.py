@@ -20,6 +20,7 @@ reviews_blueprint = Blueprint('reviews', __name__)
 
 @reviews_blueprint.route("/rooms/<int:room_id>/reviews", methods=['GET'])
 def get_reviews(room_id):
+    print(room_id)
     reviews_dict = []
     room = Room.query.filter_by(id=room_id).first()
     if room is None:
@@ -27,6 +28,7 @@ def get_reviews(room_id):
 
     for i in room.reviews:
         reviews_dict.append(i.to_dict())
+    print(reviews_dict)
 
     return jsonify(reviews_dict)
 

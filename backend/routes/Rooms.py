@@ -104,7 +104,7 @@ def get_room(room_id):
                     room_dict['air_condition'], room_dict['refrigerator'], room_dict['kitchen'], room_dict['tv'],
                     room_dict['parking'], room_dict['elevator'], room_dict['location'][0], room_dict['location'][1],
                     room_dict['address'], room_dict['transport_info'], room_dict['persons_number'],
-                    room_dict['elevator'], room_dict['cost_per_day'], room_dict['title'], room_dict['area'],
+                    room_dict['cost_per_day'], room_dict['add_persons_cost'], room_dict['title'], room_dict['area'],
                     room_dict['min_stay'], owner.id)
 
         db.session.add(room)
@@ -151,7 +151,6 @@ def get_rooms():
     location = [float(request.args.get('lat')), float(request.args.get('long'))]
 
     location_rooms = search_rooms_in_area(location)
-    print(location_rooms)
 
     if len(location_rooms):
         for room in location_rooms:
@@ -163,7 +162,6 @@ def get_rooms():
             if flag:
                 rooms_dict.append(room.to_dict_short())
 
-    print(rooms_dict)
     return jsonify(rooms_dict)
 
 

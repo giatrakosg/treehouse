@@ -63,7 +63,7 @@
         props: ['room'],
         data: () => ({}),
         created() {
-            console.log(this.room)
+
         }
 
 

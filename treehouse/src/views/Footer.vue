@@ -13,7 +13,7 @@
             <v-card-text>
                 <v-btn
                         v-for="item in items"
-                        :key="item"
+                        :key="item.link"
                         class="mx-4 white--text"
                         icon
                         :href="item.link"
