@@ -3,7 +3,7 @@
         <v-card-text> -->
         <v-container>
             <v-row>
-                <v-col cols="12" sm="2" md="2" lg="2" v-for="(room,index) in recs" :key="index">
+                <v-col cols="12" sm="3" md="3" lg="4" v-for="(room,index) in recs" :key="index">
                     <RoomCard v-bind:type="room.type"
                               v-bind:title="room.title"
                               v-bind:rating="room.rating"
