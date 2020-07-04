@@ -154,14 +154,12 @@ def get_rooms():
     print(location_rooms)
 
     if len(location_rooms):
-
         for room in location_rooms:
-            flag = False
+            flag = True
             for r in room.reservations:
-
                 if r.date_from > datetime_to or r.date_to < datetime_from:
                     print(str(r.date_from) + ' ' + str(r.date_to))
-                    flag = True
+                    flag = False
             if flag:
                 rooms_dict.append(room.to_dict_short())
 

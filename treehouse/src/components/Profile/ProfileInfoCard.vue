@@ -2,13 +2,13 @@
   <v-card
   >
     <v-img
-      src="https://cdn.vuetifyjs.com/images/lists/ali.png"
+      :src="user.avatar"
       height="300px"
+      width="200px"
       dark
     >
       <v-row class="fill-height">
         <v-card-title>
-
 
         <v-spacer></v-spacer>
 
@@ -59,9 +59,10 @@
 <script>
 export default {
     name : 'ProfileInfoCard' ,
+    props : ['user'],
     computed : {
-        user() {
-            return this.$store.state.user ;
+        avatar() {
+            return this.user.avatar ;
         }
     }
 }

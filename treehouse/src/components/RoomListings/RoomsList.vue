@@ -59,8 +59,6 @@
                 pages_number: 0,
                 room: "test",
                 empty: false,
-
-
             }
 
         },

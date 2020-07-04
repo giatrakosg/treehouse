@@ -8,6 +8,7 @@ from models.User import User
 from models.Reservation import Reservation
 from models.Review import Review
 from models.Room import Room
+from models.Recommendation import Recommendation
 
 import json
 import random
@@ -52,10 +53,17 @@ def login():
     if not user:
         return make_response('Could not verify', 401, {'WWW-Authenticate' : 'Basic realm="Login required!"'})
 
+    recs = Recommendation.query.filter_by(uid=user.id).all()
+    rooms = []
+    for rec in recs:
+        room = Room.query.filter_by(id=rec.roomid).first()
+        rooms.append(room)
+
+    roomsD = list(map(lambda x : x.to_dict_short(),rooms))
     if check_password_hash(user.password, auth.password):
         token = jwt.encode({'public_id' : user.public_id, 'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=90)}, app.config['SECRET_KEY'])
 
-        return jsonify({'token' : token.decode('UTF-8') , 'user' : user.to_dict()})
+        return jsonify({'token' : token.decode('UTF-8') , 'user' : user.to_dict(), 'recs' : roomsD})
 
     return make_response('Could not verify', 401, {'WWW-Authenticate' : 'Basic realm="Login required!"'})
 
@@ -209,6 +217,15 @@ def updateUser(current_user,public_id):
     db.session.commit()
 
     return jsonify({'message' : 'Successfull change'})
+
+@users_blueprint.route('/user/<public_id>', methods=['GET'])
+def getUser(public_id):
+    user = User.query.filter_by(public_id=public_id).first()
+    if not user:
+        return jsonify({'message' : 'No user found!'})
+    if current_user.public_id != public_id:
+        return jsonify({'message' : 'Operation not permitted!'})
+    return jsonify({'user' : user.to_dict()})
 
 @users_blueprint.route('/export/json', methods=['GET'])
 @token_required

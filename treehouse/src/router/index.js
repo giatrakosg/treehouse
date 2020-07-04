@@ -91,6 +91,14 @@ const routes = [
       }
   } ,
   {
+      path : '/user/:id' ,
+      name : 'User Page' ,
+      component : ProfilePage ,
+      meta : {
+          requiresAuth : true
+      }
+  },
+  {
       path : '/admin' ,
       name : 'Admin Page' ,
       component : AdminPage,

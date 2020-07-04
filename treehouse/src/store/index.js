@@ -32,16 +32,19 @@ export default new Vuex.Store({
         room: null,
         rooms: [],
         reviews: [],
-
+        recs : [],
         message_threads: [],
         thread_messages: [],
         current_thread: '',
-
+        user_profile : '',
         room_reservations: []
     },
     mutations: {
         addUser(state, payload) {
             state.user = payload.user;
+        },
+        addUserProfile(state,payload) {
+            state.user_profile = payload.profile ;
         },
         auth_request(state) {
             state.status = 'loading'
@@ -75,8 +78,10 @@ export default new Vuex.Store({
             state.room = payload;
         },
         addRooms(state, payload) {
-
             state.rooms = payload;
+        },
+        addRecs(state, payload) {
+            state.recs = payload;
         },
         addReviews(state, payload) {
             state.reviews = payload
@@ -131,13 +136,16 @@ export default new Vuex.Store({
                     .then(resp => {
                         const token = resp.data.token
                         const user = resp.data.user
-                        console.log(user)
+                        const recs = resp.data.recs
+                        console.log(resp.data)
+                        console.log(recs)
                         //console.log(user)
                         localStorage.setItem('token', token)
                         // Add the following line:
                         axios.defaults.headers.common['x-access-token'] = token
                         commit('auth_success', {token})
                         commit('addUser', {user})
+                        commit('addRecs', {recs})
                         resolve(resp)
                     })
                     .catch(err => {
@@ -283,12 +291,9 @@ export default new Vuex.Store({
 
         },
         updateRoom({state}) {
-
             return new Promise((resolve, reject) => {
-
                 let room_id = state.room.Id
                 let room = state.room
-
                 instance({
                     url: '/rooms/' + room_id, headers: {}, method: 'PATCH', data: {
                         room
@@ -302,9 +307,21 @@ export default new Vuex.Store({
                         reject(err)
                     })
             });
-
         },
-
+        getUser({commit},payload) {
+            return new Promise((resolve, reject) => {
+                instance({
+                    url: '/user/' + payload.public_id, headers: {}, method: 'GET'
+                })
+                    .then(resp => {
+                        commit('addUserProfile',resp.data.user);
+                        resolve(resp)
+                    })
+                    .catch(err => {
+                        reject(err)
+                    })
+            });
+        },
         updateRoomImages({state}) {
             return new Promise((resolve, reject) => {
 

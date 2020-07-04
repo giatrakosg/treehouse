@@ -47,7 +47,7 @@ class Room(db.Model):
     title = db.Column(db.String(30), nullable=False)
     area = db.Column(db.Float, nullable=False)
     min_stay = db.Column(db.Integer, nullable=False)
-
+    listingid = db.Column(db.Integer)
     owner_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     images = db.relationship('Image', backref='room', lazy=True)
@@ -75,7 +75,7 @@ class Room(db.Model):
                  smoking_all, pets_all, events_all, wifi, ac, refrigerator, kitchen, tv,
                  parking, elevator, latitude, longitude,
                  address, tran_info, pers_num,
-                 standard_cost, add_prs_cost, title, area, min_stay, owner_id):
+                 standard_cost, add_prs_cost, title, area, min_stay, owner_id,listing_id=-1):
         self.type = rt
         self.beds_num = beds_num
         self.baths_num = baths_num
@@ -102,6 +102,7 @@ class Room(db.Model):
         self.title = title
         self.area = area
         self.min_stay = min_stay
+        self.listingid = listing_id
         self.owner_id = owner_id
 
     def to_dict_all(self):
