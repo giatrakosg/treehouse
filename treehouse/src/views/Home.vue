@@ -3,7 +3,7 @@
         <v-container fluid class="pa-0">
             <v-img
                     src="../assets/back-ground-image-3.jpg"
-                    max-height="100vh">
+                    max-height="250vh">
                 <v-row style="margin-top: 200px">
 
                     <v-spacer></v-spacer>
