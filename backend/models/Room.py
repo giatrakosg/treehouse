@@ -159,7 +159,8 @@ class Room(db.Model):
              'address': self.address,
              'reviews_number': len(self.reviews),
              'location': [self.lat_coordinate, self.long_coordinate],
-             'id': self.id
+             'id': self.id ,
+             'listingid' : self.listingid
              }
 
         if len(self.images) == 0:
@@ -184,6 +185,7 @@ class Room(db.Model):
              'persons_number': self.persons_num,
              'rating': self.rating,
              'cost_per_day': self.standard_cost,
+             'listingid' : self.listingid,
              'reviews_num': len(self.reviews)}
 
         if len(self.images) == 0:

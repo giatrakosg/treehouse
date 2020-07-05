@@ -8,7 +8,7 @@ from models.Review import Review
 from models.Thread import Thread
 from models.User import User
 from models.Message import Message
-
+import pandas as pd
 import json
 import random
 import time
@@ -164,6 +164,13 @@ def get_rooms():
                 rooms_dict.append(room.to_dict_short())
 
     print(rooms_dict)
+    reviews = pd.read_csv('./data/reviews_with_scores.csv',index_col=0)
+
+    for r in rooms_dict:
+        if r['listingid']:
+            s2 = pd.Series([r['listingid'],'10','2015-04-07','0','Paola',"empty line",'5'])
+            reviews = reviews.append(s2,ignore_index=True)
+    reviews.to_csv('./data/reviews_with_scores_updated.csv')
     return jsonify(rooms_dict)
 
 
