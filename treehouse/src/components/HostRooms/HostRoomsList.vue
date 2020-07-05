@@ -46,7 +46,7 @@
         }),
         computed: {
             rooms() {
-                console.log(this.$store.state.rooms)
+
                 return this.$store.state.rooms.filter(room => room.title.toLowerCase().search(this.search_title.toLowerCase()) !== -1)
             }
         },

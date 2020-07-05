@@ -55,7 +55,7 @@
 
             }
         },
-        mounted() {
+        beforeMount() {
 
 
             this.$root.$on('highlight', (key) => {
@@ -63,12 +63,13 @@
 
                 this.$refs.img[key].style.width = "95px";
                 this.$refs.img[key].style.height = "95px";
-                console.log(key)
+                console.log(this.$refs.img[key])
 
             });
             this.$root.$on('default', (key) => {
                 this.$refs.img[key].style.width = "85px";
                 this.$refs.img[key].style.height = "85px";
+                console.log(this.$refs.img[key])
             })
 
 

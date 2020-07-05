@@ -104,7 +104,7 @@ def get_room(room_id):
                     room_dict['air_condition'], room_dict['refrigerator'], room_dict['kitchen'], room_dict['tv'],
                     room_dict['parking'], room_dict['elevator'], room_dict['location'][0], room_dict['location'][1],
                     room_dict['address'], room_dict['transport_info'], room_dict['persons_number'],
-                    room_dict['elevator'], room_dict['cost_per_day'], room_dict['title'], room_dict['area'],
+                    room_dict['cost_per_day'], room_dict['add_persons_cost'], room_dict['title'], room_dict['area'],
                     room_dict['min_stay'], owner.id)
 
         db.session.add(room)
@@ -151,7 +151,6 @@ def get_rooms():
     location = [float(request.args.get('lat')), float(request.args.get('long'))]
 
     location_rooms = search_rooms_in_area(location)
-    print(location_rooms)
 
     if len(location_rooms):
         for room in location_rooms:
@@ -163,6 +162,7 @@ def get_rooms():
             if flag:
                 rooms_dict.append(room.to_dict_short())
 
+<<<<<<< HEAD
     print(rooms_dict)
     reviews = pd.read_csv('./data/reviews_with_scores.csv',index_col=0)
 
@@ -171,6 +171,8 @@ def get_rooms():
             s2 = pd.Series([r['listingid'],'10','2015-04-07','0','Paola',"empty line",'5'])
             reviews = reviews.append(s2,ignore_index=True)
     reviews.to_csv('./data/reviews_with_scores_updated.csv')
+=======
+>>>>>>> 95675fdc0f6952dc6acbbe7d10f9c4a56521da9f
     return jsonify(rooms_dict)
 
 

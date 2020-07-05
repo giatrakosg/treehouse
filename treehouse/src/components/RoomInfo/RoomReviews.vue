@@ -23,7 +23,7 @@
             </v-card-title>
             <template v-for="(item,index) in reviews">
                 <RoomReview v-bind:key="index"
-                            avatar="https://cdn.vuetifyjs.com/images/lists/2.jpg"
+                            :avatar="item.user_avatar"
                             v-bind:username="item.user_name"
                             v-bind:content="item.description"
                             v-bind:title="item.title"
