@@ -171,6 +171,7 @@
             addImage() {
                 if (this.image_link !== '') {
                     this.$store.state.room.images.push({src: this.image_link})
+                    this.image_link = ''
                 }
 
             },

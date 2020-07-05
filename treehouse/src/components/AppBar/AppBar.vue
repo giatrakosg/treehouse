@@ -50,6 +50,7 @@
                         elevation="0"
                 >
                     Login
+                     <v-icon right>mdi-login</v-icon>
                 </v-btn>
                 <LoginForm v-on:close-dialog="closeDialog"/>
             </v-dialog>
@@ -60,7 +61,9 @@
                     to="/register"
                     elevation="0"
             >
+
                 Register
+                <v-icon right>mdi-account-plus</v-icon>
             </v-btn>
         </div>
         <div class="d-flex align-right mx-4" v-if="isLoggedIn & !isAdmin">
@@ -70,6 +73,7 @@
                     elevation="0"
             >
                 Profile
+                <v-icon right>mdi-account</v-icon>
             </v-btn>
         </div>
         <div class="d-flex align-right mx-4" v-if="isAdmin">
@@ -88,6 +92,7 @@
                     elevation="0"
             >
                 Logout
+                <v-icon right>mdi-logout</v-icon>
             </v-btn>
         </div>
 

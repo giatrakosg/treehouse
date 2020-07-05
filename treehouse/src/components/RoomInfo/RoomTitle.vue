@@ -40,7 +40,7 @@
 
         </v-list-item-content>
         <v-dialog max-width="60%" v-model="contact">
-            <v-card class="pa-2">
+            <v-card class="pa-2" style="overflow: hidden">
 
                 <v-row align="center">
                     <v-col cols="10">

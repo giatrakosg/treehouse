@@ -56,7 +56,7 @@
                 return this.$store.state.room
             }
         },
-        created() {
+        async created() {
 
             if (this.$route.params.room_id == -1) {
                 this.$store.state.room = {
@@ -68,25 +68,25 @@
                     lounge: false,
                     parking: false,
                     refrigerator: false,
-                    baths_num: 0,
-                    beds_num: 0,
-                    bedrooms_num: 0,
+                    baths_num: '',
+                    beds_num: '',
+                    bedrooms_num: '',
                     tv: false,
-                    area: 0,
+                    area: '',
                     type: '',
                     description: '',
                     wireless_internet: false,
                     smoking_allowed: false,
                     pets_allowed: false,
                     events_allowed: false,
-                    min_stay: 0,
-                    persons_num: 0,
+                    min_stay: '',
+                    persons_num: '',
                     address: '',
                     transport_info: '',
-                    cost_per_day: 0,
-                    add_persons_cost: 0,
+                    cost_per_day: '',
+                    add_persons_cost: '',
                     images: [],
-                    reviews_num: 0,
+                    reviews_num: '',
                     location: [37.983810, 23.727539],
                     public_owner_id: this.$store.state.user.public_id
 
@@ -99,7 +99,7 @@
 
                 this.loaded = true;
             } else {
-                this.$store.dispatch('getRoom', this.$route.params.room_id)
+                await this.$store.dispatch('getRoom', this.$route.params.room_id)
 
 
 

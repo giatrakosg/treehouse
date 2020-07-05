@@ -1,20 +1,6 @@
 <template>
     <v-container>
-        <v-row>
-            <v-list-item style="border-bottom:groove">
-                <v-list-item-avatar size="55">
-                    <img
-                            src="https://cdn.vuetifyjs.com/images/john.jpg"
-                            alt="John"
 
-                    >
-                </v-list-item-avatar>
-                <v-list-item-title>
-                    <span>{{user.uname}}</span>
-                </v-list-item-title>
-            </v-list-item>
-
-        </v-row>
         <v-row>
 
             <v-list three-line dense style="overflow: auto;height: 450px;width: 100%;border-bottom: groove">
@@ -25,7 +11,7 @@
                             v-if="item.sender_public_id===user.public_id"
                             :key="index"
                             style="width: 340px;"
-                            class="ma-1 mr-0 pa-0 ml-auto"
+                            class="ma-1 mr-1 pa-0 ml-auto"
 
 
                     >
@@ -124,6 +110,9 @@
             },
             user() {
                 return this.$store.state.user
+            },
+            thread() {
+                return this.$store.state.current_thread
             }
         },
         methods: {
