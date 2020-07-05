@@ -162,7 +162,6 @@ def get_rooms():
             if flag:
                 rooms_dict.append(room.to_dict_short())
 
-<<<<<<< HEAD
     print(rooms_dict)
     reviews = pd.read_csv('./data/reviews_with_scores.csv',index_col=0)
 
@@ -171,8 +170,6 @@ def get_rooms():
             s2 = pd.Series([r['listingid'],'10','2015-04-07','0','Paola',"empty line",'5'])
             reviews = reviews.append(s2,ignore_index=True)
     reviews.to_csv('./data/reviews_with_scores_updated.csv')
-=======
->>>>>>> 95675fdc0f6952dc6acbbe7d10f9c4a56521da9f
     return jsonify(rooms_dict)
 
 
