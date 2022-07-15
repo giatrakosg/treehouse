@@ -18,7 +18,7 @@ dask==2.19.0
 decorator==4.4.2
 defusedxml==0.6.0
 dicttoxml==1.7.4
-distributed==2.19.0
+distributed==2021.10.0
 entrypoints==0.3
 Flask==1.0.2
 Flask-Cors==3.0.7
